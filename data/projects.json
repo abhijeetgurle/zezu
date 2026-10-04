@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T04:48:58+00:00",
+ "generated_at": "2026-10-04T05:28:57+00:00",
  "projects": [],
  "trending": [
   {
@@ -7,7 +7,7 @@
    "url": "https://github.com/KKKKhazix/AIHOT",
    "description": "一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。",
    "language": "TypeScript",
-   "stars": 5497,
+   "stars": 5511,
    "topics": [
     "ai",
     "content-curation",
@@ -22,7 +22,7 @@
    "url": "https://github.com/rehan-remade/universal-modder",
    "description": "Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you own: recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos.",
    "language": "Python",
-   "stars": 2675,
+   "stars": 2687,
    "topics": [
     "age-of-empires",
     "claude-code",
@@ -37,7 +37,7 @@
    "url": "https://github.com/CopilotKit/OpenDots",
    "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
    "language": "TypeScript",
-   "stars": 2641,
+   "stars": 2658,
    "topics": []
   },
   {
@@ -76,7 +76,7 @@
    "url": "https://github.com/nanaism/yomiyasu",
    "description": "AI生成の日本語を自然な日本語へ推敲するAgent Skill / Agent Skill for Refining AI-Generated Japanese into Natural Japanese",
    "language": "Python",
-   "stars": 1337,
+   "stars": 1340,
    "topics": [
     "agent-skills",
     "ai-writing",
@@ -91,7 +91,7 @@
    "url": "https://github.com/edenfunf/reelmimic",
    "description": "Show it a video you love. Get a new video in the same style. An AI crew (Claude Code or Codex) plans, builds and reviews it with you.",
    "language": "JavaScript",
-   "stars": 1138,
+   "stars": 1142,
    "topics": [
     "2d-animation",
     "ai-agents",
@@ -106,7 +106,7 @@
    "url": "https://github.com/CAPCOM-TD-OSS/REDox",
    "description": "High-performance, token-based structured data engine for .NET. A core component of REX, the technology behind CAPCOM's next-generation game engine.",
    "language": "C#",
-   "stars": 991,
+   "stars": 993,
    "topics": []
   },
   {
@@ -114,7 +114,7 @@
    "url": "https://github.com/facebookincubator/muse-gadget-sdk",
    "description": "Open source SDK to build Muse gadgets",
    "language": "C",
-   "stars": 926,
+   "stars": 931,
    "topics": []
   },
   {
@@ -122,7 +122,7 @@
    "url": "https://github.com/chasmlol/SkyCraft",
    "description": "Play Skyrim as a Minecraft player: Minecraft physics, inventory, blocks and combat inside Skyrim's world (SKSE plugin + Fabric mod).",
    "language": "C++",
-   "stars": 778,
+   "stars": 782,
    "topics": []
   },
   {
@@ -130,7 +130,7 @@
    "url": "https://github.com/nykooi1/vibe-wise",
    "description": "A Claude Code plugin that helps you learn how to build while AI writes the code.",
    "language": "Python",
-   "stars": 753,
+   "stars": 756,
    "topics": []
   },
   {
@@ -146,7 +146,7 @@
    "url": "https://github.com/Edwardxlai/easyread",
    "description": "把英文论文读成舒服的中文：本地 PDF 论文翻译、原文对照、边读边问 AI、文献管理。Read English papers in comfortable Chinese.",
    "language": "Python",
-   "stars": 681,
+   "stars": 683,
    "topics": [
     "academic",
     "arxiv",
@@ -177,15 +177,7 @@
    "url": "https://github.com/composio-community/open-dot",
    "description": "Open-source personal AI agents that work on their own, on their own computers. Mac app, OpenAI + Composio.",
    "language": "TypeScript",
-   "stars": 527,
-   "topics": []
-  },
-  {
-   "name": "deepseek-ai/DeepGEMM-Ascend",
-   "url": "https://github.com/deepseek-ai/DeepGEMM-Ascend",
-   "description": "DeepGEMM-Ascend: clean and efficient matrix multiplication kernel library for Huawei Ascend NPUs",
-   "language": "C++",
-   "stars": 493,
+   "stars": 529,
    "topics": []
   },
   {
@@ -193,7 +185,7 @@
    "url": "https://github.com/QingYunA/answer-me-with-html",
    "description": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。",
    "language": "JavaScript",
-   "stars": 486,
+   "stars": 513,
    "topics": [
     "agent-skill",
     "ai-agent",
@@ -204,11 +196,19 @@
    ]
   },
   {
+   "name": "deepseek-ai/DeepGEMM-Ascend",
+   "url": "https://github.com/deepseek-ai/DeepGEMM-Ascend",
+   "description": "DeepGEMM-Ascend: clean and efficient matrix multiplication kernel library for Huawei Ascend NPUs",
+   "language": "C++",
+   "stars": 493,
+   "topics": []
+  },
+  {
    "name": "ESPARGOS/esp-sdr",
    "url": "https://github.com/ESPARGOS/esp-sdr",
    "description": "ESP-SDR uses the undocumented raw I/Q capture functionality of ESP32 family chips to turn them into (low-duty-cycle) Software Defined Radios",
    "language": "C",
-   "stars": 475,
+   "stars": 477,
    "topics": [
     "esp32",
     "sdr"
@@ -219,7 +219,7 @@
    "url": "https://github.com/amywork777/lipflow",
    "description": "Wispr Flow for your lips: hold a key, silently mouth words, and they're typed at your cursor. Runs locally on your Mac.",
    "language": "Python",
-   "stars": 457,
+   "stars": 458,
    "topics": []
   },
   {
@@ -235,7 +235,7 @@
    "url": "https://github.com/storytold/photocraft",
    "description": "",
    "language": "Rust",
-   "stars": 420,
+   "stars": 427,
    "topics": []
   },
   {
@@ -243,7 +243,7 @@
    "url": "https://github.com/ZacharyZhang-NY/Ely-GPUI-Components",
    "description": "A component library for GPUI, in light and dark. Every component runs live in the browser.",
    "language": "Rust",
-   "stars": 419,
+   "stars": 420,
    "topics": [
     "design-system",
     "gpui",
@@ -257,7 +257,7 @@
    "url": "https://github.com/PostHog/jeeves",
    "description": "Jeeves – Reasoning improves Jev-like decision models",
    "language": "Python",
-   "stars": 402,
+   "stars": 403,
    "topics": []
   }
  ]

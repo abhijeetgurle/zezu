@@ -849,5 +849,220 @@
   ],
   "url": "https://dropbox.tech/developers/new-dropbox-api-documentation",
   "weight": 1.2
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=49936575",
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "c307e47225512228",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 345,
+  "published": "2026-10-02T18:01:16+00:00",
+  "quality": 5,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "CORE 01\nAsymmetric 2-bit quantization\nCompress the routed experts, keep critical shared paths precise. That is how the supported routed-MoE builds fit their target machines.\nDS4 · LOCAL FRONTIER INFERENCE\nDwarfStar 4 is a narrow C inference engine for high-memory Mac, CUDA and…",
+  "title": "From the creator of Redis; run LLM locally with ds4",
+  "topics": [
+   "ai-engineering",
+   "backend",
+   "performance",
+   "data-engineering"
+  ],
+  "url": "https://dwarfstar.sh/",
+  "weight": 1.0
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=49929391",
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "c3530cb12d1318c6",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 328,
+  "published": "2026-10-02T02:51:27+00:00",
+  "quality": 5,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "About\nPress\nCopyright\nContact us\nCreators\nAdvertise\nDevelopers\nTerms\nPrivacy\nPolicy & Safety\nHow YouTube works\nTest new features\nNFL Sunday Ticket\n© 2026 Google LLC",
+  "title": "Greg Kroah-Hartman – Security in the LLM Age [video]",
+  "topics": [
+   "security",
+   "ai-engineering"
+  ],
+  "url": "https://www.youtube.com/watch?v=NnV_cWeoo5Q",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "bc7eda42cb3f75f7",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-02T13:00:00+00:00",
+  "quality": 5,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Introducing Cloudflare Traces: follow requests through our entire platform\nMar Witek, Dan Lapid, Nevi Shah, and Daniel Walsh\nToday, we’re introducing Cloudflare Traces in open beta, extending automatic tracing beyond Workers to the rest of the request path. In one trace, you can…",
+  "title": "Introducing Cloudflare Traces: follow requests through our entire platform",
+  "topics": [
+   "observability",
+   "backend",
+   "ai-engineering",
+   "performance"
+  ],
+  "url": "https://blog.cloudflare.com/cloudflare-tracing/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "72f49031912f98c0",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-02T13:00:00+00:00",
+  "quality": 5,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Updates on our pledge to make Cloudflare features accessible to everyone\nA year ago, Cloudflare CTO Dane Knecht announced our intention to make every Cloudflare feature available to everyone. Cloudflare launched an Enterprise tier years ago when larger customers came to us…",
+  "title": "Updates on our pledge to make Cloudflare features accessible to everyone",
+  "topics": [
+   "backend",
+   "infrastructure",
+   "security",
+   "observability"
+  ],
+  "url": "https://blog.cloudflare.com/enterprise-for-all-update/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "e189d148aef66b39",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-09-30T15:31:13+00:00",
+  "quality": 5,
+  "source": "ByteByteGo",
+  "source_type": "rss",
+  "summary": "CodeAF: a new open-source factory on the Pareto frontier (Sponsored)\nCodeAF is a new open-source software factory that sits on the Pareto frontier of cost, speed and quality. On DeepSWE it solved nearly 4× as many real GitHub issues as Claude Code on the same open model, and…",
+  "title": "How DoorDash Built a Toolbox for AI Agents",
+  "topics": [
+   "ai-engineering",
+   "security",
+   "observability",
+   "backend"
+  ],
+  "url": "https://blog.bytebytego.com/p/how-doordash-built-a-toolbox-for",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "04392c500debfe18",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-09-29T15:53:19+00:00",
+  "quality": 5,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Before we start: given this article is about native mobile development, I want to offer my 2021 ebook, ‘Building Mobile Apps at Scale: 39 engineering challenges’, for free to all readers. (normally costs $20). The book remains relevant on the challenges to solve for large-scale…",
+  "title": "Why has Shopify dropped React Native?",
+  "topics": [
+   "frontend",
+   "performance",
+   "system-design",
+   "testing"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/shopify-native-mobile",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "a9d0b575c8fd4f63",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-09-29T15:31:36+00:00",
+  "quality": 5,
+  "source": "ByteByteGo",
+  "source_type": "rss",
+  "summary": "Debugging Agents in Different Environments - Live Workshop (Sponsored)\nYour agent returns something odd. Was it the prompt, a tool call that timed out, or a response your code could not parse? Without traces, you are guessing.\nIn this hands-on workshop, Serge from Sentry…",
+  "title": "Why Do LLMs Lie?",
+  "topics": [
+   "ai-engineering",
+   "scalability",
+   "backend",
+   "system-design"
+  ],
+  "url": "https://blog.bytebytego.com/p/why-do-llms-lie",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "7344bae708cbe872",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-09-29T12:41:00+00:00",
+  "quality": 5,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "The more time I spend working with coding agents, the more convinced I am that they make software engineering even harder\nWe can do amazing things with them, but unlocking their full potential requires extraordinary discipline and knowledge\nThis has been a constant impression I…",
+  "title": "Fragments: September 29",
+  "topics": [
+   "ai-engineering",
+   "networking"
+  ],
+  "url": "https://martinfowler.com/fragments/2026-09-29.html",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "b3963992a1d516a2",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-03T20:37:40+00:00",
+  "quality": 5,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "About\nPress\nCopyright\nContact us\nCreators\nAdvertise\nDevelopers\nTerms\nPrivacy\nPolicy & Safety\nHow YouTube works\nTest new features\nNFL Sunday Ticket\n© 2026 Google LLC",
+  "title": "Rust, In Sickness & In Health",
+  "topics": [
+   "programming-languages"
+  ],
+  "url": "https://www.youtube.com/watch?v=3kbPyuAtk7g",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T05:28:57+00:00",
+  "id": "51c36e7a6645b7bd",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-03T13:23:29+00:00",
+  "quality": 5,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "Writing the Cyclone Scheme Compiler\nRevised for 2017\nby Justin Ethier\nThis write-up provides a high level background on the various components of Cyclone and how they were written. It is a revision of the original write-up, written over a year ago in August 2015, when the…",
+  "title": "Writing the Cyclone Scheme Compiler (2017)",
+  "topics": [
+   "programming-languages",
+   "performance",
+   "ai-engineering",
+   "backend"
+  ],
+  "url": "https://justinethier.github.io/cyclone/docs/Writing-the-Cyclone-Scheme-Compiler-Revised-2017",
+  "weight": 1.0
  }
 ]
