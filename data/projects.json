@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T09:02:36+00:00",
+ "generated_at": "2026-10-04T09:05:01+00:00",
  "projects": [],
  "trending": [
   {
@@ -22,7 +22,7 @@
    "url": "https://github.com/CopilotKit/OpenDots",
    "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
    "language": "TypeScript",
-   "stars": 2796,
+   "stars": 2798,
    "topics": []
   },
   {
@@ -130,7 +130,7 @@
    "url": "https://github.com/nykooi1/vibe-wise",
    "description": "A Claude Code plugin that helps you learn how to build while AI writes the code.",
    "language": "Python",
-   "stars": 797,
+   "stars": 798,
    "topics": []
   },
   {
@@ -219,7 +219,7 @@
    "url": "https://github.com/storytold/photocraft",
    "description": "",
    "language": "Rust",
-   "stars": 473,
+   "stars": 474,
    "topics": []
   },
   {
@@ -243,7 +243,7 @@
    "url": "https://github.com/sganggs/Stronghold-Protocol",
    "description": "明日方舟「卫戍协议：盟约」非官方同人复刻：浏览器自走棋塔防，单人或 1–4 人联机合作（非商业）",
    "language": "JavaScript",
-   "stars": 434,
+   "stars": 435,
    "topics": [
     "arknights",
     "auto-chess",
@@ -258,7 +258,7 @@
    "url": "https://github.com/ZacharyZhang-NY/Ely-GPUI-Components",
    "description": "A component library for GPUI, in light and dark. Every component runs live in the browser.",
    "language": "Rust",
-   "stars": 426,
+   "stars": 427,
    "topics": [
     "design-system",
     "gpui",
