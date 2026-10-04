@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T08:59:54+00:00",
+ "generated_at": "2026-10-04T09:02:36+00:00",
  "projects": [],
  "trending": [
   {
@@ -7,7 +7,7 @@
    "url": "https://github.com/KKKKhazix/AIHOT",
    "description": "一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。",
    "language": "TypeScript",
-   "stars": 5573,
+   "stars": 5574,
    "topics": [
     "ai",
     "content-curation",
@@ -22,7 +22,7 @@
    "url": "https://github.com/CopilotKit/OpenDots",
    "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
    "language": "TypeScript",
-   "stars": 2795,
+   "stars": 2796,
    "topics": []
   },
   {
@@ -114,7 +114,7 @@
    "url": "https://github.com/facebookincubator/muse-gadget-sdk",
    "description": "Open source SDK to build Muse gadgets",
    "language": "C",
-   "stars": 977,
+   "stars": 978,
    "topics": []
   },
   {
@@ -146,7 +146,7 @@
    "url": "https://github.com/Edwardxlai/easyread",
    "description": "把英文论文读成舒服的中文：本地 PDF 论文翻译、原文对照、边读边问 AI、文献管理。Read English papers in comfortable Chinese.",
    "language": "Python",
-   "stars": 709,
+   "stars": 710,
    "topics": [
     "academic",
     "arxiv",
@@ -161,7 +161,7 @@
    "url": "https://github.com/QingYunA/answer-me-with-html",
    "description": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。",
    "language": "JavaScript",
-   "stars": 653,
+   "stars": 657,
    "topics": [
     "agent-skill",
     "ai-agent",
@@ -219,7 +219,7 @@
    "url": "https://github.com/storytold/photocraft",
    "description": "",
    "language": "Rust",
-   "stars": 472,
+   "stars": 473,
    "topics": []
   },
   {
@@ -227,7 +227,7 @@
    "url": "https://github.com/amywork777/lipflow",
    "description": "Wispr Flow for your lips: hold a key, silently mouth words, and they're typed at your cursor. Runs locally on your Mac.",
    "language": "Python",
-   "stars": 461,
+   "stars": 462,
    "topics": []
   },
   {
@@ -243,7 +243,7 @@
    "url": "https://github.com/sganggs/Stronghold-Protocol",
    "description": "明日方舟「卫戍协议：盟约」非官方同人复刻：浏览器自走棋塔防，单人或 1–4 人联机合作（非商业）",
    "language": "JavaScript",
-   "stars": 433,
+   "stars": 434,
    "topics": [
     "arknights",
     "auto-chess",
@@ -258,7 +258,7 @@
    "url": "https://github.com/ZacharyZhang-NY/Ely-GPUI-Components",
    "description": "A component library for GPUI, in light and dark. Every component runs live in the browser.",
    "language": "Rust",
-   "stars": 425,
+   "stars": 426,
    "topics": [
     "design-system",
     "gpui",
