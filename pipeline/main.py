@@ -3,6 +3,7 @@
 Usage:
     python pipeline/main.py                  # normal (weekly) run
     python pipeline/main.py --max-llm 5      # limit Claude calls (cost control)
+    python pipeline/main.py --max-articles 5 # keep fewer articles per run
 """
 
 import argparse
@@ -17,7 +18,7 @@ import yaml
 import fetchers
 import projects
 from enrich import Enricher
-from store import Store, canonical_url
+from store import Store, canonical_url, rank_score
 from topics import is_relevant
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -51,8 +52,10 @@ def round_robin(items: list[dict]) -> list[dict]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--max-llm", type=int, default=int(os.environ.get("MAX_LLM_PER_RUN") or "60"),
-                        help="max articles to enrich per run; the rest wait for the next run")
+    parser.add_argument("--max-llm", type=int, default=int(os.environ.get("MAX_LLM_PER_RUN") or "30"),
+                        help="max candidates to enrich per run; the rest wait for the next run")
+    parser.add_argument("--max-articles", type=int, default=int(os.environ.get("MAX_ARTICLES_PER_RUN") or "10"),
+                        help="max articles added to the feed per run (the best-ranked enriched ones)")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     # Sites that block text extraction are expected; we fall back to the feed excerpt.
@@ -86,7 +89,7 @@ def main() -> None:
 
     # 3. Enrich (items over the cap stay unseen and are picked up next run)
     enricher = Enricher()
-    kept = 0
+    enriched = []
     for item in queue[: args.max_llm]:
         fields = enricher.enrich(item)
         if fields is None:
@@ -95,13 +98,19 @@ def main() -> None:
         item.update(fields)
         item.pop("trusted", None)
         item.pop("excerpt", None)
+        enriched.append(item)
+
+    # 4. Keep only the best N; the rest were already evaluated, so don't revisit them
+    enriched.sort(key=lambda i: rank_score(i, store.now), reverse=True)
+    for item in enriched[: args.max_articles]:
         store.add(item)
-        kept += 1
-    log.info("kept %d new articles", kept)
+    for item in enriched[args.max_articles :]:
+        store.mark_seen(item["url"])
+    log.info("enriched %d, kept the top %d", len(enriched), min(len(enriched), args.max_articles))
 
     store.save()
 
-    # 4. This week's project ideas
+    # 5. This week's project ideas
     trending = fetchers.fetch_github_trending(cfg.get("github_trending", {}), os.environ.get("GITHUB_TOKEN"))
     projects.update(DATA_DIR / "projects.json", trending, store.latest + store.new_items, store.now)
 

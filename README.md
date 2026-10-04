@@ -9,6 +9,7 @@ GitHub Actions (weekly, Monday 03:17 UTC)
        1. fetch: RSS (eng blogs, newsletters, Lobsters, dev.to, arXiv), Hacker News, Reddit
        2. dedupe against data/seen.json, keyword pre-filter
        3. enrich: Claude summary/topics/quality (keyword tagging if no API key)
+          on up to 30 candidates, then keep the best 10
        4. write data/latest.json + data/archive/YYYY-MM.json
        5. projects: GitHub trending repos + Claude → data/projects.json
   └─ commit data/ → deploy site/ + data/ to GitHub Pages
@@ -21,7 +22,8 @@ GitHub Actions (weekly, Monday 03:17 UTC)
 3. (Optional) **Settings → Secrets and variables → Actions**:
    - Secret `ANTHROPIC_API_KEY`: turns on Claude summaries and project ideas. Without it, everything still works, using keyword tagging only.
    - Variable `CLAUDE_MODEL`: defaults to `claude-opus-5-5`. Set `claude-haiku-4-5` for roughly 4x lower cost.
-   - Variable `MAX_LLM_PER_RUN`: defaults to `60` articles per week.
+   - Variable `MAX_ARTICLES_PER_RUN`: defaults to `10`, the number of articles added each week.
+   - Variable `MAX_LLM_PER_RUN`: defaults to `30`, the number of candidates Claude reviews to choose those 10.
 4. **Actions → fetch-and-deploy → Run workflow** for the first run. After that it runs every Monday.
 
 ## Run locally
@@ -45,8 +47,8 @@ python3 -m http.server 8000               # open http://localhost:8000/site/
 | | Cost |
 |---|---|
 | GitHub Actions, Pages, repo | $0 |
-| Claude, 60 articles/week with `claude-opus-5-5` | ~$1–3/week (rough estimate) |
-| Claude with `claude-haiku-4-5` | ~$0.25–0.75/week (rough estimate) |
+| Claude, 30 candidates/week with `claude-opus-5-5` | ~$0.50–1.50/week (rough estimate) |
+| Claude with `claude-haiku-4-5` | ~$0.15–0.40/week (rough estimate) |
 | No API key | $0 |
 
 Each article sends at most `LLM_MAX_CHARS` (default 12,000) characters to Claude.
