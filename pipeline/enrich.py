@@ -27,6 +27,18 @@ def claude_configured() -> bool:
     return bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_FEDERATION_RULE_ID"))
 
 
+_client: anthropic.Anthropic | None = None
+
+
+def get_client() -> anthropic.Anthropic | None:
+    """One shared client per run. With WIF each client does its own token exchange, and
+    a GitHub OIDC token can be exchanged only once (its jti is single-use)."""
+    global _client
+    if _client is None and claude_configured():
+        _client = anthropic.Anthropic()
+    return _client
+
+
 KINDS = ["deep-dive", "case-study", "tutorial", "paper", "opinion", "news", "release", "other"]
 LEVELS = ["beginner", "intermediate", "advanced"]
 
@@ -80,7 +92,7 @@ def keyword_enrich(item: dict, text: str) -> dict:
 
 class Enricher:
     def __init__(self) -> None:
-        self.client = anthropic.Anthropic() if claude_configured() else None
+        self.client = get_client()
         if not self.client:
             log.info("no Claude credentials (API key or WIF); using keyword tagging only")
 

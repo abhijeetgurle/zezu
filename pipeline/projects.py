@@ -8,7 +8,7 @@ from pathlib import Path
 
 import anthropic
 
-from enrich import MODEL, claude_configured
+from enrich import MODEL, get_client
 
 log = logging.getLogger(__name__)
 
@@ -76,9 +76,10 @@ def generate(trending: list[dict], latest: list[dict], client: anthropic.Anthrop
 
 def update(path: Path, trending: list[dict], latest: list[dict], now: datetime) -> None:
     projects = []
-    if claude_configured() and trending:
+    client = get_client()
+    if client and trending:
         try:
-            projects = generate(trending, latest, anthropic.Anthropic())
+            projects = generate(trending, latest, client)
         except (anthropic.APIError, anthropic.WorkloadIdentityError) as e:
             log.warning("projects generation failed: %s", e)
     path.write_text(json.dumps({

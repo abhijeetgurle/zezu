@@ -41,6 +41,9 @@ jobs:
               && mv "$ANTHROPIC_IDENTITY_TOKEN_FILE.tmp" "$ANTHROPIC_IDENTITY_TOKEN_FILE"
           }
           fetch_jwt
+          # Log the token's claims (not the token) to compare against the federation rule.
+          jq -cR 'split(".")[1] | gsub("-";"+") | gsub("_";"/") | @base64d | fromjson
+            | {iss, sub, aud, ref, event_name, repository_owner, workflow}' "$ANTHROPIC_IDENTITY_TOKEN_FILE" || true
           # GitHub tokens expire after ~5 min; keep the file fresh for SDK token refreshes.
           ( while sleep 240; do fetch_jwt; done ) &
           python pipeline/main.py
