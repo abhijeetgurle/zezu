@@ -34,12 +34,13 @@ hackernews:
   min_points: 200        # only stories with at least this many points
   lookback_hours: 168    # one week (the pipeline runs weekly)
 
-reddit:
-  # Reddit sometimes blocks requests from cloud IPs (including GitHub Actions).
-  # Failures are logged and skipped, so the rest of the run is unaffected.
-  subreddits: [programming, ExperiencedDevs, systemdesign, softwarearchitecture, golang, rust]
-  min_score: 100
-  weight: 0.9
+# Reddit is disabled: it blocks (403) or rate-limits (429) requests made without
+# an API key. To re-enable, register a Reddit app, switch fetch_reddit to OAuth,
+# and uncomment this block.
+# reddit:
+#   subreddits: [programming, ExperiencedDevs, systemdesign, softwarearchitecture, golang, rust]
+#   min_score: 100
+#   weight: 0.9
 
 github_trending:
   lookback_days: 7

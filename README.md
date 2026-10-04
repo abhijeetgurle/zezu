@@ -6,7 +6,7 @@ It runs on GitHub Actions and GitHub Pages, with no database and no servers.
 ```
 GitHub Actions (weekly, Monday 03:17 UTC)
   └─ pipeline/main.py
-       1. fetch: RSS (eng blogs, newsletters, Lobsters, dev.to, arXiv), Hacker News, Reddit
+       1. fetch: RSS (eng blogs, newsletters, Lobsters, dev.to, arXiv), Hacker News
        2. dedupe against data/seen.json, keyword pre-filter
        3. enrich: Claude summary/topics/quality (keyword tagging if no API key)
           on up to 30 candidates, then keep the best 10
@@ -56,7 +56,7 @@ Articles that don't pass the keyword filter never reach Claude.
 
 ## Known limitations
 
-- **Reddit** returns `403 Blocked` for unauthenticated requests. It's logged and skipped. To enable it, register a free Reddit app and switch `fetch_reddit` to OAuth.
+- **Reddit** is turned off in `sources.yaml`, because it blocks or rate-limits requests made without an API key. To turn it on, register a Reddit app and switch `fetch_reddit` to OAuth.
 - **Medium-hosted blogs** (Netflix, Airbnb, Pinterest) block text extraction, so those articles are summarized from the RSS excerpt.
 - **arXiv** feeds only list the latest day's papers, so a weekly run sees one day's worth.
 - Likes, saves and read state are stored in your browser's localStorage. They don't sync across devices.
