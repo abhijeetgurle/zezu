@@ -2,14 +2,13 @@
 
 import json
 import logging
-import os
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
 import anthropic
 
-from enrich import MODEL
+from enrich import MODEL, claude_configured
 
 log = logging.getLogger(__name__)
 
@@ -77,10 +76,10 @@ def generate(trending: list[dict], latest: list[dict], client: anthropic.Anthrop
 
 def update(path: Path, trending: list[dict], latest: list[dict], now: datetime) -> None:
     projects = []
-    if os.environ.get("ANTHROPIC_API_KEY") and trending:
+    if claude_configured() and trending:
         try:
             projects = generate(trending, latest, anthropic.Anthropic())
-        except anthropic.APIError as e:
+        except (anthropic.APIError, anthropic.WorkloadIdentityError) as e:
             log.warning("projects generation failed: %s", e)
     path.write_text(json.dumps({
         "generated_at": now.isoformat(timespec="seconds"),

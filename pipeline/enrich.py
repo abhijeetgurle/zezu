@@ -1,6 +1,6 @@
 """Article enrichment: extract readable text, then summarize/tag with Claude.
 
-If ANTHROPIC_API_KEY is not set (or a call fails), falls back to keyword tagging,
+If no Claude credentials are configured (or a call fails), falls back to keyword tagging,
 so the pipeline always works at $0.
 """
 
@@ -18,6 +18,14 @@ log = logging.getLogger(__name__)
 MODEL = os.environ.get("CLAUDE_MODEL") or "claude-opus-5-5"
 # Cost control: only the first N characters of each article are sent to Claude.
 LLM_MAX_CHARS = int(os.environ.get("LLM_MAX_CHARS") or "12000")
+
+
+
+def claude_configured() -> bool:
+    """True if the SDK can authenticate: an API key (local runs) or Workload
+    Identity Federation env vars (GitHub Actions)."""
+    return bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_FEDERATION_RULE_ID"))
+
 
 KINDS = ["deep-dive", "case-study", "tutorial", "paper", "opinion", "news", "release", "other"]
 LEVELS = ["beginner", "intermediate", "advanced"]
@@ -72,9 +80,9 @@ def keyword_enrich(item: dict, text: str) -> dict:
 
 class Enricher:
     def __init__(self) -> None:
-        self.client = anthropic.Anthropic() if os.environ.get("ANTHROPIC_API_KEY") else None
+        self.client = anthropic.Anthropic() if claude_configured() else None
         if not self.client:
-            log.info("ANTHROPIC_API_KEY not set; using keyword tagging only")
+            log.info("no Claude credentials (API key or WIF); using keyword tagging only")
 
     def enrich(self, item: dict) -> dict | None:
         """Return enrichment fields, or None if Claude judged the article irrelevant."""
@@ -100,6 +108,11 @@ class Enricher:
                 betas=["server-side-fallback-2026-07-01"],
                 fallbacks="default",
             )
+        except anthropic.WorkloadIdentityError as e:
+            # Auth won't recover mid-run: log once, then keyword-tag the rest.
+            log.error("Claude auth (WIF token exchange) failed, disabling Claude for this run: %s", e)
+            self.client = None
+            return keyword_enrich(item, text)
         except anthropic.RateLimitError:
             log.warning("rate limited on %s; using keyword tagging", item["url"])
             return keyword_enrich(item, text)

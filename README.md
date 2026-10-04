@@ -20,7 +20,11 @@ GitHub Actions (weekly, Monday 03:17 UTC)
 1. Create a **public** GitHub repo and push this folder to `main`. GitHub Pages is free for public repos; private repos need a paid plan.
 2. **Settings → Pages → Source: GitHub Actions**.
 3. (Optional) **Settings → Secrets and variables → Actions**:
-   - Secret `ANTHROPIC_API_KEY`: turns on Claude summaries and project ideas. Without it, everything still works, using keyword tagging only.
+   - Claude auth uses **Workload Identity Federation**: GitHub's per-run identity token is exchanged
+     for a short-lived Anthropic token, so no API key is stored. The federation rule, service account,
+     org and workspace IDs are set in the workflow file. They're identifiers, not secrets.
+     Don't add an `ANTHROPIC_API_KEY` to the workflow: if it's set, even to an empty value, it takes precedence over WIF.
+     If authentication fails, the run falls back to keyword tagging.
    - Variable `CLAUDE_MODEL`: defaults to `claude-opus-5-5`. Set `claude-haiku-4-5` for roughly 4x lower cost.
    - Variable `MAX_ARTICLES_PER_RUN`: defaults to `10`, the number of articles added each week.
    - Variable `MAX_LLM_PER_RUN`: defaults to `30`, the number of candidates Claude reviews to choose those 10.

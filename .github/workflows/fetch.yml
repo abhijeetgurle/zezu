@@ -30,9 +30,26 @@ jobs:
           cache-dependency-path: pipeline/requirements.txt
       - run: pip install -r pipeline/requirements.txt
       - name: Run pipeline
-        run: python pipeline/main.py
+        # Claude auth via Workload Identity Federation: GitHub's OIDC token is exchanged
+        # for a short-lived Anthropic token, so no API key is stored in the repo.
+        # Don't add ANTHROPIC_API_KEY here: if set (even empty) it takes precedence over WIF.
+        run: |
+          fetch_jwt() {
+            curl -sSf -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+              "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://api.anthropic.com" \
+              | jq -r .value > "$ANTHROPIC_IDENTITY_TOKEN_FILE.tmp" \
+              && mv "$ANTHROPIC_IDENTITY_TOKEN_FILE.tmp" "$ANTHROPIC_IDENTITY_TOKEN_FILE"
+          }
+          fetch_jwt
+          # GitHub tokens expire after ~5 min; keep the file fresh for SDK token refreshes.
+          ( while sleep 240; do fetch_jwt; done ) &
+          python pipeline/main.py
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_FEDERATION_RULE_ID: fdrl_01BLqTyEkrivthzTzcHQrX71
+          ANTHROPIC_ORGANIZATION_ID: 7107212a-0d35-4002-bb40-61131ddaeca9
+          ANTHROPIC_SERVICE_ACCOUNT_ID: svac_01UxQZbHinvtHPPENBwHgv3M
+          ANTHROPIC_WORKSPACE_ID: wrkspc_01VMcyqVkJDF8en7ocoPSr79
+          ANTHROPIC_IDENTITY_TOKEN_FILE: ${{ runner.temp }}/gha-jwt
           CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
           MAX_LLM_PER_RUN: ${{ vars.MAX_LLM_PER_RUN }}
           MAX_ARTICLES_PER_RUN: ${{ vars.MAX_ARTICLES_PER_RUN }}
