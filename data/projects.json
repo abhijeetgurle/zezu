@@ -1,13 +1,154 @@
 {
- "generated_at": "2026-10-04T09:06:28+00:00",
- "projects": [],
+ "generated_at": "2026-10-04T09:08:49+00:00",
+ "projects": [
+  {
+   "title": "PuffLite: An Object-Storage-Native Search Engine with LSM Compaction",
+   "pitch": "Build a tiny turbopuffer-style search service whose source of truth is S3-compatible object storage (MinIO). Writes land in a WAL, get flushed to immutable segment files with a BM25 inverted index and an IVF vector index, and a background compactor merges segments. Queries combine text and vector results and are served from a local NVMe/memory cache tier in front of cold object storage.",
+   "stack": [
+    "Rust or Go",
+    "MinIO (S3 API)",
+    "Parquet or a custom segment format",
+    "tantivy-style inverted index (hand-rolled)",
+    "IVF/k-means vector index",
+    "Prometheus"
+   ],
+   "you_will_learn": [
+    "LSM-tree write path: WAL, memtable, immutable segments, compaction",
+    "Inverted index construction and BM25 scoring",
+    "Approximate nearest neighbor indexing (IVF) and recall/latency tradeoffs",
+    "Tiered caching over high-latency object storage",
+    "Read-after-write consistency when the store is eventually listed",
+    "Write amplification vs. read amplification measurement"
+   ],
+   "milestones": [
+    "WAL + memtable that flushes to immutable segment objects on MinIO with a manifest file updated via conditional PUT",
+    "Per-segment BM25 inverted index and a query path that fans out across segments",
+    "Add IVF vector index per segment and hybrid ranking (reciprocal rank fusion)",
+    "Background compactor that merges small segments and atomically swaps the manifest; measure write/read amplification",
+    "Local disk cache with LRU eviction and prefetch; plot p50/p99 cold vs. warm query latency"
+   ],
+   "scope": "month",
+   "inspired_by": "https://turbopuffer.com/blog/rip-vector-database"
+  },
+  {
+   "title": "Backpressure Lab: A Mini Serverless Event Stream with Consumer Groups",
+   "pitch": "Recreate the core idea behind Cloudflare K2: decouple producers and consumers in scale and time. Build a single-node append-only log broker with partitions, consumer groups, committed offsets, and explicit backpressure (credit-based flow control), then hammer it with a load generator to watch what happens when consumers fall behind.",
+   "stack": [
+    "Go or Zig 0.17",
+    "Append-only segmented log files with mmap",
+    "gRPC or HTTP/2 streaming",
+    "Grafana + Prometheus",
+    "k6 for load generation"
+   ],
+   "you_will_learn": [
+    "Log-structured storage and segment rotation/retention",
+    "Partitioning and ordering guarantees per key",
+    "At-least-once delivery, offset commits, and idempotent consumers",
+    "Credit-based flow control vs. buffering vs. load shedding",
+    "Consumer lag as an observability signal"
+   ],
+   "milestones": [
+    "Single-partition append-only log with fsync policy options and segment rotation",
+    "Multiple partitions with key-hash routing and per-partition ordering",
+    "Consumer groups with committed offsets and rebalancing when consumers join/leave",
+    "Credit-based backpressure on the push path; compare against unbounded buffering under a 10x producer spike",
+    "Dashboard showing throughput, consumer lag, and redelivery counts; write up a failure-injection report (kill consumer mid-batch)"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://blog.cloudflare.com/cloudflare-k2-streams/"
+  },
+  {
+   "title": "System-1 Router: A Low-Latency Decision Model Gateway with LoRA Hot-Swapping",
+   "pitch": "Serve a small open decision model (like jeff's 0.8B base) behind a gateway that picks between options with calibrated probabilities, hot-swaps LoRA adapters per domain, and micro-batches requests to hit millisecond latency targets. Use it as a router: cheap fast model decides, expensive LLM only called when confidence is low.",
+   "stack": [
+    "Python",
+    "vLLM or llama.cpp with LoRA support",
+    "FastAPI",
+    "Redis",
+    "OpenTelemetry",
+    "Jaeger"
+   ],
+   "you_will_learn": [
+    "Dynamic micro-batching and the latency vs. throughput tradeoff",
+    "Adapter caching: LRU of LoRA weights in GPU/CPU memory",
+    "Probability calibration (ECE, reliability diagrams, temperature scaling)",
+    "Confidence-based cascading / fallback architecture",
+    "Tail-latency tracing with distributed spans"
+   ],
+   "milestones": [
+    "Run the base model locally and expose a /decide endpoint returning option probabilities",
+    "Add a LoRA adapter registry with LRU cache and measure swap cost (cold vs. warm adapter)",
+    "Implement a micro-batcher with max-wait and max-batch knobs; graph p50/p99 vs. QPS",
+    "Measure calibration on a labeled set, apply temperature scaling, show reliability diagrams before/after",
+    "Build the cascade: escalate to a large LLM below a confidence threshold, and report cost/accuracy curves"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://github.com/firelex/jeff"
+  },
+  {
+   "title": "Hotspot Daily: A Self-Hosted Trend Aggregator with Dedup and Idempotent Pipelines",
+   "pitch": "Build your own AIHOT-style industry digest: ingest RSS, GitHub trending, and HN on a schedule, dedupe near-identical stories, rank them with your own criteria, and generate a daily report. The engineering focus is making the pipeline idempotent, resumable, and politely rate-limited rather than just calling an LLM.",
+   "stack": [
+    "TypeScript",
+    "Node.js or Bun",
+    "PostgreSQL with pgvector",
+    "BullMQ on Redis",
+    "MinHash/SimHash",
+    "A local LLM via Ollama for summaries"
+   ],
+   "you_will_learn": [
+    "Idempotent ingestion with content hashes and upserts",
+    "Near-duplicate detection with SimHash/MinHash and LSH bucketing",
+    "Job queues with retries, exponential backoff, and dead-letter queues",
+    "Per-source rate limiting with token buckets and ETag/If-Modified-Since caching",
+    "Exactly-once-ish effects via outbox pattern for report publishing"
+   ],
+   "milestones": [
+    "Fetchers for 3 sources with conditional GET caching and token-bucket rate limits",
+    "Normalized items table with content-hash upserts so reruns are safe",
+    "SimHash + LSH dedup clustering stories across sources; evaluate precision on a hand-labeled sample",
+    "Scoring stage with pluggable criteria and an LLM summarizer behind a queue with DLQ",
+    "Daily report generation via an outbox table; kill the worker mid-run and prove no duplicate reports"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://github.com/KKKKhazix/AIHOT"
+  },
+  {
+   "title": "Fail-Static SDK: Reproducing the Firebase Crash and Building a Kill-Switch Config Service",
+   "pitch": "The Firebase outage crashed client apps because of a backend change. Build a remote-config service plus a client SDK that cannot take down its host app: schema-validated configs, staged rollouts, last-known-good caching, and a circuit breaker. First reproduce the failure mode, then engineer it away.",
+   "stack": [
+    "Go for the config server",
+    "SQLite or Postgres",
+    "TypeScript client SDK",
+    "JSON Schema",
+    "Toxiproxy for fault injection",
+    "OpenTelemetry"
+   ],
+   "you_will_learn": [
+    "Fail-static vs. fail-closed design for client SDKs",
+    "Versioned configs, schema validation, and safe deserialization",
+    "Staged/percentage rollouts with automatic rollback on error-rate SLO breach",
+    "Circuit breakers, timeouts, and last-known-good caching",
+    "Blast-radius reduction and incident observability"
+   ],
+   "milestones": [
+    "Naive config server + SDK; reproduce a crash by shipping a malformed payload",
+    "Add schema validation on publish and defensive parsing with last-known-good fallback in the SDK",
+    "Versioned configs with percentage rollouts keyed on stable client hash",
+    "Client-side telemetry and server-side auto-rollback when error rate exceeds threshold",
+    "Chaos run with Toxiproxy (latency, garbage responses, outage) and a written postmortem showing zero host crashes"
+   ],
+   "scope": "weekend",
+   "inspired_by": "https://newsletter.pragmaticengineer.com/p/the-pulse-firebases-global-outage"
+  }
+ ],
  "trending": [
   {
    "name": "KKKKhazix/AIHOT",
    "url": "https://github.com/KKKKhazix/AIHOT",
    "description": "一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。",
    "language": "TypeScript",
-   "stars": 5574,
+   "stars": 5578,
    "topics": [
     "ai",
     "content-curation",
@@ -22,7 +163,7 @@
    "url": "https://github.com/CopilotKit/OpenDots",
    "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
    "language": "TypeScript",
-   "stars": 2798,
+   "stars": 2801,
    "topics": []
   },
   {
@@ -30,7 +171,7 @@
    "url": "https://github.com/rehan-remade/universal-modder",
    "description": "Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you own: recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos.",
    "language": "Python",
-   "stars": 2755,
+   "stars": 2756,
    "topics": [
     "age-of-empires",
     "claude-code",
@@ -161,7 +302,7 @@
    "url": "https://github.com/QingYunA/answer-me-with-html",
    "description": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。",
    "language": "JavaScript",
-   "stars": 658,
+   "stars": 660,
    "topics": [
     "agent-skill",
     "ai-agent",
@@ -243,7 +384,7 @@
    "url": "https://github.com/sganggs/Stronghold-Protocol",
    "description": "明日方舟「卫戍协议：盟约」非官方同人复刻：浏览器自走棋塔防，单人或 1–4 人联机合作（非商业）",
    "language": "JavaScript",
-   "stars": 435,
+   "stars": 436,
    "topics": [
     "arknights",
     "auto-chess",

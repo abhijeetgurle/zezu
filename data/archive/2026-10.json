@@ -1937,5 +1937,214 @@
   ],
   "url": "https://dev.to/subham01/what-does-it-take-to-build-a-correct-real-time-leaderboard-4j7h",
   "weight": 0.8
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "84a222ae95f1c442",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-09-14T15:31:02+00:00",
+  "quality": 7,
+  "source": "ByteByteGo",
+  "source_type": "rss",
+  "summary": "Explains how to evaluate LLM applications: why deterministic tests fall short, the evaluation loop, building golden datasets with dev/holdout splits, the limits of automated metrics like BLEU/ROUGE and schema checks, and how LLM-as-a-judge fits alongside human review and production monitoring.",
+  "title": "LLMs as a Judge: How to Know if Your LLM is Healthy",
+  "topics": [
+   "ai-engineering",
+   "testing",
+   "observability"
+  ],
+  "url": "https://blog.bytebytego.com/p/llms-as-a-judge-how-to-know-if-your",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "c17d7f4488aecf93",
+  "kind": "tutorial",
+  "level": "beginner",
+  "popularity": 0,
+  "published": "2026-09-10T15:31:28+00:00",
+  "quality": 5,
+  "source": "ByteByteGo",
+  "source_type": "rss",
+  "summary": "Walks through what happens when an application calls an API: DNS resolution, routing, TCP and TLS handshakes, HTTP, and load balancing. The excerpt is introductory, and the full article (likely paywalled) promises more detail on each layer.",
+  "title": "A Guide to Application Networking Basics",
+  "topics": [
+   "networking",
+   "backend",
+   "system-design"
+  ],
+  "url": "https://blog.bytebytego.com/p/a-guide-to-application-networking",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "6d8d858504db7f0a",
+  "kind": "other",
+  "level": "beginner",
+  "popularity": 0,
+  "published": "2026-09-12T15:30:46+00:00",
+  "quality": 4,
+  "source": "ByteByteGo",
+  "source_type": "rss",
+  "summary": "A newsletter digest covering why git revert produces conflicts when later commits touch the same lines, a list of Claude Code features, symmetric vs asymmetric encryption, load balancer use cases, and common cache failure modes (thundering herd, penetration, breakdown, crash) with mitigations. Each item is a brief overview rather than an in-depth treatment.",
+  "title": "EP225: Why Does Git Revert Cause Conflicts?",
+  "topics": [
+   "system-design",
+   "security",
+   "scalability",
+   "ai-engineering"
+  ],
+  "url": "https://blog.bytebytego.com/p/ep225-why-does-git-revert-cause-conflicts",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "721fedba6db18ddf",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-09-01T13:09:19+00:00",
+  "quality": 7,
+  "source": "AWS Architecture Blog",
+  "source_type": "rss",
+  "summary": "Explains the MCP 2026-07-28 stateless protocol revision (removal of initialize handshake and session IDs, server/discover, Multi Round-Trip Requests with requestState tokens) and what it means for deploying remote MCP servers on AWS. Maps the changes to Well-Architected pillars: dropping sticky sessions and session stores, header-based routing, W3C trace context, idempotent tools, protocol-declared caching, and security requirements like HMAC-protected continuation tokens and ownership checks. Includes migration advice for keeping legacy session infrastructure until old clients are gone.",
+  "title": "MCP went stateless: Is your AWS MCP server deployment well-architected?",
+  "topics": [
+   "ai-engineering",
+   "system-design",
+   "scalability",
+   "infrastructure"
+  ],
+  "url": "https://aws.amazon.com/blogs/architecture/mcp-went-stateless-is-your-aws-mcp-server-deployment-well-architected/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "6aab71fc8846de7a",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-09-01T14:01:10+00:00",
+  "quality": 6,
+  "source": "AWS Architecture Blog",
+  "source_type": "rss",
+  "summary": "Part 1 of an AWS series describing an architecture for centrally orchestrating bare-metal servers and EKS Anywhere clusters across many on-premises sites, using Lambda, Step Functions, EventBridge and DynamoDB. It covers the inventory/state model (sites, servers, clusters, orders), the Step Functions callback pattern for long-running on-prem tasks, Distributed Map for fan-out, Redfish for vendor-agnostic hardware control, and hybrid security setup.",
+  "title": "Hybrid cloud orchestration: Modernizing on-premises infrastructure management with AWS",
+  "topics": [
+   "infrastructure",
+   "system-design",
+   "distributed-systems"
+  ],
+  "url": "https://aws.amazon.com/blogs/architecture/hybrid-cloud-orchestration-modernizing-on-premises-infrastructure-management-with-aws/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "951ebe4894ec88c1",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-08-26T17:33:03+00:00",
+  "quality": 7,
+  "source": "AWS Architecture Blog",
+  "source_type": "rss",
+  "summary": "Describes a graduated-autonomy architecture for AI agents where permissions expand or contract based on a rolling trust score, with safety as an independent floor and hysteresis between tiers. Covers pre-execution checks, out-of-process Cedar policy enforcement via a gateway, audit/provenance records, eval-gated delivery, honeypot monitoring, and delegation-chain minimum tiers. AWS-specific services are used but the pattern is broadly transferable.",
+  "title": "Closing the AI agent trust gap with graduated autonomy",
+  "topics": [
+   "ai-engineering",
+   "security",
+   "system-design",
+   "reliability"
+  ],
+  "url": "https://aws.amazon.com/blogs/architecture/closing-the-ai-agent-trust-gap-with-graduated-autonomy/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "4fe89b4c93910eb0",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-08-18T16:21:06+00:00",
+  "quality": 7,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Based on interviews with about 20 engineering leaders, the article explains why CTOs and VPs of Engineering are quitting or taking career breaks in 2026. Reasons include founders with unrealistic AI expectations, cost-cutting pressure, equity wiped out by liquidation preferences, and smaller teams needing fewer leaders. It also walks through how preference stacks can make a 2% equity grant worthless, and how the market now favors AI-native leadership experience.",
+  "title": "Headed for the Exit: the Great Engineering Leader Career Break",
+  "topics": [
+   "career"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/the-great-engineering-leader-career-break",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "4f6ea3bc7cf5409f",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-08-19T18:15:00+00:00",
+  "quality": 6,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "Jim Highsmith proposes 'Practitioner Voice' as a writing category distinct from academic writing, thought leadership, and LLM-generated prose. It is characterized by authority from experience, tensions left unresolved, a visible author, and readers who recognize the pattern from their own work. Useful for engineers who write design docs, blog posts, or technical essays and want their writing to carry real judgment.",
+  "title": "Practitioner Voice: The Writing Category Nobody has Named Yet",
+  "topics": [
+   "career"
+  ],
+  "url": "https://martinfowler.com/articles/practitioner-voice.html",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "4d7cecd4850bc523",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-08-19T16:53:57+00:00",
+  "quality": 6,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Podcast episode notes with Addy Osmani covering his path from Chrome DevTools and Core Web Vitals to AI developer experience at Google. Key takeaways include the risk of 'cognitive surrender' when working with AI agents, 'mutual amplification' and loop engineering practices, accountability as the enduring role of engineers, and career advice about broadening into product and go-to-market skills.",
+  "title": "From Chrome DevTools to AI Engineering, with Addy Osmani",
+  "topics": [
+   "ai-engineering",
+   "career",
+   "frontend"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/from-chrome-devtools-to-ai-engineering",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-04T09:08:49+00:00",
+  "id": "0e8b7a142118ffcc",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-08-26T17:36:23+00:00",
+  "quality": 5,
+  "source": "AWS Architecture Blog",
+  "source_type": "rss",
+  "summary": "Describes Gallup's production RAG assistant on AWS: dual retrieval from Bedrock Knowledge Bases and Kendra with confidence-threshold filtering, Lambda/FastAPI streaming, ElastiCache for conversation history with RDS as system of record, and token/latency metrics via Firehose. Includes details like persisting interactions before streaming and mid-stream guardrail intervention, but is largely a vendor case study with limited depth.",
+  "title": "Gallup scales real-time coaching for thousands with Amazon Bedrock",
+  "topics": [
+   "ai-engineering",
+   "system-design",
+   "backend"
+  ],
+  "url": "https://aws.amazon.com/blogs/architecture/gallup-delivers-real-time-workplace-coaching-to-thousands-of-leaders-with-amazon-bedrock/",
+  "weight": 1.0
  }
 ]
