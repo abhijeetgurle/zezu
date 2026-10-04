@@ -1722,5 +1722,220 @@
   ],
   "url": "https://dev.to/coldstorage/how-huskhoard-talks-to-the-cloud-and-why-it-beats-managing-buckets-by-hand-4136",
   "weight": 0.8
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "d3d13d9734feda49",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-01T13:00:00+00:00",
+  "quality": 5,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Cloudflare OS: your company’s agent workspace, managed for you\nCloudflare OS gives everyone in your organization an agent workspace that knows how your company works and connects to its data and systems. Today, we're opening the waitlist for fully managed Cloudflare OS…",
+  "title": "Cloudflare OS: your company’s agent workspace, managed for you",
+  "topics": [
+   "ai-engineering",
+   "backend"
+  ],
+  "url": "https://blog.cloudflare.com/managed-cloudflare-os/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "55a839bbc3fdfddb",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-01T13:00:00+00:00",
+  "quality": 5,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "We want you to build the next Git platform on Cloudflare\nGitHub was built for a world where humans write code, organize it into repositories, and collaborate through branches, commits, issues, and pull requests.\nBut the next generation of software is going to be built…",
+  "title": "We want you to build the next Git platform on Cloudflare",
+  "topics": [
+   "ai-engineering",
+   "observability",
+   "scalability",
+   "backend"
+  ],
+  "url": "https://blog.cloudflare.com/next-git-platform-on-cloudflare/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "c6c3c49e0ac1396f",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-01T13:00:00+00:00",
+  "quality": 5,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "AI Search is now generally available\nCloudflare’s AI Search combines Workers AI, Vectorize, R2, and Browser Run into a fully managed index and retrieval pipeline. Since we launched AI Search over a year ago, we’ve seen developers use it to power a wide range of search use cases,…",
+  "title": "AI Search is now generally available",
+  "topics": [
+   "ai-engineering",
+   "databases",
+   "data-engineering",
+   "frontend"
+  ],
+  "url": "https://blog.cloudflare.com/ai-search-ga/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "8581f2589f95f862",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-01T13:00:00+00:00",
+  "quality": 5,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Support for modern cryptographic algorithms in Workers\nToday, Cloudflare Workers is adding support for post-quantum-resistant algorithms within Web Crypto. These are defined in Modern Algorithms in the Web Cryptography API draft community group report, and include:\n- ML-KEM-768…",
+  "title": "Support for modern cryptographic algorithms in Workers",
+  "topics": [
+   "backend",
+   "security",
+   "programming-languages",
+   "performance"
+  ],
+  "url": "https://blog.cloudflare.com/workers-ml-kem-ml-dsa-support/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "432829626cbfff9a",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-01T12:58:00+00:00",
+  "quality": 5,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Introducing Cloudflare Basin: an open, serverless data platform, now generally available\nDuring Birthday Week 2025, we announced the Cloudflare Data Platform, a suite of products that ingest, store, and query your analytical data. Today, we’re announcing that the platform is…",
+  "title": "Introducing Cloudflare Basin: an open, serverless data platform, now generally available",
+  "topics": [
+   "data-engineering",
+   "infrastructure",
+   "backend",
+   "distributed-systems"
+  ],
+  "url": "https://blog.cloudflare.com/cloudflare-basin/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "ea31032385071ed5",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-04T07:19:23+00:00",
+  "quality": 5,
+  "source": "dev.to architecture",
+  "source_type": "rss",
+  "summary": "Un debate que no puedes ignorar\nLos últimos años han visto una batalla silenciosa pero encarnizada entre dos paradigmas de despliegue: serverless y contenedores. La primera frase de este artículo ya te dice que la decisión que tomes hoy moldeará la arquitectura de tus…",
+  "title": "Serverless vs Contenedores: ¿La verdadera revolución de la infraestructura cloud?",
+  "topics": [
+   "infrastructure",
+   "data-engineering",
+   "observability",
+   "backend"
+  ],
+  "url": "https://dev.to/alvaro_martin_crespo_frontend/serverless-vs-contenedores-la-verdadera-revolucion-de-la-infraestructura-cloud-1i1c",
+  "weight": 0.8
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "b66f2e68c75d987b",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-04T06:58:08+00:00",
+  "quality": 5,
+  "source": "dev.to architecture",
+  "source_type": "rss",
+  "summary": "The boundary question ended my whiteboard round before it started. The interviewer asked where my system ended. I listed components. He said I had just described the whole company.\nHe was right.\nWatch the 40-second version first: Q2: System Design Interviews Start With the…",
+  "title": "If You Can't Draw the Boundary, You Don't Have an Architecture",
+  "topics": [
+   "system-design",
+   "security",
+   "networking"
+  ],
+  "url": "https://dev.to/nurrehman/if-you-cant-draw-the-boundary-you-dont-have-an-architecture-ln1",
+  "weight": 0.8
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "0ca166305c03bca1",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-04T06:35:36+00:00",
+  "quality": 5,
+  "source": "dev.to architecture",
+  "source_type": "rss",
+  "summary": "Idempotency Key Auto-Validation & Circuit Breaker Audit Log Fallback: Defeating Double Charges in External Payment APIs\nIn modern microservices and external payment API integrations (like Stripe or other PSPs), \"double charging\" caused by network partitions or temporary 502/504…",
+  "title": "Idempotency Key Auto-Validation & Circuit Breaker Audit Log Fallback: Defeating Double Charges in External Payment APIs",
+  "topics": [
+   "databases",
+   "backend",
+   "observability",
+   "system-design"
+  ],
+  "url": "https://dev.to/toai/idempotency-key-auto-validation-circuit-breaker-audit-log-fallback-defeating-double-charges-in-3afk",
+  "weight": 0.8
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "3ee217276c48b189",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-04T06:35:22+00:00",
+  "quality": 5,
+  "source": "dev.to architecture",
+  "source_type": "rss",
+  "summary": "Why Automate Content Creation\nCreating content manually for 9 channels would take 8+ hours daily. I have a full-time job as VP at JPMorgan. The math doesnt work.\nThe Pipeline\nTrending Topic CSV\n       ↓\n  AI Script (Ollama/Gemini)\n       ↓\n  Google Cloud TTS (Voice)\n       ↓\n …",
+  "title": "DynamoDB Design Lessons from 2M Daily Transactions",
+  "topics": [
+   "backend",
+   "infrastructure",
+   "databases",
+   "data-engineering"
+  ],
+  "url": "https://dev.to/amrendra_n_mishra/dynamodb-design-lessons-from-2m-daily-transactions-31kh",
+  "weight": 0.8
+ },
+ {
+  "enriched_by": "keywords",
+  "fetched": "2026-10-04T09:06:28+00:00",
+  "id": "547d7080dbc274da",
+  "kind": "other",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-03T15:14:45+00:00",
+  "quality": 5,
+  "source": "dev.to systemdesign",
+  "source_type": "rss",
+  "summary": "What happens when a gaming leaderboard must stay fast, accurate, retry-safe, and recoverable—even while millions of players are competing?\nThe article below captures my thought process and understanding of how to design this…",
+  "title": "What Does It Take to Build a Correct Real-Time Leaderboard?",
+  "topics": [
+   "distributed-systems",
+   "databases"
+  ],
+  "url": "https://dev.to/subham01/what-does-it-take-to-build-a-correct-real-time-leaderboard-4j7h",
+  "weight": 0.8
  }
 ]

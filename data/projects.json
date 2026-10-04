@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T09:05:01+00:00",
+ "generated_at": "2026-10-04T09:06:28+00:00",
  "projects": [],
  "trending": [
   {
@@ -30,7 +30,7 @@
    "url": "https://github.com/rehan-remade/universal-modder",
    "description": "Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you own: recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos.",
    "language": "Python",
-   "stars": 2754,
+   "stars": 2755,
    "topics": [
     "age-of-empires",
     "claude-code",
@@ -45,7 +45,7 @@
    "url": "https://github.com/feder-cr/dots",
    "description": "Open-source dots for the web: an AI agent with its own browser, one that does not get blocked.",
    "language": "Python",
-   "stars": 2583,
+   "stars": 2584,
    "topics": [
     "ai-agent",
     "ai-agents",
@@ -91,7 +91,7 @@
    "url": "https://github.com/edenfunf/reelmimic",
    "description": "Show it a video you love. Get a new video in the same style. An AI crew (Claude Code or Codex) plans, builds and reviews it with you.",
    "language": "JavaScript",
-   "stars": 1177,
+   "stars": 1178,
    "topics": [
     "2d-animation",
     "ai-agents",
@@ -114,7 +114,7 @@
    "url": "https://github.com/facebookincubator/muse-gadget-sdk",
    "description": "Open source SDK to build Muse gadgets",
    "language": "C",
-   "stars": 978,
+   "stars": 981,
    "topics": []
   },
   {
@@ -146,7 +146,7 @@
    "url": "https://github.com/Edwardxlai/easyread",
    "description": "把英文论文读成舒服的中文：本地 PDF 论文翻译、原文对照、边读边问 AI、文献管理。Read English papers in comfortable Chinese.",
    "language": "Python",
-   "stars": 710,
+   "stars": 712,
    "topics": [
     "academic",
     "arxiv",
@@ -161,7 +161,7 @@
    "url": "https://github.com/QingYunA/answer-me-with-html",
    "description": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。",
    "language": "JavaScript",
-   "stars": 657,
+   "stars": 658,
    "topics": [
     "agent-skill",
     "ai-agent",
@@ -184,7 +184,7 @@
    "url": "https://github.com/fsiaonma/elpis",
    "description": "elpis",
    "language": "TypeScript",
-   "stars": 544,
+   "stars": 545,
    "topics": []
   },
   {
@@ -219,7 +219,7 @@
    "url": "https://github.com/storytold/photocraft",
    "description": "",
    "language": "Rust",
-   "stars": 474,
+   "stars": 475,
    "topics": []
   },
   {
