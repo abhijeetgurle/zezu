@@ -1,0 +1,50 @@
+# Sources the pipeline reads on every run.
+# weight: multiplies an article's rank (1.0 = neutral). trusted: skip the keyword
+# relevance pre-filter (use for blogs that are almost always on-topic).
+
+rss:
+  # Company engineering blogs
+  - { name: Netflix Tech Blog, url: "https://netflixtechblog.com/feed", weight: 1.3, trusted: true }
+  - { name: Cloudflare Blog, url: "https://blog.cloudflare.com/rss/", weight: 1.2, trusted: true }
+  - { name: Meta Engineering, url: "https://engineering.fb.com/feed/", weight: 1.2, trusted: true }
+  - { name: Slack Engineering, url: "https://slack.engineering/feed/", weight: 1.2, trusted: true }
+  - { name: Dropbox Tech, url: "https://dropbox.tech/feed", weight: 1.2, trusted: true }
+  - { name: Stripe Blog, url: "https://stripe.com/blog/feed.rss", weight: 1.1 }
+  - { name: GitHub Engineering, url: "https://github.blog/engineering/feed/", weight: 1.1, trusted: true }
+  - { name: Airbnb Engineering, url: "https://medium.com/feed/airbnb-engineering", weight: 1.2, trusted: true }
+  - { name: Pinterest Engineering, url: "https://medium.com/feed/pinterest-engineering", weight: 1.1, trusted: true }
+  - { name: AWS Architecture Blog, url: "https://aws.amazon.com/blogs/architecture/feed/", weight: 1.0, trusted: true }
+  - { name: Martin Fowler, url: "https://martinfowler.com/feed.atom", weight: 1.3, trusted: true }
+
+  # Newsletters
+  - { name: ByteByteGo, url: "https://blog.bytebytego.com/feed", weight: 1.3, trusted: true }
+  - { name: The Pragmatic Engineer, url: "https://newsletter.pragmaticengineer.com/feed", weight: 1.3, trusted: true }
+
+  # Communities
+  - { name: Lobsters, url: "https://lobste.rs/rss", weight: 1.0 }
+  - { name: dev.to systemdesign, url: "https://dev.to/feed/tag/systemdesign", weight: 0.8 }
+  - { name: dev.to architecture, url: "https://dev.to/feed/tag/architecture", weight: 0.8 }
+
+  # Papers (high volume, so capped and keyword-filtered). Note: arXiv feeds only
+  # list the latest day's papers, so a weekly run sees one day's worth.
+  - { name: arXiv cs.DC, url: "https://rss.arxiv.org/rss/cs.DC", weight: 0.9, max_items: 15 }
+  - { name: arXiv cs.SE, url: "https://rss.arxiv.org/rss/cs.SE", weight: 0.9, max_items: 15 }
+
+hackernews:
+  min_points: 200        # only stories with at least this many points
+  lookback_hours: 168    # one week (the pipeline runs weekly)
+
+reddit:
+  # Reddit sometimes blocks requests from cloud IPs (including GitHub Actions).
+  # Failures are logged and skipped, so the rest of the run is unaffected.
+  subreddits: [programming, ExperiencedDevs, systemdesign, softwarearchitecture, golang, rust]
+  min_score: 100
+  weight: 0.9
+
+github_trending:
+  lookback_days: 7
+  min_stars: 200
+  limit: 25
+
+# Default per-feed cap for RSS sources
+max_items_per_feed: 20

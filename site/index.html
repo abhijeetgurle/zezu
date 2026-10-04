@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weekly Reading</title>
+  <meta name="description" content="A weekly reading list on system design and software engineering, plus project ideas.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">
+        <h1>Weekly Reading</h1>
+        <p id="updated" class="muted">Loading…</p>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="feed" aria-selected="true">Feed</button>
+        <button role="tab" data-tab="projects" aria-selected="false">Projects</button>
+        <button role="tab" data-tab="saved" aria-selected="false">Saved <span id="saved-count" class="count"></span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="feed" class="panel">
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search titles and summaries" aria-label="Search">
+        <select id="kind" aria-label="Type">
+          <option value="">All types</option>
+        </select>
+        <select id="level" aria-label="Level">
+          <option value="">All levels</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        <label class="check"><input id="hide-read" type="checkbox"> Hide read</label>
+      </div>
+      <div id="topics" class="chips" aria-label="Topics"></div>
+      <ol id="feed-list" class="list"></ol>
+    </section>
+
+    <section id="projects" class="panel" hidden>
+      <p id="projects-intro" class="muted"></p>
+      <div id="project-list" class="projects"></div>
+      <h2 class="section-title">Trending repositories this week</h2>
+      <ol id="trending-list" class="list compact"></ol>
+    </section>
+
+    <section id="saved" class="panel" hidden>
+      <ol id="saved-list" class="list"></ol>
+    </section>
+  </main>
+
+  <template id="article-tpl">
+    <li class="card">
+      <div class="meta">
+        <span class="source"></span>
+        <span class="dot">·</span>
+        <time></time>
+        <span class="badge kind"></span>
+        <span class="badge level"></span>
+      </div>
+      <h3><a class="title" target="_blank" rel="noopener"></a></h3>
+      <p class="summary"></p>
+      <div class="foot">
+        <div class="tags"></div>
+        <div class="actions">
+          <a class="discuss" target="_blank" rel="noopener">Discussion</a>
+          <button class="act like" aria-pressed="false" title="More like this">👍</button>
+          <button class="act save" aria-pressed="false" title="Save for later">Save</button>
+          <button class="act read" aria-pressed="false" title="Mark as read">Read</button>
+        </div>
+      </div>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

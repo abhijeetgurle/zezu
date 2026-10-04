@@ -1,0 +1,264 @@
+{
+ "generated_at": "2026-10-04T04:48:58+00:00",
+ "projects": [],
+ "trending": [
+  {
+   "name": "KKKKhazix/AIHOT",
+   "url": "https://github.com/KKKKhazix/AIHOT",
+   "description": "一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。",
+   "language": "TypeScript",
+   "stars": 5497,
+   "topics": [
+    "ai",
+    "content-curation",
+    "llm",
+    "mcp",
+    "news-aggregator",
+    "rss"
+   ]
+  },
+  {
+   "name": "rehan-remade/universal-modder",
+   "url": "https://github.com/rehan-remade/universal-modder",
+   "description": "Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you own: recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos.",
+   "language": "Python",
+   "stars": 2675,
+   "topics": [
+    "age-of-empires",
+    "claude-code",
+    "claude-code-plugin",
+    "fal",
+    "game-assets",
+    "game-modding"
+   ]
+  },
+  {
+   "name": "CopilotKit/OpenDots",
+   "url": "https://github.com/CopilotKit/OpenDots",
+   "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
+   "language": "TypeScript",
+   "stars": 2641,
+   "topics": []
+  },
+  {
+   "name": "feder-cr/dots",
+   "url": "https://github.com/feder-cr/dots",
+   "description": "Open-source dots for the web: an AI agent with its own browser, one that does not get blocked.",
+   "language": "Python",
+   "stars": 2576,
+   "topics": [
+    "ai-agent",
+    "ai-agents",
+    "ai-browser",
+    "anti-detect-browser",
+    "browser-agent",
+    "browser-automation"
+   ]
+  },
+  {
+   "name": "wy51ai/floorplan-3d",
+   "url": "https://github.com/wy51ai/floorplan-3d",
+   "description": "",
+   "language": "HTML",
+   "stars": 1365,
+   "topics": []
+  },
+  {
+   "name": "firelex/jeff",
+   "url": "https://github.com/firelex/jeff",
+   "description": "Millisecond decisions, any domain: a 0.8B open \"System 1\" model that picks between your options with calibrated probabilities. One base, swappable LoRA adapters, on your own hardware.",
+   "language": "Python",
+   "stars": 1351,
+   "topics": []
+  },
+  {
+   "name": "nanaism/yomiyasu",
+   "url": "https://github.com/nanaism/yomiyasu",
+   "description": "AI生成の日本語を自然な日本語へ推敲するAgent Skill / Agent Skill for Refining AI-Generated Japanese into Natural Japanese",
+   "language": "Python",
+   "stars": 1337,
+   "topics": [
+    "agent-skills",
+    "ai-writing",
+    "antigravity",
+    "claude-code",
+    "codex",
+    "cursor"
+   ]
+  },
+  {
+   "name": "edenfunf/reelmimic",
+   "url": "https://github.com/edenfunf/reelmimic",
+   "description": "Show it a video you love. Get a new video in the same style. An AI crew (Claude Code or Codex) plans, builds and reviews it with you.",
+   "language": "JavaScript",
+   "stars": 1138,
+   "topics": [
+    "2d-animation",
+    "ai-agents",
+    "ai-video",
+    "animation",
+    "claude-code",
+    "codex"
+   ]
+  },
+  {
+   "name": "CAPCOM-TD-OSS/REDox",
+   "url": "https://github.com/CAPCOM-TD-OSS/REDox",
+   "description": "High-performance, token-based structured data engine for .NET. A core component of REX, the technology behind CAPCOM's next-generation game engine.",
+   "language": "C#",
+   "stars": 991,
+   "topics": []
+  },
+  {
+   "name": "facebookincubator/muse-gadget-sdk",
+   "url": "https://github.com/facebookincubator/muse-gadget-sdk",
+   "description": "Open source SDK to build Muse gadgets",
+   "language": "C",
+   "stars": 926,
+   "topics": []
+  },
+  {
+   "name": "chasmlol/SkyCraft",
+   "url": "https://github.com/chasmlol/SkyCraft",
+   "description": "Play Skyrim as a Minecraft player: Minecraft physics, inventory, blocks and combat inside Skyrim's world (SKSE plugin + Fabric mod).",
+   "language": "C++",
+   "stars": 778,
+   "topics": []
+  },
+  {
+   "name": "nykooi1/vibe-wise",
+   "url": "https://github.com/nykooi1/vibe-wise",
+   "description": "A Claude Code plugin that helps you learn how to build while AI writes the code.",
+   "language": "Python",
+   "stars": 753,
+   "topics": []
+  },
+  {
+   "name": "openai/mcp-extensions",
+   "url": "https://github.com/openai/mcp-extensions",
+   "description": "Build plugins that feel like native, first-class features of ChatGPT.",
+   "language": "TypeScript",
+   "stars": 729,
+   "topics": []
+  },
+  {
+   "name": "Edwardxlai/easyread",
+   "url": "https://github.com/Edwardxlai/easyread",
+   "description": "把英文论文读成舒服的中文：本地 PDF 论文翻译、原文对照、边读边问 AI、文献管理。Read English papers in comfortable Chinese.",
+   "language": "Python",
+   "stars": 681,
+   "topics": [
+    "academic",
+    "arxiv",
+    "chinese",
+    "claude-code",
+    "codex",
+    "electron"
+   ]
+  },
+  {
+   "name": "OpSafari/hypoarena",
+   "url": "https://github.com/OpSafari/hypoarena",
+   "description": "Scientific hypothesis-discovery workbench: grounded hypothesis-evidence graphs, synthetic literature with planted causal chains, generate-debate-evolve loops over pluggable offline adapters, Elo tournaments recovering planted skill order, paraphrase dedup, Bayesian evidence accumulation, reproducible reports. NumPy core, CPU-only torch extra.",
+   "language": "Python",
+   "stars": 560,
+   "topics": []
+  },
+  {
+   "name": "fsiaonma/elpis",
+   "url": "https://github.com/fsiaonma/elpis",
+   "description": "elpis",
+   "language": "TypeScript",
+   "stars": 544,
+   "topics": []
+  },
+  {
+   "name": "composio-community/open-dot",
+   "url": "https://github.com/composio-community/open-dot",
+   "description": "Open-source personal AI agents that work on their own, on their own computers. Mac app, OpenAI + Composio.",
+   "language": "TypeScript",
+   "stars": 527,
+   "topics": []
+  },
+  {
+   "name": "deepseek-ai/DeepGEMM-Ascend",
+   "url": "https://github.com/deepseek-ai/DeepGEMM-Ascend",
+   "description": "DeepGEMM-Ascend: clean and efficient matrix multiplication kernel library for Huawei Ascend NPUs",
+   "language": "C++",
+   "stars": 493,
+   "topics": []
+  },
+  {
+   "name": "QingYunA/answer-me-with-html",
+   "url": "https://github.com/QingYunA/answer-me-with-html",
+   "description": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。",
+   "language": "JavaScript",
+   "stars": 486,
+   "topics": [
+    "agent-skill",
+    "ai-agent",
+    "claude-code",
+    "cli",
+    "diagram",
+    "explainer"
+   ]
+  },
+  {
+   "name": "ESPARGOS/esp-sdr",
+   "url": "https://github.com/ESPARGOS/esp-sdr",
+   "description": "ESP-SDR uses the undocumented raw I/Q capture functionality of ESP32 family chips to turn them into (low-duty-cycle) Software Defined Radios",
+   "language": "C",
+   "stars": 475,
+   "topics": [
+    "esp32",
+    "sdr"
+   ]
+  },
+  {
+   "name": "amywork777/lipflow",
+   "url": "https://github.com/amywork777/lipflow",
+   "description": "Wispr Flow for your lips: hold a key, silently mouth words, and they're typed at your cursor. Runs locally on your Mac.",
+   "language": "Python",
+   "stars": 457,
+   "topics": []
+  },
+  {
+   "name": "elliotttate/Wind-Waker-Recomp",
+   "url": "https://github.com/elliotttate/Wind-Waker-Recomp",
+   "description": "Personal source fork of BlueWake for The Wind Waker on iPhone and iPad",
+   "language": "C",
+   "stars": 452,
+   "topics": []
+  },
+  {
+   "name": "storytold/photocraft",
+   "url": "https://github.com/storytold/photocraft",
+   "description": "",
+   "language": "Rust",
+   "stars": 420,
+   "topics": []
+  },
+  {
+   "name": "ZacharyZhang-NY/Ely-GPUI-Components",
+   "url": "https://github.com/ZacharyZhang-NY/Ely-GPUI-Components",
+   "description": "A component library for GPUI, in light and dark. Every component runs live in the browser.",
+   "language": "Rust",
+   "stars": 419,
+   "topics": [
+    "design-system",
+    "gpui",
+    "rust",
+    "ui-components",
+    "webassembly"
+   ]
+  },
+  {
+   "name": "PostHog/jeeves",
+   "url": "https://github.com/PostHog/jeeves",
+   "description": "Jeeves – Reasoning improves Jev-like decision models",
+   "language": "Python",
+   "stars": 402,
+   "topics": []
+  }
+ ]
+}
