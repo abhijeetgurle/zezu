@@ -1,177 +1,154 @@
 {
- "generated_at": "2026-10-04T09:08:49+00:00",
+ "generated_at": "2026-10-05T10:36:24+00:00",
  "projects": [
   {
-   "title": "PuffLite: An Object-Storage-Native Search Engine with LSM Compaction",
-   "pitch": "Build a tiny turbopuffer-style search service whose source of truth is S3-compatible object storage (MinIO). Writes land in a WAL, get flushed to immutable segment files with a BM25 inverted index and an IVF vector index, and a background compactor merges segments. Queries combine text and vector results and are served from a local NVMe/memory cache tier in front of cold object storage.",
+   "title": "Dual-Write Migration Lab with Built-In Sabotage",
+   "pitch": "Build a small orders service, then migrate it live from a legacy Postgres schema to a new store while a load generator keeps writing. The service has a phase-aware router covering dual-write, backfill, verify, and cutover. Add a chaos switch that reproduces each failure mode from the article: backfilling before dual-write, a stale backfill overwriting fresh writes, and shadow-write failures taking down the primary. Then prove your design survives each one.",
+   "stack": [
+    "Python 3.13",
+    "PostgreSQL 17",
+    "SQLite or DuckDB as target store",
+    "k6 or Locust for write load",
+    "Podman rootless + docker-compose"
+   ],
+   "you_will_learn": [
+    "Consistency during dual-write windows and why write ordering matters",
+    "Keyset-cursor backfill versus OFFSET pagination",
+    "Last-writer-wins with version columns to stop stale backfill overwrites",
+    "Decoupling shadow-write availability using async queues and failure budgets",
+    "Continuous sampling verification and row-conservation accounting at stage boundaries"
+   ],
+   "milestones": [
+    "Build the CRUD service plus a load generator writing about 200 rows/sec",
+    "Implement the phase-aware router with feature-flag phases",
+    "Write a keyset backfill with deterministic natural keys and idempotent upserts",
+    "Add a sampling verifier that reports mismatch rate and fails loudly on a count-ratio floor",
+    "Add a chaos mode that injects each of the four failure modes and shows the verifier catches them",
+    "Do cutover and rollback with zero dropped writes, proven by end-to-end row counts"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://dev.to/freddie_thompson_e0488262/zero-downtime-database-migration-the-dual-write-window-is-where-it-goes-wrong-5dm1"
+  },
+  {
+   "title": "Freshness-Budgeted Online Feature Store",
+   "pitch": "Model an online feature store as a materialized view over an event stream. Clickstream events flow through Redpanda/Kafka into a recompute worker that writes features to Redis, with Postgres as the source of truth. Each feature declares a freshness budget, and the serving API returns the value together with its measured staleness. It also refuses or falls back when it can tell the budget is unachievable under the current stream lag.",
+   "stack": [
+    "Redpanda (Kafka API)",
+    "Redis 8",
+    "PostgreSQL 17",
+    "Go or Python FastAPI",
+    "Prometheus + Grafana"
+   ],
+   "you_will_learn": [
+    "Treating staleness as a first-class SLO and measuring it correctly",
+    "How consumer lag propagates into serving freshness",
+    "Why phase-locked request and recompute clocks under-observe staleness, and how jittered sampling fixes it",
+    "Cache invalidation versus recompute-on-write trade-offs",
+    "Graceful degradation with fallback values and budget-violation signals"
+   ],
+   "milestones": [
+    "Build an event producer and a consumer that recomputes rolling-window features into Redis with event-time stamps",
+    "Add a serving endpoint that returns feature, age, and in-budget flag",
+    "Add Prometheus histograms for staleness and consumer lag",
+    "Reproduce the phase-locking measurement bias, then fix it with randomized probe timing",
+    "Derive the minimum achievable staleness per feature from the paper's threshold idea and reject infeasible budgets at registration",
+    "Inject lag spikes by pausing consumers and verify alerts and fallbacks"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://arxiv.org/abs/2610.02259"
+  },
+  {
+   "title": "Resilience Harness for a Tool-Using Agent Pipeline",
+   "pitch": "Take a small RAG plus tool-calling agent (for example, one that answers questions using MCP tools) and wrap every component in production resilience patterns from the 150-incident taxonomy. These include circuit breakers on tools, output quality gates on generation, bulkheads between retrieval and tool calls, and timeouts with budgets. Then build a fault-injection runner that measures how much each pattern actually reduces bad answers and outages.",
+   "stack": [
+    "Python or TypeScript",
+    "An MCP server (via openai/mcp-extensions-style plugin or the reference SDK)",
+    "A local open-weight model or hosted API",
+    "OpenTelemetry tracing + Jaeger",
+    "pytest-based fault injector"
+   ],
+   "you_will_learn": [
+    "Circuit breaker state machines (closed, open, half-open) applied to flaky tools",
+    "Output quality gates as schema validation and grounding checks",
+    "Component isolation and bulkheads to stop cascading failures",
+    "Designing fault-injection experiments with baselines and measurable outcomes",
+    "Distributed tracing across LLM, retrieval, and tool spans"
+   ],
+   "milestones": [
+    "Build a baseline agent with a vector-store retriever and 2–3 MCP tools, with end-to-end OTel traces",
+    "Write a fault injector that adds tool latency, 5xx errors, empty retrieval, malformed JSON output, and context overflow",
+    "Add a circuit breaker and timeout budget per tool",
+    "Add an output quality gate with retry or abstain policy",
+    "Build a bulkhead executor to isolate retrieval from tool concurrency",
+    "Produce a report table of failure mode by pattern, showing success-rate deltas over 500 injected runs"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://arxiv.org/abs/2610.02503"
+  },
+  {
+   "title": "Precedence Forest Log Triage Engine",
+   "pitch": "Build a LOGOS-style unsupervised triage tool. It ingests raw logs from a deliberately broken microservice demo and extracts entities (hosts, request IDs, services) and event templates. It computes co-occurrence and temporal precedence, then compresses an alert flood into a small forest showing how the failure propagated. A final optional step feeds the forest to an LLM for a root-cause summary.",
    "stack": [
     "Rust or Go",
-    "MinIO (S3 API)",
-    "Parquet or a custom segment format",
-    "tantivy-style inverted index (hand-rolled)",
-    "IVF/k-means vector index",
-    "Prometheus"
+    "Drain-style log template mining",
+    "DuckDB for windowed aggregation",
+    "OpenTelemetry Collector for log shipping",
+    "A 3–4 service demo app run under Podman compose"
    ],
    "you_will_learn": [
-    "LSM-tree write path: WAL, memtable, immutable segments, compaction",
-    "Inverted index construction and BM25 scoring",
-    "Approximate nearest neighbor indexing (IVF) and recall/latency tradeoffs",
-    "Tiered caching over high-latency object storage",
-    "Read-after-write consistency when the store is eventually listed",
-    "Write amplification vs. read amplification measurement"
+    "Streaming log parsing and template extraction",
+    "Indexing events by entity and time window for fast co-occurrence queries",
+    "Inferring temporal precedence and handling clock skew across hosts",
+    "Noise reduction and alert deduplication as a compression problem",
+    "Observability pipeline design for backpressure in the collector"
    ],
    "milestones": [
-    "WAL + memtable that flushes to immutable segment objects on MinIO with a manifest file updated via conditional PUT",
-    "Per-segment BM25 inverted index and a query path that fans out across segments",
-    "Add IVF vector index per segment and hybrid ranking (reciprocal rank fusion)",
-    "Background compactor that merges small segments and atomically swaps the manifest; measure write/read amplification",
-    "Local disk cache with LRU eviction and prefetch; plot p50/p99 cold vs. warm query latency"
+    "Build the demo services plus a fault script (DB pool exhaustion cascading to upstream timeouts)",
+    "Write an ingestor with template mining and entity extraction, storing events in DuckDB",
+    "Compute a co-occurrence matrix and precedence edges over sliding windows",
+    "Prune to a precedence forest and render it as a DOT or HTML graph",
+    "Measure noise reduction ratio and alert consolidation factor on 3 injected incidents",
+    "Optionally feed the forest to an LLM and compare root-cause accuracy against raw logs"
    ],
    "scope": "month",
-   "inspired_by": "https://turbopuffer.com/blog/rip-vector-database"
+   "inspired_by": "https://arxiv.org/abs/2610.02297"
   },
   {
-   "title": "Backpressure Lab: A Mini Serverless Event Stream with Consumer Groups",
-   "pitch": "Recreate the core idea behind Cloudflare K2: decouple producers and consumers in scale and time. Build a single-node append-only log broker with partitions, consumer groups, committed offsets, and explicit backpressure (credit-based flow control), then hammer it with a load generator to watch what happens when consumers fall behind.",
+   "title": "Backpressure-Aware Gateway for a Local MoE Inference Engine",
+   "pitch": "Put a scheduling gateway in front of a local LLM engine such as DwarfStar 4 or llama.cpp that serves several clients at once. It covers admission control, separate prefill and decode queues, token-based rate limits, request deadlines, and load shedding. The goal is to keep p99 time-to-first-token bounded when the single box is overloaded, applying the latency-critical versus best-effort split from GPU-sharing research on a laptop.",
    "stack": [
-    "Go or Zig 0.17",
-    "Append-only segmented log files with mmap",
-    "gRPC or HTTP/2 streaming",
-    "Grafana + Prometheus",
-    "k6 for load generation"
+    "Go or Rust (tokio)",
+    "DwarfStar 4 (ds4) or llama.cpp server",
+    "Server-Sent Events streaming",
+    "Prometheus + Grafana",
+    "vegeta or a custom load generator"
    ],
    "you_will_learn": [
-    "Log-structured storage and segment rotation/retention",
-    "Partitioning and ordering guarantees per key",
-    "At-least-once delivery, offset commits, and idempotent consumers",
-    "Credit-based flow control vs. buffering vs. load shedding",
-    "Consumer lag as an observability signal"
+    "Backpressure, bounded queues, and why unbounded queues destroy tail latency",
+    "Admission control and load shedding with deadline-aware rejection",
+    "Priority scheduling of interactive versus batch requests",
+    "Separating prefill and decode costs when modeling capacity",
+    "Measuring TTFT, tokens/sec, and p99 under open-loop load"
    ],
    "milestones": [
-    "Single-partition append-only log with fsync policy options and segment rotation",
-    "Multiple partitions with key-hash routing and per-partition ordering",
-    "Consumer groups with committed offsets and rebalancing when consumers join/leave",
-    "Credit-based backpressure on the push path; compare against unbounded buffering under a 10x producer spike",
-    "Dashboard showing throughput, consumer lag, and redelivery counts; write up a failure-injection report (kill consumer mid-batch)"
+    "Build a streaming proxy to the local engine with per-request TTFT and throughput metrics",
+    "Run an open-loop load test that shows latency collapse with a naive FIFO",
+    "Add a bounded queue with token-cost estimates and 429 or Retry-After shedding",
+    "Add two priority classes, with interactive preempting batch at queue level",
+    "Add per-request deadlines that drop work which can't finish in time",
+    "Write up before/after p99 TTFT and goodput curves"
    ],
    "scope": "1-2 weeks",
-   "inspired_by": "https://blog.cloudflare.com/cloudflare-k2-streams/"
-  },
-  {
-   "title": "System-1 Router: A Low-Latency Decision Model Gateway with LoRA Hot-Swapping",
-   "pitch": "Serve a small open decision model (like jeff's 0.8B base) behind a gateway that picks between options with calibrated probabilities, hot-swaps LoRA adapters per domain, and micro-batches requests to hit millisecond latency targets. Use it as a router: cheap fast model decides, expensive LLM only called when confidence is low.",
-   "stack": [
-    "Python",
-    "vLLM or llama.cpp with LoRA support",
-    "FastAPI",
-    "Redis",
-    "OpenTelemetry",
-    "Jaeger"
-   ],
-   "you_will_learn": [
-    "Dynamic micro-batching and the latency vs. throughput tradeoff",
-    "Adapter caching: LRU of LoRA weights in GPU/CPU memory",
-    "Probability calibration (ECE, reliability diagrams, temperature scaling)",
-    "Confidence-based cascading / fallback architecture",
-    "Tail-latency tracing with distributed spans"
-   ],
-   "milestones": [
-    "Run the base model locally and expose a /decide endpoint returning option probabilities",
-    "Add a LoRA adapter registry with LRU cache and measure swap cost (cold vs. warm adapter)",
-    "Implement a micro-batcher with max-wait and max-batch knobs; graph p50/p99 vs. QPS",
-    "Measure calibration on a labeled set, apply temperature scaling, show reliability diagrams before/after",
-    "Build the cascade: escalate to a large LLM below a confidence threshold, and report cost/accuracy curves"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://github.com/firelex/jeff"
-  },
-  {
-   "title": "Hotspot Daily: A Self-Hosted Trend Aggregator with Dedup and Idempotent Pipelines",
-   "pitch": "Build your own AIHOT-style industry digest: ingest RSS, GitHub trending, and HN on a schedule, dedupe near-identical stories, rank them with your own criteria, and generate a daily report. The engineering focus is making the pipeline idempotent, resumable, and politely rate-limited rather than just calling an LLM.",
-   "stack": [
-    "TypeScript",
-    "Node.js or Bun",
-    "PostgreSQL with pgvector",
-    "BullMQ on Redis",
-    "MinHash/SimHash",
-    "A local LLM via Ollama for summaries"
-   ],
-   "you_will_learn": [
-    "Idempotent ingestion with content hashes and upserts",
-    "Near-duplicate detection with SimHash/MinHash and LSH bucketing",
-    "Job queues with retries, exponential backoff, and dead-letter queues",
-    "Per-source rate limiting with token buckets and ETag/If-Modified-Since caching",
-    "Exactly-once-ish effects via outbox pattern for report publishing"
-   ],
-   "milestones": [
-    "Fetchers for 3 sources with conditional GET caching and token-bucket rate limits",
-    "Normalized items table with content-hash upserts so reruns are safe",
-    "SimHash + LSH dedup clustering stories across sources; evaluate precision on a hand-labeled sample",
-    "Scoring stage with pluggable criteria and an LLM summarizer behind a queue with DLQ",
-    "Daily report generation via an outbox table; kill the worker mid-run and prove no duplicate reports"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://github.com/KKKKhazix/AIHOT"
-  },
-  {
-   "title": "Fail-Static SDK: Reproducing the Firebase Crash and Building a Kill-Switch Config Service",
-   "pitch": "The Firebase outage crashed client apps because of a backend change. Build a remote-config service plus a client SDK that cannot take down its host app: schema-validated configs, staged rollouts, last-known-good caching, and a circuit breaker. First reproduce the failure mode, then engineer it away.",
-   "stack": [
-    "Go for the config server",
-    "SQLite or Postgres",
-    "TypeScript client SDK",
-    "JSON Schema",
-    "Toxiproxy for fault injection",
-    "OpenTelemetry"
-   ],
-   "you_will_learn": [
-    "Fail-static vs. fail-closed design for client SDKs",
-    "Versioned configs, schema validation, and safe deserialization",
-    "Staged/percentage rollouts with automatic rollback on error-rate SLO breach",
-    "Circuit breakers, timeouts, and last-known-good caching",
-    "Blast-radius reduction and incident observability"
-   ],
-   "milestones": [
-    "Naive config server + SDK; reproduce a crash by shipping a malformed payload",
-    "Add schema validation on publish and defensive parsing with last-known-good fallback in the SDK",
-    "Versioned configs with percentage rollouts keyed on stable client hash",
-    "Client-side telemetry and server-side auto-rollback when error rate exceeds threshold",
-    "Chaos run with Toxiproxy (latency, garbage responses, outage) and a written postmortem showing zero host crashes"
-   ],
-   "scope": "weekend",
-   "inspired_by": "https://newsletter.pragmaticengineer.com/p/the-pulse-firebases-global-outage"
+   "inspired_by": "https://dwarfstar.sh/"
   }
  ],
  "trending": [
-  {
-   "name": "KKKKhazix/AIHOT",
-   "url": "https://github.com/KKKKhazix/AIHOT",
-   "description": "一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。",
-   "language": "TypeScript",
-   "stars": 5578,
-   "topics": [
-    "ai",
-    "content-curation",
-    "llm",
-    "mcp",
-    "news-aggregator",
-    "rss"
-   ]
-  },
-  {
-   "name": "CopilotKit/OpenDots",
-   "url": "https://github.com/CopilotKit/OpenDots",
-   "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
-   "language": "TypeScript",
-   "stars": 2801,
-   "topics": []
-  },
   {
    "name": "rehan-remade/universal-modder",
    "url": "https://github.com/rehan-remade/universal-modder",
    "description": "Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you own: recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos.",
    "language": "Python",
-   "stars": 2756,
+   "stars": 3502,
    "topics": [
     "age-of-empires",
     "claude-code",
@@ -182,11 +159,19 @@
    ]
   },
   {
+   "name": "CopilotKit/OpenDots",
+   "url": "https://github.com/CopilotKit/OpenDots",
+   "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
+   "language": "TypeScript",
+   "stars": 3384,
+   "topics": []
+  },
+  {
    "name": "feder-cr/dots",
    "url": "https://github.com/feder-cr/dots",
    "description": "Open-source dots for the web: an AI agent with its own browser, one that does not get blocked.",
    "language": "Python",
-   "stars": 2584,
+   "stars": 2610,
    "topics": [
     "ai-agent",
     "ai-agents",
@@ -197,27 +182,11 @@
    ]
   },
   {
-   "name": "wy51ai/floorplan-3d",
-   "url": "https://github.com/wy51ai/floorplan-3d",
-   "description": "",
-   "language": "HTML",
-   "stars": 1370,
-   "topics": []
-  },
-  {
-   "name": "firelex/jeff",
-   "url": "https://github.com/firelex/jeff",
-   "description": "Millisecond decisions, any domain: a 0.8B open \"System 1\" model that picks between your options with calibrated probabilities. One base, swappable LoRA adapters, on your own hardware.",
-   "language": "Python",
-   "stars": 1353,
-   "topics": []
-  },
-  {
    "name": "nanaism/yomiyasu",
    "url": "https://github.com/nanaism/yomiyasu",
    "description": "AI生成の日本語を自然な日本語へ推敲するAgent Skill / Agent Skill for Refining AI-Generated Japanese into Natural Japanese",
    "language": "Python",
-   "stars": 1348,
+   "stars": 1460,
    "topics": [
     "agent-skills",
     "ai-writing",
@@ -228,26 +197,19 @@
    ]
   },
   {
-   "name": "edenfunf/reelmimic",
-   "url": "https://github.com/edenfunf/reelmimic",
-   "description": "Show it a video you love. Get a new video in the same style. An AI crew (Claude Code or Codex) plans, builds and reviews it with you.",
-   "language": "JavaScript",
-   "stars": 1178,
-   "topics": [
-    "2d-animation",
-    "ai-agents",
-    "ai-video",
-    "animation",
-    "claude-code",
-    "codex"
-   ]
+   "name": "wy51ai/floorplan-3d",
+   "url": "https://github.com/wy51ai/floorplan-3d",
+   "description": "",
+   "language": "HTML",
+   "stars": 1412,
+   "topics": []
   },
   {
-   "name": "CAPCOM-TD-OSS/REDox",
-   "url": "https://github.com/CAPCOM-TD-OSS/REDox",
-   "description": "High-performance, token-based structured data engine for .NET. A core component of REX, the technology behind CAPCOM's next-generation game engine.",
-   "language": "C#",
-   "stars": 1004,
+   "name": "storytold/photocraft",
+   "url": "https://github.com/storytold/photocraft",
+   "description": "",
+   "language": "Rust",
+   "stars": 1343,
    "topics": []
   },
   {
@@ -255,54 +217,15 @@
    "url": "https://github.com/facebookincubator/muse-gadget-sdk",
    "description": "Open source SDK to build Muse gadgets",
    "language": "C",
-   "stars": 981,
+   "stars": 1312,
    "topics": []
-  },
-  {
-   "name": "chasmlol/SkyCraft",
-   "url": "https://github.com/chasmlol/SkyCraft",
-   "description": "Play Skyrim as a Minecraft player: Minecraft physics, inventory, blocks and combat inside Skyrim's world (SKSE plugin + Fabric mod).",
-   "language": "C++",
-   "stars": 801,
-   "topics": []
-  },
-  {
-   "name": "nykooi1/vibe-wise",
-   "url": "https://github.com/nykooi1/vibe-wise",
-   "description": "A Claude Code plugin that helps you learn how to build while AI writes the code.",
-   "language": "Python",
-   "stars": 798,
-   "topics": []
-  },
-  {
-   "name": "openai/mcp-extensions",
-   "url": "https://github.com/openai/mcp-extensions",
-   "description": "Build plugins that feel like native, first-class features of ChatGPT.",
-   "language": "TypeScript",
-   "stars": 733,
-   "topics": []
-  },
-  {
-   "name": "Edwardxlai/easyread",
-   "url": "https://github.com/Edwardxlai/easyread",
-   "description": "把英文论文读成舒服的中文：本地 PDF 论文翻译、原文对照、边读边问 AI、文献管理。Read English papers in comfortable Chinese.",
-   "language": "Python",
-   "stars": 712,
-   "topics": [
-    "academic",
-    "arxiv",
-    "chinese",
-    "claude-code",
-    "codex",
-    "electron"
-   ]
   },
   {
    "name": "QingYunA/answer-me-with-html",
    "url": "https://github.com/QingYunA/answer-me-with-html",
    "description": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。",
    "language": "JavaScript",
-   "stars": 660,
+   "stars": 1265,
    "topics": [
     "agent-skill",
     "ai-agent",
@@ -313,70 +236,73 @@
    ]
   },
   {
-   "name": "OpSafari/hypoarena",
-   "url": "https://github.com/OpSafari/hypoarena",
-   "description": "Scientific hypothesis-discovery workbench: grounded hypothesis-evidence graphs, synthetic literature with planted causal chains, generate-debate-evolve loops over pluggable offline adapters, Elo tournaments recovering planted skill order, paraphrase dedup, Bayesian evidence accumulation, reproducible reports. NumPy core, CPU-only torch extra.",
+   "name": "nykooi1/vibe-wise",
+   "url": "https://github.com/nykooi1/vibe-wise",
+   "description": "A Claude Code plugin that helps you learn how to build while AI writes the code.",
    "language": "Python",
-   "stars": 560,
+   "stars": 1195,
    "topics": []
   },
   {
-   "name": "fsiaonma/elpis",
-   "url": "https://github.com/fsiaonma/elpis",
-   "description": "elpis",
+   "name": "kargulstudio/sales-crm",
+   "url": "https://github.com/kargulstudio/sales-crm",
+   "description": "",
    "language": "TypeScript",
-   "stars": 545,
+   "stars": 1180,
    "topics": []
   },
   {
-   "name": "composio-community/open-dot",
-   "url": "https://github.com/composio-community/open-dot",
-   "description": "Open-source personal AI agents that work on their own, on their own computers. Mac app, OpenAI + Composio.",
-   "language": "TypeScript",
-   "stars": 533,
+   "name": "CAPCOM-TD-OSS/REDox",
+   "url": "https://github.com/CAPCOM-TD-OSS/REDox",
+   "description": "High-performance, token-based structured data engine for .NET. A core component of REX, the technology behind CAPCOM's next-generation game engine.",
+   "language": "C#",
+   "stars": 1048,
    "topics": []
   },
   {
-   "name": "deepseek-ai/DeepGEMM-Ascend",
-   "url": "https://github.com/deepseek-ai/DeepGEMM-Ascend",
-   "description": "DeepGEMM-Ascend: clean and efficient matrix multiplication kernel library for Huawei Ascend NPUs",
-   "language": "C++",
-   "stars": 496,
-   "topics": []
-  },
-  {
-   "name": "ESPARGOS/esp-sdr",
-   "url": "https://github.com/ESPARGOS/esp-sdr",
-   "description": "ESP-SDR uses the undocumented raw I/Q capture functionality of ESP32 family chips to turn them into (low-duty-cycle) Software Defined Radios",
-   "language": "C",
-   "stars": 492,
+   "name": "omlahore/RemoveMacAI",
+   "url": "https://github.com/omlahore/RemoveMacAI",
+   "description": "Turn off Apple Intelligence on macOS 27 and get its disk space back. One command, fully reversible.",
+   "language": "Swift",
+   "stars": 963,
    "topics": [
-    "esp32",
-    "sdr"
+    "apple-intelligence",
+    "cli",
+    "debloat",
+    "macos",
+    "macos-27",
+    "privacy"
    ]
   },
   {
-   "name": "storytold/photocraft",
-   "url": "https://github.com/storytold/photocraft",
-   "description": "",
-   "language": "Rust",
-   "stars": 475,
+   "name": "chasmlol/SkyCraft",
+   "url": "https://github.com/chasmlol/SkyCraft",
+   "description": "Play Skyrim as a Minecraft player: Minecraft physics, inventory, blocks and combat inside Skyrim's world (SKSE plugin + Fabric mod).",
+   "language": "C++",
+   "stars": 921,
    "topics": []
   },
   {
-   "name": "amywork777/lipflow",
-   "url": "https://github.com/amywork777/lipflow",
-   "description": "Wispr Flow for your lips: hold a key, silently mouth words, and they're typed at your cursor. Runs locally on your Mac.",
+   "name": "Edwardxlai/easyread",
+   "url": "https://github.com/Edwardxlai/easyread",
+   "description": "把英文论文读成舒服的中文：本地 PDF 论文翻译、原文对照、边读边问 AI、文献管理。Read English papers in comfortable Chinese.",
    "language": "Python",
-   "stars": 462,
-   "topics": []
+   "stars": 794,
+   "topics": [
+    "academic",
+    "arxiv",
+    "chinese",
+    "claude-code",
+    "codex",
+    "electron"
+   ]
   },
   {
-   "name": "elliotttate/Wind-Waker-Recomp",
-   "url": "https://github.com/elliotttate/Wind-Waker-Recomp",
-   "description": "Personal source fork of BlueWake for The Wind Waker on iPhone and iPad",
-   "language": "C",
-   "stars": 459,
+   "name": "openai/mcp-extensions",
+   "url": "https://github.com/openai/mcp-extensions",
+   "description": "Build plugins that feel like native, first-class features of ChatGPT.",
+   "language": "TypeScript",
+   "stars": 763,
    "topics": []
   },
   {
@@ -384,7 +310,7 @@
    "url": "https://github.com/sganggs/Stronghold-Protocol",
    "description": "明日方舟「卫戍协议：盟约」非官方同人复刻：浏览器自走棋塔防，单人或 1–4 人联机合作（非商业）",
    "language": "JavaScript",
-   "stars": 436,
+   "stars": 644,
    "topics": [
     "arknights",
     "auto-chess",
@@ -395,11 +321,74 @@
    ]
   },
   {
+   "name": "composio-community/open-dot",
+   "url": "https://github.com/composio-community/open-dot",
+   "description": "Open-source personal AI agents that work on their own, on their own computers. Mac app, OpenAI + Composio.",
+   "language": "TypeScript",
+   "stars": 567,
+   "topics": []
+  },
+  {
+   "name": "OpSafari/hypoarena",
+   "url": "https://github.com/OpSafari/hypoarena",
+   "description": "Scientific hypothesis-discovery workbench: grounded hypothesis-evidence graphs, synthetic literature with planted causal chains, generate-debate-evolve loops over pluggable offline adapters, Elo tournaments recovering planted skill order, paraphrase dedup, Bayesian evidence accumulation, reproducible reports. NumPy core, CPU-only torch extra.",
+   "language": "Python",
+   "stars": 561,
+   "topics": []
+  },
+  {
+   "name": "StayLameBro/backburner",
+   "url": "https://github.com/StayLameBro/backburner",
+   "description": "Your iPhone helps your Mac run a 27B model: faster prompt reading and more context over a USB-C cable",
+   "language": "Python",
+   "stars": 556,
+   "topics": [
+    "apple-silicon",
+    "ios",
+    "iphone",
+    "llama-cpp",
+    "llm-inference",
+    "local-llm"
+   ]
+  },
+  {
+   "name": "extend-hq/jevbox",
+   "url": "https://github.com/extend-hq/jevbox",
+   "description": "",
+   "language": "TypeScript",
+   "stars": 555,
+   "topics": []
+  },
+  {
+   "name": "fsiaonma/elpis",
+   "url": "https://github.com/fsiaonma/elpis",
+   "description": "elpis",
+   "language": "TypeScript",
+   "stars": 550,
+   "topics": []
+  },
+  {
+   "name": "oil-oil/oil-ui",
+   "url": "https://github.com/oil-oil/oil-ui",
+   "description": "把 AI 的 UI 设计能力推到极限。",
+   "language": "Python",
+   "stars": 547,
+   "topics": []
+  },
+  {
+   "name": "ythx-101/live-panel-skill",
+   "url": "https://github.com/ythx-101/live-panel-skill",
+   "description": "Config-driven animated architecture diagrams: turn one JSON file into a terminal-style, always-running diagram or a light-theme infographic that moves. Outputs H.264 mp4 or a live web page; also a Claude Code style skill (SKILL.md).",
+   "language": "HTML",
+   "stars": 537,
+   "topics": []
+  },
+  {
    "name": "ZacharyZhang-NY/Ely-GPUI-Components",
    "url": "https://github.com/ZacharyZhang-NY/Ely-GPUI-Components",
    "description": "A component library for GPUI, in light and dark. Every component runs live in the browser.",
    "language": "Rust",
-   "stars": 427,
+   "stars": 505,
    "topics": [
     "design-system",
     "gpui",
@@ -407,6 +396,14 @@
     "ui-components",
     "webassembly"
    ]
+  },
+  {
+   "name": "deepseek-ai/DeepGEMM-Ascend",
+   "url": "https://github.com/deepseek-ai/DeepGEMM-Ascend",
+   "description": "DeepGEMM-Ascend: clean and efficient matrix multiplication kernel library for Huawei Ascend NPUs",
+   "language": "C++",
+   "stars": 505,
+   "topics": []
   }
  ]
 }

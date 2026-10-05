@@ -2146,5 +2146,220 @@
   ],
   "url": "https://aws.amazon.com/blogs/architecture/gallup-delivers-real-time-workplace-coaching-to-thousands-of-leaders-with-amazon-bedrock/",
   "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "e962f3eded1ac9ee",
+  "kind": "deep-dive",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-04T18:49:55+00:00",
+  "quality": 9,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "Explores why netip.AddrFrom16(ip.As16()) is about 8x slower than a native IPv4-to-IPv6 mapping method in Go, comparing stdlib, helper, and unsafe implementations with benchmarks and generated assembly. It then walks through the Go compiler's phases and IR dumps to patch the noder and optimize the pack/copy/unpack pattern.",
+  "title": "Hacking the Go compiler to efficiently map IPv4 to IPv6",
+  "topics": [
+   "programming-languages",
+   "performance",
+   "networking"
+  ],
+  "url": "https://vincent.bernat.ch/en/blog/2026-go-netip-addrto6",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "f6ff5f6917ead5ff",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-05T04:28:00+00:00",
+  "quality": 6,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "A collection of short notes from Martin Fowler. The main thread argues that higher-level code still matters when LLMs write software, drawing on Sam Ruby's example that a Rails app of about 60K tokens grows to about 4M tokens in C, and on Unmesh Joshi's view of code as a conceptual model. Other notes cover the move from deterministic building to 'nurturing' inferential systems, an Evans/Fowler interview on AI, and hallucination-rate trade-offs between models.",
+  "title": "Fragments: October 4",
+  "topics": [
+   "ai-engineering",
+   "programming-languages"
+  ],
+  "url": "https://martinfowler.com/fragments/2026-10-04.html",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "205a9acf7dad6d4f",
+  "kind": "paper",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-05T04:00:00+00:00",
+  "quality": 8,
+  "source": "arXiv cs.SE",
+  "source_type": "rss",
+  "summary": "Analyzes 150 production incidents in compound AI systems (RAG, tool-using, orchestrated LLM pipelines) to build a taxonomy of 23 failure modes across retrieval, generation, tool, orchestration, and integration categories. It proposes resilience patterns such as circuit breakers, output quality gates, and component isolation, and measures their effectiveness with fault injection experiments. Only the abstract is shown here, so the depth of the full paper is unverified.",
+  "title": "Compound AI System Reliability: A Failure Taxonomy and Resilience Pattern Catalog from 150 Production Incidents",
+  "topics": [
+   "ai-engineering",
+   "reliability",
+   "system-design",
+   "observability"
+  ],
+  "url": "https://arxiv.org/abs/2610.02503",
+  "weight": 0.9
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "eb2a20aad135b75b",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-05T09:53:33+00:00",
+  "quality": 8,
+  "source": "dev.to architecture",
+  "source_type": "rss",
+  "summary": "A postmortem of a data pipeline bug where a non-unique cache key silently dropped 99.9% of records while jobs reported success. The author draws out three habits: row-conservation accounting with ratio floors at every stage boundary, idempotent reruns via deterministic natural keys, upserts and database unique constraints, and SCD Type 2 dimensions that use null-safe change detection.",
+  "title": "A cache key ate 99.9% of my records and the pipeline looked green",
+  "topics": [
+   "data-engineering",
+   "reliability",
+   "databases",
+   "observability"
+  ],
+  "url": "https://dev.to/kyien/a-cache-key-ate-999-of-my-records-and-the-pipeline-looked-green-37i0",
+  "weight": 0.8
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "3f0f1d79dbc98c09",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-05T07:44:24+00:00",
+  "quality": 8,
+  "source": "dev.to systemdesign",
+  "source_type": "rss",
+  "summary": "Walks through the four-phase zero-downtime migration playbook (dual-write, backfill, verify, cut over) with Python code for a phase-aware router, keyset-cursor backfill, and continuous sampling verification. Explains specific failure modes: backfilling before dual-write, stale backfill overwriting fresh writes, shadow-write failures coupling availability, and noisy verification. It also covers the harder edge cases: cross-store transactions, schema changes mid-migration, and non-key-value reads.",
+  "title": "Zero-Downtime Database Migration: The Dual-Write Window Is Where It Goes Wrong",
+  "topics": [
+   "databases",
+   "reliability",
+   "system-design",
+   "backend"
+  ],
+  "url": "https://dev.to/freddie_thompson_e0488262/zero-downtime-database-migration-the-dual-write-window-is-where-it-goes-wrong-5dm1",
+  "weight": 0.8
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "ff1beac2d9d88f16",
+  "kind": "paper",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-05T04:00:00+00:00",
+  "quality": 7,
+  "source": "arXiv cs.DC",
+  "source_type": "rss",
+  "summary": "Models an online feature store as a materialized view over an event stream and defines a per-feature freshness budget, proving a staleness bound and a closed-form threshold below which a feature can never be served in budget. Validates this in simulation and on a Kafka/Redis/PostgreSQL pipeline, and shows that phase-locked request and recomputation clocks in simulations systematically under-observe staleness.",
+  "title": "Feature Freshness Budgets for Real-Time ML Inference Under Stream Lag",
+  "topics": [
+   "data-engineering",
+   "distributed-systems",
+   "ai-engineering",
+   "system-design"
+  ],
+  "url": "https://arxiv.org/abs/2610.02259",
+  "weight": 0.9
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "0f887b2e02841599",
+  "kind": "paper",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-05T04:00:00+00:00",
+  "quality": 7,
+  "source": "arXiv cs.DC",
+  "source_type": "rss",
+  "summary": "Presents LOGOS, an unsupervised system that uses entity-event co-occurrence and temporal precedence to compress millions of raw, unannotated log lines into a compact precedence forest that shows how a failure propagated. It is evaluated on 25 enterprise outages and 12 open-source issues, where it removes about 99.8% of noise and consolidates alert floods 124x. Feeding its output to an LLM gave 80% (enterprise) and 100% (open-source) zero-shot root-cause accuracy.",
+  "title": "From Alert Floods to Precedence Forests: Zero-Prior-Knowledge Incident Triage with LOGOS",
+  "topics": [
+   "observability",
+   "reliability",
+   "distributed-systems",
+   "ai-engineering"
+  ],
+  "url": "https://arxiv.org/abs/2610.02297",
+  "weight": 0.9
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "7dce1833b15f198a",
+  "kind": "paper",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-05T04:00:00+00:00",
+  "quality": 7,
+  "source": "arXiv cs.DC",
+  "source_type": "rss",
+  "summary": "Presents Beaver, a system for co-locating latency-critical vRAN processing with best-effort ML workloads on a shared GPU. It resizes SM partitions at slot granularity based on scheduled work, and rewrites ML kernels so they yield HBM bandwidth during the vRAN's memory-critical phases. On an H200 it keeps p99.9 latency within a 1.5ms deadline while retaining 74% of Llama-3.3-70B serving throughput.",
+  "title": "Beaver: Elastic GPU Sharing between ML and Latency-Critical vRAN Workloads",
+  "topics": [
+   "infrastructure",
+   "performance",
+   "ai-engineering",
+   "distributed-systems"
+  ],
+  "url": "https://arxiv.org/abs/2610.02522",
+  "weight": 0.9
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "fa919f7d6aff8e6a",
+  "kind": "tutorial",
+  "level": "beginner",
+  "popularity": 0,
+  "published": "2026-10-05T09:51:28+00:00",
+  "quality": 6,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "Shows how to enable Podman's Docker-compatible API socket as a rootless user via systemd and point DOCKER_HOST at it so docker-compose and the docker CLI work unchanged. Also covers user namespaces, podman unshare/mount for inspecting container files, rootless Docker as an alternative, and user lingering to keep containers running after logout.",
+  "title": "Using docker-compose with Podman rootless",
+  "topics": [
+   "infrastructure",
+   "security"
+  ],
+  "url": "https://elou.world/en/tutorial/podman-docker-compose",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-05T10:36:24+00:00",
+  "id": "5452ad65b6da7226",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-05T09:50:52+00:00",
+  "quality": 7,
+  "source": "dev.to architecture",
+  "source_type": "rss",
+  "summary": "Practical lessons from running a Laravel SaaS with a database per tenant across 2,000+ customers. Covers initializing tenancy in queued jobs, tenant-prefixing cache keys, adding a business sub-scope within tenants, keeping migrations idempotent across N databases, rolling-forward settings defaults, and a checklist for testing isolation.",
+  "title": "Database-per-tenant in Laravel: 6 lessons from running a multi-tenant SaaS",
+  "topics": [
+   "system-design",
+   "databases",
+   "backend",
+   "security"
+  ],
+  "url": "https://dev.to/bytephase/database-per-tenant-in-laravel-6-lessons-from-running-a-multi-tenant-saas-50b4",
+  "weight": 0.8
  }
 ]
