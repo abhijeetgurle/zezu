@@ -1,408 +1,374 @@
 {
- "generated_at": "2026-10-05T10:36:24+00:00",
+ "generated_at": "2026-10-12T11:01:39+00:00",
  "projects": [
   {
-   "title": "Dual-Write Migration Lab with Built-In Sabotage",
-   "pitch": "Build a small orders service, then migrate it live from a legacy Postgres schema to a new store while a load generator keeps writing. The service has a phase-aware router covering dual-write, backfill, verify, and cutover. Add a chaos switch that reproduces each failure mode from the article: backfilling before dual-write, a stale backfill overwriting fresh writes, and shadow-write failures taking down the primary. Then prove your design survives each one.",
+   "title": "Shadow Replay: A Postgres Workload Capture and Replay Proxy",
+   "pitch": "Build a small TCP proxy that sits in front of Postgres, records every query with its session, timestamp, and latency, and then replays the capture against a second database. Replay can run at 1x, 5x, or 'as fast as possible' while keeping each session's ordering intact. You then diff latency percentiles and result checksums between the two runs. It is a scaled-down version of what Airbnb uses to de-risk upgrades and migrations.",
    "stack": [
-    "Python 3.13",
-    "PostgreSQL 17",
-    "SQLite or DuckDB as target store",
-    "k6 or Locust for write load",
-    "Podman rootless + docker-compose"
-   ],
-   "you_will_learn": [
-    "Consistency during dual-write windows and why write ordering matters",
-    "Keyset-cursor backfill versus OFFSET pagination",
-    "Last-writer-wins with version columns to stop stale backfill overwrites",
-    "Decoupling shadow-write availability using async queues and failure budgets",
-    "Continuous sampling verification and row-conservation accounting at stage boundaries"
-   ],
-   "milestones": [
-    "Build the CRUD service plus a load generator writing about 200 rows/sec",
-    "Implement the phase-aware router with feature-flag phases",
-    "Write a keyset backfill with deterministic natural keys and idempotent upserts",
-    "Add a sampling verifier that reports mismatch rate and fails loudly on a count-ratio floor",
-    "Add a chaos mode that injects each of the four failure modes and shows the verifier catches them",
-    "Do cutover and rollback with zero dropped writes, proven by end-to-end row counts"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://dev.to/freddie_thompson_e0488262/zero-downtime-database-migration-the-dual-write-window-is-where-it-goes-wrong-5dm1"
-  },
-  {
-   "title": "Freshness-Budgeted Online Feature Store",
-   "pitch": "Model an online feature store as a materialized view over an event stream. Clickstream events flow through Redpanda/Kafka into a recompute worker that writes features to Redis, with Postgres as the source of truth. Each feature declares a freshness budget, and the serving API returns the value together with its measured staleness. It also refuses or falls back when it can tell the budget is unachievable under the current stream lag.",
-   "stack": [
-    "Redpanda (Kafka API)",
-    "Redis 8",
-    "PostgreSQL 17",
-    "Go or Python FastAPI",
+    "Go",
+    "PostgreSQL wire protocol (pgproto3)",
+    "Docker Compose (two Postgres versions)",
+    "Parquet or SQLite for capture storage",
     "Prometheus + Grafana"
    ],
    "you_will_learn": [
-    "Treating staleness as a first-class SLO and measuring it correctly",
-    "How consumer lag propagates into serving freshness",
-    "Why phase-locked request and recompute clocks under-observe staleness, and how jittered sampling fixes it",
-    "Cache invalidation versus recompute-on-write trade-offs",
-    "Graceful degradation with fallback values and budget-violation signals"
+    "Parsing a real database wire protocol and proxying it transparently",
+    "Preserving per-session ordering while replaying sessions concurrently (causality vs throughput)",
+    "Why time-scaled replay surfaces lock contention and connection-pool limits that synthetic benchmarks miss",
+    "Handling non-determinism (now(), sequences, random) and filtering writes so replay is safe",
+    "Comparing latency distributions (p50/p99) instead of averages for capacity planning"
    ],
    "milestones": [
-    "Build an event producer and a consumer that recomputes rolling-window features into Redis with event-time stamps",
-    "Add a serving endpoint that returns feature, age, and in-budget flag",
-    "Add Prometheus histograms for staleness and consumer lag",
-    "Reproduce the phase-locking measurement bias, then fix it with randomized probe timing",
-    "Derive the minimum achievable staleness per feature from the paper's threshold idea and reject infeasible budgets at registration",
-    "Inject lag spikes by pausing consumers and verify alerts and fallbacks"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://arxiv.org/abs/2610.02259"
-  },
-  {
-   "title": "Resilience Harness for a Tool-Using Agent Pipeline",
-   "pitch": "Take a small RAG plus tool-calling agent (for example, one that answers questions using MCP tools) and wrap every component in production resilience patterns from the 150-incident taxonomy. These include circuit breakers on tools, output quality gates on generation, bulkheads between retrieval and tool calls, and timeouts with budgets. Then build a fault-injection runner that measures how much each pattern actually reduces bad answers and outages.",
-   "stack": [
-    "Python or TypeScript",
-    "An MCP server (via openai/mcp-extensions-style plugin or the reference SDK)",
-    "A local open-weight model or hosted API",
-    "OpenTelemetry tracing + Jaeger",
-    "pytest-based fault injector"
-   ],
-   "you_will_learn": [
-    "Circuit breaker state machines (closed, open, half-open) applied to flaky tools",
-    "Output quality gates as schema validation and grounding checks",
-    "Component isolation and bulkheads to stop cascading failures",
-    "Designing fault-injection experiments with baselines and measurable outcomes",
-    "Distributed tracing across LLM, retrieval, and tool spans"
-   ],
-   "milestones": [
-    "Build a baseline agent with a vector-store retriever and 2–3 MCP tools, with end-to-end OTel traces",
-    "Write a fault injector that adds tool latency, 5xx errors, empty retrieval, malformed JSON output, and context overflow",
-    "Add a circuit breaker and timeout budget per tool",
-    "Add an output quality gate with retry or abstain policy",
-    "Build a bulkhead executor to isolate retrieval from tool concurrency",
-    "Produce a report table of failure mode by pattern, showing success-rate deltas over 500 injected runs"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://arxiv.org/abs/2610.02503"
-  },
-  {
-   "title": "Precedence Forest Log Triage Engine",
-   "pitch": "Build a LOGOS-style unsupervised triage tool. It ingests raw logs from a deliberately broken microservice demo and extracts entities (hosts, request IDs, services) and event templates. It computes co-occurrence and temporal precedence, then compresses an alert flood into a small forest showing how the failure propagated. A final optional step feeds the forest to an LLM for a root-cause summary.",
-   "stack": [
-    "Rust or Go",
-    "Drain-style log template mining",
-    "DuckDB for windowed aggregation",
-    "OpenTelemetry Collector for log shipping",
-    "A 3–4 service demo app run under Podman compose"
-   ],
-   "you_will_learn": [
-    "Streaming log parsing and template extraction",
-    "Indexing events by entity and time window for fast co-occurrence queries",
-    "Inferring temporal precedence and handling clock skew across hosts",
-    "Noise reduction and alert deduplication as a compression problem",
-    "Observability pipeline design for backpressure in the collector"
-   ],
-   "milestones": [
-    "Build the demo services plus a fault script (DB pool exhaustion cascading to upstream timeouts)",
-    "Write an ingestor with template mining and entity extraction, storing events in DuckDB",
-    "Compute a co-occurrence matrix and precedence edges over sliding windows",
-    "Prune to a precedence forest and render it as a DOT or HTML graph",
-    "Measure noise reduction ratio and alert consolidation factor on 3 injected incidents",
-    "Optionally feed the forest to an LLM and compare root-cause accuracy against raw logs"
+    "Pass-through proxy that logs startup and simple-query messages with timestamps and session IDs",
+    "Capture the extended query protocol (Parse/Bind/Execute) and persist captures to Parquet",
+    "Replayer that keeps per-session order, adds a time-scale factor, and caps concurrency",
+    "Result checksumming plus a latency diff report comparing Postgres 15 and 17",
+    "Add an incident-reproduction mode: replay just a time window and flag queries whose plans or latency regressed"
    ],
    "scope": "month",
-   "inspired_by": "https://arxiv.org/abs/2610.02297"
+   "inspired_by": "https://medium.com/airbnb-engineering/beyond-synthetic-testing-capturing-and-replaying-real-database-workloads-at-airbnb-cea7ee9b1ab2?source=rss----53c7c27702d5---4"
   },
   {
-   "title": "Backpressure-Aware Gateway for a Local MoE Inference Engine",
-   "pitch": "Put a scheduling gateway in front of a local LLM engine such as DwarfStar 4 or llama.cpp that serves several clients at once. It covers admission control, separate prefill and decode queues, token-based rate limits, request deadlines, and load shedding. The goal is to keep p99 time-to-first-token bounded when the single box is overloaded, applying the latency-critical versus best-effort split from GPU-sharing research on a laptop.",
+   "title": "Mini-NTS: Authenticated Time with Stateless Cookies",
+   "pitch": "Implement a minimal Network Time Security (RFC 8915) server and client. It covers the NTS-KE handshake over TLS, the NTP packets carrying authenticated extension fields, and the stateless cookie scheme Meta describes, where sealing keys come from HKDF(master secret, epoch day) instead of being replicated. Run several server replicas that share no state and confirm any of them can validate any cookie. Then attack the system with delay injection to see what NTS does not protect against.",
    "stack": [
-    "Go or Rust (tokio)",
-    "DwarfStar 4 (ds4) or llama.cpp server",
-    "Server-Sent Events streaming",
-    "Prometheus + Grafana",
-    "vegeta or a custom load generator"
+    "Rust",
+    "rustls",
+    "hkdf + aes-siv crates",
+    "tokio UDP",
+    "chrony (for interop testing)"
    ],
    "you_will_learn": [
-    "Backpressure, bounded queues, and why unbounded queues destroy tail latency",
-    "Admission control and load shedding with deadline-aware rejection",
-    "Priority scheduling of interactive versus batch requests",
-    "Separating prefill and decode costs when modeling capacity",
-    "Measuring TTFT, tokens/sec, and p99 under open-loop load"
+    "Designing stateless servers by deriving keys rather than synchronizing them",
+    "Key rotation windows and accepting both the current and previous epoch keys",
+    "Integrity of NTP timestamps vs the unsolved delay/asymmetry attack",
+    "Why authenticated time matters as certificate lifetimes shrink (the bootstrapping chicken-and-egg)",
+    "Interop testing against a production implementation"
    ],
    "milestones": [
-    "Build a streaming proxy to the local engine with per-request TTFT and throughput metrics",
-    "Run an open-loop load test that shows latency collapse with a naive FIFO",
-    "Add a bounded queue with token-cost estimates and 429 or Retry-After shedding",
-    "Add two priority classes, with interactive preempting batch at queue level",
-    "Add per-request deadlines that drop work which can't finish in time",
-    "Write up before/after p99 TTFT and goodput curves"
+    "Plain SNTP server and client that compute offset and round-trip delay",
+    "NTS-KE over TLS 1.3: negotiate the AEAD and hand out cookies",
+    "Authenticated NTP extension fields; reject tampered packets",
+    "HKDF epoch-day key derivation across 3 stateless replicas behind a UDP load balancer",
+    "Delay-attack harness (tc netem) showing how far an attacker can skew a client, and how multi-server sampling limits the skew"
    ],
    "scope": "1-2 weeks",
-   "inspired_by": "https://dwarfstar.sh/"
+   "inspired_by": "https://engineering.fb.com/2026/10/06/production-engineering/nts-authenticated-time-at-meta/"
+  },
+  {
+   "title": "Trigram Disk Indexer: Millisecond File and Content Search",
+   "pitch": "Build a whole-directory search tool in the spirit of fsearch. It does fuzzy filename matching with typo tolerance plus indexed content grep. Filenames go into an in-memory structure, content goes into an on-disk trigram inverted index, and the index stays fresh through filesystem events instead of rescans. Benchmark it on a million or more files and work toward sub-10ms queries.",
+   "stack": [
+    "Rust",
+    "memmap2",
+    "notify crate (FSEvents/inotify)",
+    "roaring bitmaps",
+    "criterion for benchmarks"
+   ],
+   "you_will_learn": [
+    "Inverted indexes and trigram posting lists (the idea behind Google Code Search and zoekt)",
+    "Compressed posting lists with roaring bitmaps and fast intersection",
+    "Memory-mapped, immutable index segments plus a mutable delta, merged LSM-style",
+    "Incremental indexing consistency: handling renames, event coalescing, and dropped events",
+    "Fuzzy matching (edit distance and subsequence scoring) and ranking under a latency budget"
+   ],
+   "milestones": [
+    "Parallel directory walker that builds a filename index; fuzzy subsequence search with scoring",
+    "Trigram content index for text files, with candidate verification by regex",
+    "Serialize the index as mmap-able immutable segments; measure cold vs warm query latency",
+    "Live updates via filesystem events into a delta segment, with background compaction",
+    "Benchmark suite (p50/p99 query latency, index size, rebuild time) and a write-up of the trade-offs"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://github.com/noahdunnagan/fsearch"
+  },
+  {
+   "title": "Incremental Spreadsheet Recalc Engine in Rust",
+   "pitch": "Write the core of a spreadsheet engine, the part GridCraft has to get right. It needs a formula parser, a cell dependency graph, and incremental recalculation that only recomputes dirty cells, in topological order, with cycle detection. Then make it fast on a 1M-cell sheet and add parallel evaluation of independent subgraphs.",
+   "stack": [
+    "Rust",
+    "nom or chumsky (parser combinators)",
+    "petgraph",
+    "rayon",
+    "egui or a WASM web front end (optional)"
+   ],
+   "you_will_learn": [
+    "Dependency graphs, topological sort, and dirty-propagation (the core of build systems and reactive dataflow)",
+    "Cycle detection and error propagation semantics (#REF!, #CIRC!)",
+    "Range references and why naive per-cell edges blow up memory (interval and range indexing)",
+    "Parallelizing a DAG safely by computing levels or using a work-stealing scheduler",
+    "Undo/redo as an operation log, the basis for collaboration later"
+   ],
+   "milestones": [
+    "Formula lexer and parser (arithmetic, cell refs, ranges, SUM/IF) to an AST",
+    "Dependency graph with full recalculation and cycle detection",
+    "Incremental recalc: mark dirty, recompute only affected cells in topo order; benchmark against full recalc",
+    "Efficient range dependencies for things like SUM(A1:A100000) without 100k edges",
+    "Parallel recalc with rayon plus an operation log for undo/redo; optional minimal grid UI"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://github.com/storytold/gridcraft"
+  },
+  {
+   "title": "Safe AI Reply Dispatcher: State Machines, Idempotency, and Circuit Breakers",
+   "pitch": "Build a support-reply service where an LLM only drafts replies. A human approves a specific revision, and an explicit state machine dispatches it through a flaky email provider. Timeouts move a message to delivery_unknown, and a reconciliation job resolves it instead of blindly retrying. Wrap the LLM and the provider in circuit breakers and output quality gates. Then run fault-injection experiments to prove you never double-send or send unapproved text.",
+   "stack": [
+    "Python (FastAPI)",
+    "PostgreSQL (state + transactional outbox)",
+    "Any LLM API or a local model via Ollama",
+    "Toxiproxy for fault injection",
+    "OpenTelemetry + Jaeger"
+   ],
+   "you_will_learn": [
+    "Modeling workflows as explicit state machines with guarded transitions",
+    "Idempotency keys vs request fingerprints (from Sam Newman's discussion) and the transactional outbox pattern",
+    "Handling ambiguous outcomes: delivery_unknown, reconciliation, and why retries cause duplicates",
+    "Authorization bound to a revision hash so an edited draft needs re-approval; prompt-injection boundaries",
+    "Circuit breakers, fail-open vs fail-closed choices, and structured audit logging"
+   ],
+   "milestones": [
+    "Data model and state machine: drafted, approved(rev), dispatching, sent / delivery_unknown / failed",
+    "LLM drafting behind a quality gate (schema, PII and policy checks); injected instructions in a ticket cannot trigger a send",
+    "Outbox worker with idempotency keys against a mock provider that sometimes times out after succeeding",
+    "Reconciliation job, circuit breakers on the LLM and the provider, and OpenTelemetry traces across the flow",
+    "Fault-injection test suite (latency, drops, 500s, LLM garbage) asserting zero double-sends and zero unapproved sends"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://dev.to/alexander_iwizard/the-ai-drafted-a-reply-who-authorized-sending-it-11dn"
   }
  ],
  "trending": [
   {
-   "name": "rehan-remade/universal-modder",
-   "url": "https://github.com/rehan-remade/universal-modder",
-   "description": "Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you own: recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos.",
-   "language": "Python",
-   "stars": 3502,
-   "topics": [
-    "age-of-empires",
-    "claude-code",
-    "claude-code-plugin",
-    "fal",
-    "game-assets",
-    "game-modding"
-   ]
-  },
-  {
-   "name": "CopilotKit/OpenDots",
-   "url": "https://github.com/CopilotKit/OpenDots",
-   "description": "Your always-on AI coworkers that move between text, calls, and Slack.",
-   "language": "TypeScript",
-   "stars": 3384,
+   "name": "openai/math",
+   "url": "https://github.com/openai/math",
+   "description": "",
+   "language": "Lean",
+   "stars": 14262,
    "topics": []
   },
   {
-   "name": "feder-cr/dots",
-   "url": "https://github.com/feder-cr/dots",
-   "description": "Open-source dots for the web: an AI agent with its own browser, one that does not get blocked.",
-   "language": "Python",
-   "stars": 2610,
-   "topics": [
-    "ai-agent",
-    "ai-agents",
-    "ai-browser",
-    "anti-detect-browser",
-    "browser-agent",
-    "browser-automation"
-   ]
-  },
-  {
-   "name": "nanaism/yomiyasu",
-   "url": "https://github.com/nanaism/yomiyasu",
-   "description": "AI生成の日本語を自然な日本語へ推敲するAgent Skill / Agent Skill for Refining AI-Generated Japanese into Natural Japanese",
-   "language": "Python",
-   "stars": 1460,
-   "topics": [
-    "agent-skills",
-    "ai-writing",
-    "antigravity",
-    "claude-code",
-    "codex",
-    "cursor"
-   ]
-  },
-  {
-   "name": "wy51ai/floorplan-3d",
-   "url": "https://github.com/wy51ai/floorplan-3d",
-   "description": "",
-   "language": "HTML",
-   "stars": 1412,
-   "topics": []
-  },
-  {
-   "name": "storytold/photocraft",
-   "url": "https://github.com/storytold/photocraft",
-   "description": "",
+   "name": "storytold/wordcraft",
+   "url": "https://github.com/storytold/wordcraft",
+   "description": "An open-source, clean-room reimplementation of Microsoft Word in pure Rust",
    "language": "Rust",
-   "stars": 1343,
+   "stars": 7464,
    "topics": []
   },
   {
-   "name": "facebookincubator/muse-gadget-sdk",
-   "url": "https://github.com/facebookincubator/muse-gadget-sdk",
-   "description": "Open source SDK to build Muse gadgets",
-   "language": "C",
-   "stars": 1312,
-   "topics": []
-  },
-  {
-   "name": "QingYunA/answer-me-with-html",
-   "url": "https://github.com/QingYunA/answer-me-with-html",
-   "description": "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。",
+   "name": "wheresryan22/anatomy",
+   "url": "https://github.com/wheresryan22/anatomy",
+   "description": "An agent skill for creating detailed, interactive isometric illustrations of real-world machines and complex systems. Generates polished SVGs with optional WebGL shaders and 3D effects.",
    "language": "JavaScript",
-   "stars": 1265,
+   "stars": 4612,
    "topics": [
     "agent-skill",
-    "ai-agent",
-    "claude-code",
-    "cli",
-    "diagram",
-    "explainer"
+    "open-source",
+    "svg",
+    "vizualization"
    ]
   },
   {
-   "name": "nykooi1/vibe-wise",
-   "url": "https://github.com/nykooi1/vibe-wise",
-   "description": "A Claude Code plugin that helps you learn how to build while AI writes the code.",
-   "language": "Python",
-   "stars": 1195,
-   "topics": []
-  },
-  {
-   "name": "kargulstudio/sales-crm",
-   "url": "https://github.com/kargulstudio/sales-crm",
-   "description": "",
-   "language": "TypeScript",
-   "stars": 1180,
-   "topics": []
-  },
-  {
-   "name": "CAPCOM-TD-OSS/REDox",
-   "url": "https://github.com/CAPCOM-TD-OSS/REDox",
-   "description": "High-performance, token-based structured data engine for .NET. A core component of REX, the technology behind CAPCOM's next-generation game engine.",
-   "language": "C#",
-   "stars": 1048,
-   "topics": []
-  },
-  {
-   "name": "omlahore/RemoveMacAI",
-   "url": "https://github.com/omlahore/RemoveMacAI",
-   "description": "Turn off Apple Intelligence on macOS 27 and get its disk space back. One command, fully reversible.",
-   "language": "Swift",
-   "stars": 963,
-   "topics": [
-    "apple-intelligence",
-    "cli",
-    "debloat",
-    "macos",
-    "macos-27",
-    "privacy"
-   ]
-  },
-  {
-   "name": "chasmlol/SkyCraft",
-   "url": "https://github.com/chasmlol/SkyCraft",
-   "description": "Play Skyrim as a Minecraft player: Minecraft physics, inventory, blocks and combat inside Skyrim's world (SKSE plugin + Fabric mod).",
-   "language": "C++",
-   "stars": 921,
-   "topics": []
-  },
-  {
-   "name": "Edwardxlai/easyread",
-   "url": "https://github.com/Edwardxlai/easyread",
-   "description": "把英文论文读成舒服的中文：本地 PDF 论文翻译、原文对照、边读边问 AI、文献管理。Read English papers in comfortable Chinese.",
-   "language": "Python",
-   "stars": 794,
-   "topics": [
-    "academic",
-    "arxiv",
-    "chinese",
-    "claude-code",
-    "codex",
-    "electron"
-   ]
-  },
-  {
-   "name": "openai/mcp-extensions",
-   "url": "https://github.com/openai/mcp-extensions",
-   "description": "Build plugins that feel like native, first-class features of ChatGPT.",
-   "language": "TypeScript",
-   "stars": 763,
-   "topics": []
-  },
-  {
-   "name": "sganggs/Stronghold-Protocol",
-   "url": "https://github.com/sganggs/Stronghold-Protocol",
-   "description": "明日方舟「卫戍协议：盟约」非官方同人复刻：浏览器自走棋塔防，单人或 1–4 人联机合作（非商业）",
+   "name": "alchaincyf/huashu-art-motion",
+   "url": "https://github.com/alchaincyf/huashu-art-motion",
+   "description": "艺术动画skill：35种艺术风格、9种解说语法，用代码让画动起来。",
    "language": "JavaScript",
-   "stars": 644,
-   "topics": [
-    "arknights",
-    "auto-chess",
-    "fan-game",
-    "nodejs",
-    "tower-defense",
-    "websocket"
-   ]
-  },
-  {
-   "name": "composio-community/open-dot",
-   "url": "https://github.com/composio-community/open-dot",
-   "description": "Open-source personal AI agents that work on their own, on their own computers. Mac app, OpenAI + Composio.",
-   "language": "TypeScript",
-   "stars": 567,
+   "stars": 3524,
    "topics": []
   },
   {
-   "name": "OpSafari/hypoarena",
-   "url": "https://github.com/OpSafari/hypoarena",
-   "description": "Scientific hypothesis-discovery workbench: grounded hypothesis-evidence graphs, synthetic literature with planted causal chains, generate-debate-evolve loops over pluggable offline adapters, Elo tournaments recovering planted skill order, paraphrase dedup, Bayesian evidence accumulation, reproducible reports. NumPy core, CPU-only torch extra.",
-   "language": "Python",
-   "stars": 561,
+   "name": "mhtsec/ARTEX",
+   "url": "https://github.com/mhtsec/ARTEX",
+   "description": "AI 自主渗透测试系统 | 百度“agent+”攻防挑战赛冠军项目",
+   "language": "Go",
+   "stars": 3454,
    "topics": []
   },
   {
-   "name": "StayLameBro/backburner",
-   "url": "https://github.com/StayLameBro/backburner",
-   "description": "Your iPhone helps your Mac run a 27B model: faster prompt reading and more context over a USB-C cable",
-   "language": "Python",
-   "stars": 556,
-   "topics": [
-    "apple-silicon",
-    "ios",
-    "iphone",
-    "llama-cpp",
-    "llm-inference",
-    "local-llm"
-   ]
-  },
-  {
-   "name": "extend-hq/jevbox",
-   "url": "https://github.com/extend-hq/jevbox",
-   "description": "",
-   "language": "TypeScript",
-   "stars": 555,
-   "topics": []
-  },
-  {
-   "name": "fsiaonma/elpis",
-   "url": "https://github.com/fsiaonma/elpis",
-   "description": "elpis",
-   "language": "TypeScript",
-   "stars": 550,
-   "topics": []
-  },
-  {
-   "name": "oil-oil/oil-ui",
-   "url": "https://github.com/oil-oil/oil-ui",
-   "description": "把 AI 的 UI 设计能力推到极限。",
-   "language": "Python",
-   "stars": 547,
-   "topics": []
-  },
-  {
-   "name": "ythx-101/live-panel-skill",
-   "url": "https://github.com/ythx-101/live-panel-skill",
-   "description": "Config-driven animated architecture diagrams: turn one JSON file into a terminal-style, always-running diagram or a light-theme infographic that moves. Outputs H.264 mp4 or a live web page; also a Claude Code style skill (SKILL.md).",
-   "language": "HTML",
-   "stars": 537,
-   "topics": []
-  },
-  {
-   "name": "ZacharyZhang-NY/Ely-GPUI-Components",
-   "url": "https://github.com/ZacharyZhang-NY/Ely-GPUI-Components",
-   "description": "A component library for GPUI, in light and dark. Every component runs live in the browser.",
+   "name": "storytold/gridcraft",
+   "url": "https://github.com/storytold/gridcraft",
+   "description": "GridCraft: an open-source, clean-room spreadsheet (Microsoft Excel-style) in pure Rust. By ArtCraft.",
    "language": "Rust",
-   "stars": 505,
+   "stars": 3312,
+   "topics": []
+  },
+  {
+   "name": "zhongerxin/iPhone-use",
+   "url": "https://github.com/zhongerxin/iPhone-use",
+   "description": "让 Codex 通过 USB 操作真实 iPhone：引导安装、App 自动化、实时屏幕与截图回退。",
+   "language": "Python",
+   "stars": 3281,
+   "topics": []
+  },
+  {
+   "name": "storytold/cadcraft",
+   "url": "https://github.com/storytold/cadcraft",
+   "description": "CADCraft: computer-aided design and drafting — an open-source, clean-room AutoCAD-style app in pure Rust",
+   "language": "Rust",
+   "stars": 2996,
+   "topics": []
+  },
+  {
+   "name": "nullmoth/nvidia-macos-driver",
+   "url": "https://github.com/nullmoth/nvidia-macos-driver",
+   "description": "Metal driver for NVIDIA GeForce RTX cards on macOS 15 Sequoia (Intel / OpenCore). Free, source included.",
+   "language": "Rust",
+   "stars": 2645,
+   "topics": []
+  },
+  {
+   "name": "LosaLosSantos/aurelio-finance",
+   "url": "https://github.com/LosaLosSantos/aurelio-finance",
+   "description": "Open-source personal finance app with an AI financial advisor: track your net worth, investments, ETFs, cash and debts on your own computer.",
+   "language": "Python",
+   "stars": 2579,
    "topics": [
-    "design-system",
-    "gpui",
-    "rust",
-    "ui-components",
-    "webassembly"
+    "ai",
+    "dividends",
+    "etf",
+    "finance",
+    "financial-planning",
+    "fintech"
    ]
   },
   {
-   "name": "deepseek-ai/DeepGEMM-Ascend",
-   "url": "https://github.com/deepseek-ai/DeepGEMM-Ascend",
-   "description": "DeepGEMM-Ascend: clean and efficient matrix multiplication kernel library for Huawei Ascend NPUs",
+   "name": "t4t5/omdrop-owl",
+   "url": "https://github.com/t4t5/omdrop-owl",
+   "description": "airdrop for non-apple devices",
+   "language": "Shell",
+   "stars": 2297,
+   "topics": [
+    "airdrop",
+    "omarchy",
+    "opendrop"
+   ]
+  },
+  {
+   "name": "storytold/deckcraft",
+   "url": "https://github.com/storytold/deckcraft",
+   "description": "Presentations and slide shows: an open-source, clean-room reimplementation of Microsoft PowerPoint in pure Rust. Part of the ArtCraft Crafting Apps.",
+   "language": "Rust",
+   "stars": 2223,
+   "topics": []
+  },
+  {
+   "name": "storytold/soundcraft",
+   "url": "https://github.com/storytold/soundcraft",
+   "description": "An open-source, clean-room reimplementation of Avid Pro Tools in pure Rust",
+   "language": "Rust",
+   "stars": 2001,
+   "topics": []
+  },
+  {
+   "name": "alejandrobujan/tendedero",
+   "url": "https://github.com/alejandrobujan/tendedero",
+   "description": "Screenshots, hung out to dry. A tiny native macOS app that hangs every screenshot on a line at the top of your screen.",
+   "language": "Swift",
+   "stars": 1946,
+   "topics": []
+  },
+  {
+   "name": "noahdunnagan/fsearch",
+   "url": "https://github.com/noahdunnagan/fsearch",
+   "description": "Whole-disk file search for macOS: fuzzy names, typo tolerance, indexed content grep. ~1 ms over 8M files.",
+   "language": "Rust",
+   "stars": 1927,
+   "topics": []
+  },
+  {
+   "name": "storytold/craft-launcher",
+   "url": "https://github.com/storytold/craft-launcher",
+   "description": "The Craft App Launcher",
+   "language": "Rust",
+   "stars": 1507,
+   "topics": []
+  },
+  {
+   "name": "ARahim3/DigUp",
+   "url": "https://github.com/ARahim3/DigUp",
+   "description": "Search your Mac by what's in your files: photos, PDFs, recordings, videos and code. On-device, built on Google DeepMind's EmbeddingGemma 2.",
+   "language": "Swift",
+   "stars": 1491,
+   "topics": [
+    "embeddinggemma",
+    "embeddings",
+    "llama-cpp",
+    "local-first",
+    "macos",
+    "menubar-app"
+   ]
+  },
+  {
+   "name": "LoreanXavier/pt-pc",
+   "url": "https://github.com/LoreanXavier/pt-pc",
+   "description": "Native PC port of P.T. (runs from your own PS4 game files)",
    "language": "C++",
-   "stars": 505,
+   "stars": 1474,
+   "topics": []
+  },
+  {
+   "name": "shadany7824/playgta5",
+   "url": "https://github.com/shadany7824/playgta5",
+   "description": "A source code for playgta5.com.",
+   "language": "JavaScript",
+   "stars": 1432,
+   "topics": []
+  },
+  {
+   "name": "HelixDB/helix-foundry",
+   "url": "https://github.com/HelixDB/helix-foundry",
+   "description": "Your company's data, connected into one ontology, on your own computer. A local-first data workspace built on HelixDB and DuckDB.",
+   "language": "TypeScript",
+   "stars": 1274,
+   "topics": []
+  },
+  {
+   "name": "Fei2411/DeepSeek-Bot",
+   "url": "https://github.com/Fei2411/DeepSeek-Bot",
+   "description": "A team of long-lived bots for DeepSeek Harness, with main bots, bot-to-bot messages and group chats.",
+   "language": "JavaScript",
+   "stars": 1207,
+   "topics": [
+    "bot",
+    "deepseek-harness",
+    "dsh-plugin",
+    "multi-agent"
+   ]
+  },
+  {
+   "name": "liseami/CCBaga",
+   "url": "https://github.com/liseami/CCBaga",
+   "description": "",
+   "language": "Rust",
+   "stars": 1184,
+   "topics": []
+  },
+  {
+   "name": "pingdotgg/ts-rust",
+   "url": "https://github.com/pingdotgg/ts-rust",
+   "description": "An experimental Rust port of the TypeScript 7 compiler (tsc)",
+   "language": "Rust",
+   "stars": 1084,
+   "topics": [
+    "compiler",
+    "rust",
+    "tsc",
+    "typescript"
+   ]
+  },
+  {
+   "name": "anthropics/oss-scanner",
+   "url": "https://github.com/anthropics/oss-scanner",
+   "description": "",
+   "language": "Dockerfile",
+   "stars": 846,
+   "topics": []
+  },
+  {
+   "name": "wesbos/photo-frame-dashboard",
+   "url": "https://github.com/wesbos/photo-frame-dashboard",
+   "description": "Getting ADB, root, backups and custom apps onto locked-down Android photo frames (Skylight Calendar, BIUFRAME)",
+   "language": "Python",
+   "stars": 846,
    "topics": []
   }
  ]

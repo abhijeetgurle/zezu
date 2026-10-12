@@ -2361,5 +2361,216 @@
   ],
   "url": "https://dev.to/bytephase/database-per-tenant-in-laravel-6-lessons-from-running-a-multi-tenant-saas-50b4",
   "weight": 0.8
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "3e07d9aae6f70f50",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-06T17:01:04+00:00",
+  "quality": 8,
+  "source": "Airbnb Engineering",
+  "source_type": "rss",
+  "summary": "Airbnb describes a system that captures real production MySQL-compatible database traffic and replays it offline. They use it for load testing, capacity planning, de-risking version upgrades and migrations, and reproducing incidents across hundreds of clusters handling millions of QPS.",
+  "title": "Beyond synthetic testing: Capturing and replaying real database workloads at Airbnb",
+  "topics": [
+   "databases",
+   "testing",
+   "reliability",
+   "scalability"
+  ],
+  "url": "https://medium.com/airbnb-engineering/beyond-synthetic-testing-capturing-and-replaying-real-database-workloads-at-airbnb-cea7ee9b1ab2?source=rss----53c7c27702d5---4",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "e5fdc92139fff718",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-06T16:00:06+00:00",
+  "quality": 8,
+  "source": "Meta Engineering",
+  "source_type": "rss",
+  "summary": "Meta explains its deployment of Network Time Security (RFC 8915) on its public time service, covering the NTS-KE handshake, authenticated NTP extension fields, and a stateless cookie design in which sealing keys are derived via HKDF from a master secret and the epoch day number instead of being replicated. It also covers why authenticated time matters as certificate lifetimes shrink, practical chrony configuration with pool, and the threats NTS does not address, such as delay attacks, bootstrapping, and servers that are authenticated but wrong.",
+  "title": "NTS: Authenticated Time at Meta",
+  "topics": [
+   "security",
+   "networking",
+   "distributed-systems",
+   "infrastructure"
+  ],
+  "url": "https://engineering.fb.com/2026/10/06/production-engineering/nts-authenticated-time-at-meta/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "c2e92180363e5e10",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-07T17:19:58+00:00",
+  "quality": 7,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Podcast summary with Sam Newman covering microservices as an architecture of last resort, his three simplified rules of distributed systems, idempotency keys versus fingerprints, fail-open/fail-closed decisions, and Woods' four resilience concepts. It also discusses modular architecture as a way to constrain AI-assisted development, hedging LLM vendors, and recommended architecture reading.",
+  "title": "Building resilient systems with Sam Newman",
+  "topics": [
+   "distributed-systems",
+   "reliability",
+   "system-design",
+   "ai-engineering"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/building-resilient-systems-with-sam",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "659ba4f151961765",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-06T16:25:03+00:00",
+  "quality": 7,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Gergely Orosz summarizes his LDX3 keynote on how AI coding agents have reshaped software engineering: engineers running 5-10 parallel agents, agent-authored PRs overtaking human ones on GitHub, the decline of the IDE, and companies building internal agent harnesses. It also covers what's broken (code review, quality) and what remains unchanged, with data from GitHub, Linear, and Factory AI.",
+  "title": "The state of the tech industry in 2026",
+  "topics": [
+   "ai-engineering",
+   "career"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/the-state-of-the-tech-industry-in",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "d9eef010e3f6acaa",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-06T15:31:18+00:00",
+  "quality": 7,
+  "source": "ByteByteGo",
+  "source_type": "rss",
+  "summary": "Explains LLM sycophancy: why models abandon correct answers under user pushback, tracing it to pretraining, supervised fine-tuning, and RLHF reward models that conflate human approval with accuracy. Covers multi-turn pressure, social sycophancy, agreement masquerading as verification, and approaches like probes and pressure-resistance testing.",
+  "title": "Why LLMs Agree With You Even When You’re Wrong",
+  "topics": [
+   "ai-engineering"
+  ],
+  "url": "https://blog.bytebytego.com/p/why-llms-agree-with-you-even-when",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "ea8bd858f1d27f40",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-09T15:01:02+00:00",
+  "quality": 7,
+  "source": "Pinterest Engineering",
+  "source_type": "rss",
+  "summary": "Pinterest engineers describe how they use LLMs to turn raw user activity (clicks, saves, sessions over weeks) into higher-level 'journeys' representing user goals and intent. The piece covers the motivation for intent-level personalization and the system for generating journeys at scale. The excerpt is truncated, so the depth of the architecture discussion can't be fully confirmed.",
+  "title": "From Activity to Intent: Generating User Journeys with LLMs",
+  "topics": [
+   "ai-engineering",
+   "data-engineering",
+   "system-design"
+  ],
+  "url": "https://medium.com/pinterest-engineering/from-activity-to-intent-generating-user-journeys-with-llms-9652b9417626?source=rss----4c5a5f6279b6---4",
+  "weight": 1.1
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=50047422",
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "44c65736f8dd5ac9",
+  "kind": "opinion",
+  "level": "beginner",
+  "popularity": 480,
+  "published": "2026-10-11T20:20:52+00:00",
+  "quality": 5,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "Karpathy argues that understanding of LLM capability is splitting into a funnel. Most people barely use LLMs, casual users see weak free-tier chatbots, professionals in math and code see large agentic productivity gains, and a few insiders work with far stronger systems. He attributes the gap to problem ambition, jagged capability that peaks in verifiable domains trained with RL, and access tier.",
+  "title": "The gap in shared understanding of LLM capability is widening",
+  "topics": [
+   "ai-engineering",
+   "career"
+  ],
+  "url": "https://twitter.com/karpathy/status/2109361546505966046",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "b5590cdb97279015",
+  "kind": "news",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-08T16:55:51+00:00",
+  "quality": 6,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Covers a trend at mid-sized tech companies like Ramp and Stripe of building internal AI 'vibe-coding' platforms that let non-engineers create internal websites and tools. The excerpt is truncated, so the depth of technical detail is unclear, but it gives a sense of how companies are adopting AI-assisted development internally.",
+  "title": "The Pulse: new trend of building “internal vibe-coding apps” at tech companies",
+  "topics": [
+   "ai-engineering",
+   "career"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/the-pulse-new-trend-of-building-internal",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "f4cfd6eef929635b",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-12T10:42:39+00:00",
+  "quality": 8,
+  "source": "dev.to architecture",
+  "source_type": "rss",
+  "summary": "Walks through designing an AI-assisted customer support reply workflow where the model only proposes drafts and the application enforces authorization, revision-bound human approval, and dispatch through an explicit state machine. Covers prompt injection boundaries, handling timeouts with a delivery_unknown state and reconciliation instead of blind retries, negative test cases, and what to log for auditability.",
+  "title": "The AI Drafted a Reply. Who Authorized Sending It?",
+  "topics": [
+   "ai-engineering",
+   "system-design",
+   "security",
+   "reliability"
+  ],
+  "url": "https://dev.to/alexander_iwizard/the-ai-drafted-a-reply-who-authorized-sending-it-11dn",
+  "weight": 0.8
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-12T11:01:39+00:00",
+  "id": "47c1a0791726985e",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-12T09:42:26+00:00",
+  "quality": 8,
+  "source": "dev.to systemdesign",
+  "source_type": "rss",
+  "summary": "Examines tenant isolation in multi-tenant SaaS across identity, data, compute, network, storage, performance, and operations, distinguishing authentication, authorization, and isolation. Covers shared vs dedicated vs hybrid models, trustworthy tenant context propagation, composite foreign keys for tenant ownership in PostgreSQL, and row-level security caveats.",
+  "title": "Tenant Isolation and Resource Separation: Engineering Trust in Multi-Tenant Systems",
+  "topics": [
+   "system-design",
+   "security",
+   "databases",
+   "backend"
+  ],
+  "url": "https://dev.to/wellingtonmwadali/tenant-isolation-and-resource-separation-engineering-trust-in-multi-tenant-systems-4moa",
+  "weight": 0.8
  }
 ]
