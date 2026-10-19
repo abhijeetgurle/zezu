@@ -1,375 +1,458 @@
 {
- "generated_at": "2026-10-12T11:01:39+00:00",
+ "generated_at": "2026-10-19T09:02:25+00:00",
  "projects": [
   {
-   "title": "Shadow Replay: A Postgres Workload Capture and Replay Proxy",
-   "pitch": "Build a small TCP proxy that sits in front of Postgres, records every query with its session, timestamp, and latency, and then replays the capture against a second database. Replay can run at 1x, 5x, or 'as fast as possible' while keeping each session's ordering intact. You then diff latency percentiles and result checksums between the two runs. It is a scaled-down version of what Airbnb uses to de-risk upgrades and migrations.",
+   "title": "Starline: A Time-Bucketed Event Aggregation API That Stays Fast at Millions of Rows",
+   "pitch": "Rebuild GitHub's star-history lesson from scratch. Seed Postgres with tens of millions of synthetic 'star' events across repos with skewed popularity. Build three versions of a /history endpoint: naive OFFSET/LIMIT pagination, aggregate-then-paginate, and index-range-filter-then-group. Then add a fourth version with incremental daily rollups. Measure each with EXPLAIN ANALYZE and a load generator so you can see exactly where the database does wasted work.",
    "stack": [
     "Go",
-    "PostgreSQL wire protocol (pgproto3)",
-    "Docker Compose (two Postgres versions)",
-    "Parquet or SQLite for capture storage",
+    "PostgreSQL 17+",
+    "pgbench / k6",
+    "pg_stat_statements",
+    "DuckDB (for offline comparison)"
+   ],
+   "you_will_learn": [
+    "Why OFFSET/LIMIT still scans skipped rows, and keyset pagination as the alternative",
+    "Composite and covering index design for (repo_id, created_at) range scans",
+    "Reading query plans: Index Only Scan vs Bitmap Heap Scan vs Seq Scan",
+    "Pre-aggregation and rollup tables, including incremental maintenance and late-arriving events",
+    "Handling hot keys and skew when one repo has 100x more rows than the median"
+   ],
+   "milestones": [
+    "Generate a Zipf-distributed dataset of 50M events with a seed script",
+    "Implement the naive paginated endpoint and record p50/p99 latency and rows read for small vs huge repos",
+    "Add an index-range-filter-before-GROUP-BY version and compare plans with EXPLAIN (ANALYZE, BUFFERS)",
+    "Add a daily rollup table maintained by a trigger or batch job, and handle backfills correctly",
+    "Write a short benchmark report with charts showing requests and rows touched per approach"
+   ],
+   "scope": "weekend",
+   "inspired_by": "https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/"
+  },
+  {
+   "title": "Replayr: Capture and Replay Real Postgres Traffic Against a New Version",
+   "pitch": "Write a Postgres wire-protocol proxy that sits between an app and its database. It records every query with its parameters, session and timing into a compact log. A replayer then re-issues that workload against a target database (a new major version, a different index set, or a migrated schema) at 1x, 5x or as-fast-as-possible speed. Finally, diff the latency distributions and result checksums between the two runs.",
+   "stack": [
+    "Rust (tokio) or Go",
+    "Postgres wire protocol (pgwire crate / pgproto3)",
+    "PostgreSQL 16 and 17 side-by-side in Docker",
+    "Parquet for capture logs",
+    "Grafana + Prometheus"
+   ],
+   "you_will_learn": [
+    "Implementing a binary network protocol proxy: startup, simple and extended query flows",
+    "Preserving session ordering and transaction boundaries while replaying concurrently",
+    "Time-scaling a workload while respecting causal dependencies between queries",
+    "Comparing latency histograms (HDR) and detecting regressions statistically",
+    "Handling non-determinism in replays, such as now(), sequences and random()"
+   ],
+   "milestones": [
+    "Build a transparent TCP proxy that forwards traffic and logs raw messages",
+    "Parse simple and extended query protocol messages and write structured capture records",
+    "Build a replayer that maintains per-session ordering with configurable speed multipliers",
+    "Add result checksumming and an HDR-histogram latency diff report between source and target",
+    "Use it to catch a real regression, such as a dropped index or a planner change between PG versions"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://medium.com/airbnb-engineering/beyond-synthetic-testing-capturing-and-replaying-real-database-workloads-at-airbnb-cea7ee9b1ab2"
+  },
+  {
+   "title": "AgentVCS: A Content-Addressed Store for Many Agents Editing One Repo Concurrently",
+   "pitch": "Coding agents now run 5-10 at a time against the same codebase. Build a small versioned file store designed for that load. It uses content-addressed blobs and trees, a compare-and-swap ref update API for optimistic concurrency, and automatic 3-way merge with conflict surfacing. Every agent operation goes into an append-only operation log, so any agent's work can be audited or rolled back. Stress it with a swarm of simulated agents making overlapping edits.",
+   "stack": [
+    "Go",
+    "BLAKE3 hashing",
+    "SQLite (WAL mode) or Pebble for refs and op log",
+    "gRPC",
+    "diff3 merge algorithm"
+   ],
+   "you_will_learn": [
+    "Content addressing, Merkle trees and structural sharing between versions",
+    "Optimistic concurrency control with CAS on refs, and retry/backoff under contention",
+    "Linearizability of ref updates vs eventual consistency of blob replication",
+    "3-way merge, conflict detection and operation logs as an audit and undo mechanism",
+    "Garbage collection of unreachable objects without racing live writers"
+   ],
+   "milestones": [
+    "Implement a blob/tree/commit object model with BLAKE3 hashing and a local object store",
+    "Add a ref store with atomic compare-and-swap updates and an append-only op log",
+    "Implement automatic 3-way merge on CAS failure, returning structured conflicts",
+    "Write a load harness with 20 simulated agents editing overlapping files, and measure conflict rate and throughput",
+    "Add mark-and-sweep GC that is safe with concurrent writers, plus an 'undo agent X' command driven by the op log"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://github.com/feder-cr/git-ai"
+  },
+  {
+   "title": "TraceGraph: An Ontology-Backed Knowledge Graph for Root-Cause Analysis",
+   "pitch": "Build a mini version of Netflix's ontology-driven observability. Run a toy microservice system (5-8 services, a queue and a DB) instrumented with OpenTelemetry. Stream spans, metrics and deploy events into a typed knowledge graph with entities such as Service, Endpoint, Host, Deployment and Dependency. Then write a root-cause query: given a latency regression on one endpoint, walk the graph to rank upstream suspects using recent deploys and error-rate deltas.",
+   "stack": [
+    "OpenTelemetry Collector",
+    "Go or Python services",
+    "Kuzu or Neo4j (graph DB)",
+    "ClickHouse for raw spans",
+    "Chaos injection via toxiproxy"
+   ],
+   "you_will_learn": [
+    "Designing an ontology: entity types, relationship types and identity resolution across telemetry sources",
+    "Deriving service dependency graphs from distributed traces",
+    "Separating high-cardinality raw telemetry (columnar store) from low-cardinality topology (graph store)",
+    "Sampling strategies (head vs tail) and how they bias what the graph can see",
+    "Graph traversal heuristics for root-cause ranking, and evaluating them against injected faults"
+   ],
+   "milestones": [
+    "Stand up the toy service mesh with OTel tracing exporting to the collector",
+    "Build an ingestion job that upserts entities and edges into the graph and raw spans into ClickHouse",
+    "Model deploy events and config changes as first-class graph nodes linked to services",
+    "Implement a root-cause query that ranks suspects by graph distance, error delta and deploy recency",
+    "Inject 10 faults with toxiproxy (latency, errors, bad deploy) and measure top-1/top-3 accuracy"
+   ],
+   "scope": "month",
+   "inspired_by": "https://netflixtechblog.com/ontology-driven-observability-building-an-end-to-end-knowledge-graph-at-netflix-scale-421392cf5adf"
+  },
+  {
+   "title": "FleetSim: Resumable OTA Updates and Staged Rollouts for 100k Flaky Virtual Devices",
+   "pitch": "Simulate a fleet of 100,000 battery-powered IoT sensors as lightweight goroutines. Each one has intermittent connectivity, an energy budget, and A/B firmware partitions. Build the server side to match: chunked, resumable firmware downloads with integrity checks, and staged rollouts (1% → 10% → 100%) that halt automatically when device health telemetry regresses. Partition swap and rollback must happen on boot failure. The control plane has to survive thundering herds when whole stores come back online at once.",
+   "stack": [
+    "Go",
+    "NATS JetStream or MQTT (EMQX)",
+    "S3-compatible object storage (MinIO)",
+    "SQLite / Postgres for rollout state",
     "Prometheus + Grafana"
    ],
    "you_will_learn": [
-    "Parsing a real database wire protocol and proxying it transparently",
-    "Preserving per-session ordering while replaying sessions concurrently (causality vs throughput)",
-    "Why time-scaled replay surfaces lock contention and connection-pool limits that synthetic benchmarks miss",
-    "Handling non-determinism (now(), sequences, random) and filtering writes so replay is safe",
-    "Comparing latency distributions (p50/p99) instead of averages for capacity planning"
+    "Resumable transfers with chunk manifests, range requests and per-chunk hashing",
+    "Backpressure and admission control when 100k devices reconnect simultaneously",
+    "Jittered exponential backoff and why it prevents synchronized retry storms",
+    "Staged rollout state machines with automatic halt and rollback on health signals",
+    "A/B partitioning and idempotent update protocols under arbitrary interruption"
    ],
    "milestones": [
-    "Pass-through proxy that logs startup and simple-query messages with timestamps and session IDs",
-    "Capture the extended query protocol (Parse/Bind/Execute) and persist captures to Parquet",
-    "Replayer that keeps per-session order, adds a time-scale factor, and caps concurrency",
-    "Result checksumming plus a latency diff report comparing Postgres 15 and 17",
-    "Add an incident-reproduction mode: replay just a time window and flag queries whose plans or latency regressed"
-   ],
-   "scope": "month",
-   "inspired_by": "https://medium.com/airbnb-engineering/beyond-synthetic-testing-capturing-and-replaying-real-database-workloads-at-airbnb-cea7ee9b1ab2?source=rss----53c7c27702d5---4"
-  },
-  {
-   "title": "Mini-NTS: Authenticated Time with Stateless Cookies",
-   "pitch": "Implement a minimal Network Time Security (RFC 8915) server and client. It covers the NTS-KE handshake over TLS, the NTP packets carrying authenticated extension fields, and the stateless cookie scheme Meta describes, where sealing keys come from HKDF(master secret, epoch day) instead of being replicated. Run several server replicas that share no state and confirm any of them can validate any cookie. Then attack the system with delay injection to see what NTS does not protect against.",
-   "stack": [
-    "Rust",
-    "rustls",
-    "hkdf + aes-siv crates",
-    "tokio UDP",
-    "chrony (for interop testing)"
-   ],
-   "you_will_learn": [
-    "Designing stateless servers by deriving keys rather than synchronizing them",
-    "Key rotation windows and accepting both the current and previous epoch keys",
-    "Integrity of NTP timestamps vs the unsolved delay/asymmetry attack",
-    "Why authenticated time matters as certificate lifetimes shrink (the bootstrapping chicken-and-egg)",
-    "Interop testing against a production implementation"
-   ],
-   "milestones": [
-    "Plain SNTP server and client that compute offset and round-trip delay",
-    "NTS-KE over TLS 1.3: negotiate the AEAD and hand out cookies",
-    "Authenticated NTP extension fields; reject tampered packets",
-    "HKDF epoch-day key derivation across 3 stateless replicas behind a UDP load balancer",
-    "Delay-attack harness (tc netem) showing how far an attacker can skew a client, and how multi-server sampling limits the skew"
+    "Build a device emulator with configurable connectivity drop rates, battery drain and boot outcomes",
+    "Implement chunked firmware delivery that resumes from the last verified chunk after disconnects",
+    "Add A/B partition logic on the device with boot-health reporting and automatic rollback",
+    "Build a rollout controller with cohorts, health gates and a kill switch, and test it with a deliberately bad firmware",
+    "Simulate a 'store reopens' herd of 30k devices, then add token-bucket admission and jitter until p99 control-plane latency stays flat"
    ],
    "scope": "1-2 weeks",
-   "inspired_by": "https://engineering.fb.com/2026/10/06/production-engineering/nts-authenticated-time-at-meta/"
-  },
-  {
-   "title": "Trigram Disk Indexer: Millisecond File and Content Search",
-   "pitch": "Build a whole-directory search tool in the spirit of fsearch. It does fuzzy filename matching with typo tolerance plus indexed content grep. Filenames go into an in-memory structure, content goes into an on-disk trigram inverted index, and the index stays fresh through filesystem events instead of rescans. Benchmark it on a million or more files and work toward sub-10ms queries.",
-   "stack": [
-    "Rust",
-    "memmap2",
-    "notify crate (FSEvents/inotify)",
-    "roaring bitmaps",
-    "criterion for benchmarks"
-   ],
-   "you_will_learn": [
-    "Inverted indexes and trigram posting lists (the idea behind Google Code Search and zoekt)",
-    "Compressed posting lists with roaring bitmaps and fast intersection",
-    "Memory-mapped, immutable index segments plus a mutable delta, merged LSM-style",
-    "Incremental indexing consistency: handling renames, event coalescing, and dropped events",
-    "Fuzzy matching (edit distance and subsequence scoring) and ranking under a latency budget"
-   ],
-   "milestones": [
-    "Parallel directory walker that builds a filename index; fuzzy subsequence search with scoring",
-    "Trigram content index for text files, with candidate verification by regex",
-    "Serialize the index as mmap-able immutable segments; measure cold vs warm query latency",
-    "Live updates via filesystem events into a delta segment, with background compaction",
-    "Benchmark suite (p50/p99 query latency, index size, rebuild time) and a write-up of the trade-offs"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://github.com/noahdunnagan/fsearch"
-  },
-  {
-   "title": "Incremental Spreadsheet Recalc Engine in Rust",
-   "pitch": "Write the core of a spreadsheet engine, the part GridCraft has to get right. It needs a formula parser, a cell dependency graph, and incremental recalculation that only recomputes dirty cells, in topological order, with cycle detection. Then make it fast on a 1M-cell sheet and add parallel evaluation of independent subgraphs.",
-   "stack": [
-    "Rust",
-    "nom or chumsky (parser combinators)",
-    "petgraph",
-    "rayon",
-    "egui or a WASM web front end (optional)"
-   ],
-   "you_will_learn": [
-    "Dependency graphs, topological sort, and dirty-propagation (the core of build systems and reactive dataflow)",
-    "Cycle detection and error propagation semantics (#REF!, #CIRC!)",
-    "Range references and why naive per-cell edges blow up memory (interval and range indexing)",
-    "Parallelizing a DAG safely by computing levels or using a work-stealing scheduler",
-    "Undo/redo as an operation log, the basis for collaboration later"
-   ],
-   "milestones": [
-    "Formula lexer and parser (arithmetic, cell refs, ranges, SUM/IF) to an AST",
-    "Dependency graph with full recalculation and cycle detection",
-    "Incremental recalc: mark dirty, recompute only affected cells in topo order; benchmark against full recalc",
-    "Efficient range dependencies for things like SUM(A1:A100000) without 100k edges",
-    "Parallel recalc with rayon plus an operation log for undo/redo; optional minimal grid UI"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://github.com/storytold/gridcraft"
-  },
-  {
-   "title": "Safe AI Reply Dispatcher: State Machines, Idempotency, and Circuit Breakers",
-   "pitch": "Build a support-reply service where an LLM only drafts replies. A human approves a specific revision, and an explicit state machine dispatches it through a flaky email provider. Timeouts move a message to delivery_unknown, and a reconciliation job resolves it instead of blindly retrying. Wrap the LLM and the provider in circuit breakers and output quality gates. Then run fault-injection experiments to prove you never double-send or send unapproved text.",
-   "stack": [
-    "Python (FastAPI)",
-    "PostgreSQL (state + transactional outbox)",
-    "Any LLM API or a local model via Ollama",
-    "Toxiproxy for fault injection",
-    "OpenTelemetry + Jaeger"
-   ],
-   "you_will_learn": [
-    "Modeling workflows as explicit state machines with guarded transitions",
-    "Idempotency keys vs request fingerprints (from Sam Newman's discussion) and the transactional outbox pattern",
-    "Handling ambiguous outcomes: delivery_unknown, reconciliation, and why retries cause duplicates",
-    "Authorization bound to a revision hash so an edited draft needs re-approval; prompt-injection boundaries",
-    "Circuit breakers, fail-open vs fail-closed choices, and structured audit logging"
-   ],
-   "milestones": [
-    "Data model and state machine: drafted, approved(rev), dispatching, sent / delivery_unknown / failed",
-    "LLM drafting behind a quality gate (schema, PII and policy checks); injected instructions in a ticket cannot trigger a send",
-    "Outbox worker with idempotency keys against a mock provider that sometimes times out after succeeding",
-    "Reconciliation job, circuit breakers on the LLM and the provider, and OpenTelemetry traces across the flow",
-    "Fault-injection test suite (latency, drops, 500s, LLM garbage) asserting zero double-sends and zero unapproved sends"
-   ],
-   "scope": "1-2 weeks",
-   "inspired_by": "https://dev.to/alexander_iwizard/the-ai-drafted-a-reply-who-authorized-sending-it-11dn"
+   "inspired_by": "https://martinfowler.com/articles/software-meets-hardware.html"
   }
  ],
  "trending": [
   {
-   "name": "openai/math",
-   "url": "https://github.com/openai/math",
-   "description": "",
-   "language": "Lean",
-   "stars": 14262,
-   "topics": []
-  },
-  {
-   "name": "storytold/wordcraft",
-   "url": "https://github.com/storytold/wordcraft",
-   "description": "An open-source, clean-room reimplementation of Microsoft Word in pure Rust",
-   "language": "Rust",
-   "stars": 7464,
-   "topics": []
-  },
-  {
-   "name": "wheresryan22/anatomy",
-   "url": "https://github.com/wheresryan22/anatomy",
-   "description": "An agent skill for creating detailed, interactive isometric illustrations of real-world machines and complex systems. Generates polished SVGs with optional WebGL shaders and 3D effects.",
-   "language": "JavaScript",
-   "stars": 4612,
+   "name": "Arekejoker/qwen21-nsfw-pose-skill",
+   "url": "https://github.com/Arekejoker/qwen21-nsfw-pose-skill",
+   "description": "Qwen-Image 2.1 NSFW/姿势出图 skill：作者级提示词配方 + NSFW LoRA + 136 姿势 VNCCS 人偶控制；适用 Claude Code / Codex / Cursor / OpenClaw",
+   "language": "Python",
+   "stars": 3228,
    "topics": [
     "agent-skill",
-    "open-source",
-    "svg",
-    "vizualization"
+    "comfyui",
+    "image-generation",
+    "openclaw",
+    "pose-control",
+    "qwen-image"
    ]
   },
   {
-   "name": "alchaincyf/huashu-art-motion",
-   "url": "https://github.com/alchaincyf/huashu-art-motion",
-   "description": "艺术动画skill：35种艺术风格、9种解说语法，用代码让画动起来。",
-   "language": "JavaScript",
-   "stars": 3524,
-   "topics": []
+   "name": "Gathin23/tv-vibehack",
+   "url": "https://github.com/Gathin23/tv-vibehack",
+   "description": "Your TV, minus the ads. Debloat any Android TV or Google TV over Wi-Fi and swap the ad-filled home screen for a clean Apple TV-style launcher. No root, fully reversible.",
+   "language": "Java",
+   "stars": 2972,
+   "topics": [
+    "ad-free",
+    "adb",
+    "android-tv",
+    "android-tv-launcher",
+    "bloatware-removal",
+    "claude-code"
+   ]
   },
   {
-   "name": "mhtsec/ARTEX",
-   "url": "https://github.com/mhtsec/ARTEX",
-   "description": "AI 自主渗透测试系统 | 百度“agent+”攻防挑战赛冠军项目",
+   "name": "feder-cr/git-ai",
+   "url": "https://github.com/feder-cr/git-ai",
+   "description": "Git designed for AI agents.",
    "language": "Go",
-   "stars": 3454,
-   "topics": []
-  },
-  {
-   "name": "storytold/gridcraft",
-   "url": "https://github.com/storytold/gridcraft",
-   "description": "GridCraft: an open-source, clean-room spreadsheet (Microsoft Excel-style) in pure Rust. By ArtCraft.",
-   "language": "Rust",
-   "stars": 3312,
-   "topics": []
-  },
-  {
-   "name": "zhongerxin/iPhone-use",
-   "url": "https://github.com/zhongerxin/iPhone-use",
-   "description": "让 Codex 通过 USB 操作真实 iPhone：引导安装、App 自动化、实时屏幕与截图回退。",
-   "language": "Python",
-   "stars": 3281,
-   "topics": []
-  },
-  {
-   "name": "storytold/cadcraft",
-   "url": "https://github.com/storytold/cadcraft",
-   "description": "CADCraft: computer-aided design and drafting — an open-source, clean-room AutoCAD-style app in pure Rust",
-   "language": "Rust",
-   "stars": 2996,
-   "topics": []
-  },
-  {
-   "name": "nullmoth/nvidia-macos-driver",
-   "url": "https://github.com/nullmoth/nvidia-macos-driver",
-   "description": "Metal driver for NVIDIA GeForce RTX cards on macOS 15 Sequoia (Intel / OpenCore). Free, source included.",
-   "language": "Rust",
-   "stars": 2645,
-   "topics": []
-  },
-  {
-   "name": "LosaLosSantos/aurelio-finance",
-   "url": "https://github.com/LosaLosSantos/aurelio-finance",
-   "description": "Open-source personal finance app with an AI financial advisor: track your net worth, investments, ETFs, cash and debts on your own computer.",
-   "language": "Python",
-   "stars": 2579,
+   "stars": 2345,
    "topics": [
-    "ai",
-    "dividends",
-    "etf",
-    "finance",
-    "financial-planning",
-    "fintech"
+    "ai-agents",
+    "coding-agents",
+    "git",
+    "golang",
+    "scion",
+    "version-control"
    ]
   },
   {
-   "name": "t4t5/omdrop-owl",
-   "url": "https://github.com/t4t5/omdrop-owl",
-   "description": "airdrop for non-apple devices",
-   "language": "Shell",
-   "stars": 2297,
-   "topics": [
-    "airdrop",
-    "omarchy",
-    "opendrop"
-   ]
-  },
-  {
-   "name": "storytold/deckcraft",
-   "url": "https://github.com/storytold/deckcraft",
-   "description": "Presentations and slide shows: an open-source, clean-room reimplementation of Microsoft PowerPoint in pure Rust. Part of the ArtCraft Crafting Apps.",
-   "language": "Rust",
-   "stars": 2223,
-   "topics": []
-  },
-  {
-   "name": "storytold/soundcraft",
-   "url": "https://github.com/storytold/soundcraft",
-   "description": "An open-source, clean-room reimplementation of Avid Pro Tools in pure Rust",
-   "language": "Rust",
-   "stars": 2001,
-   "topics": []
-  },
-  {
-   "name": "alejandrobujan/tendedero",
-   "url": "https://github.com/alejandrobujan/tendedero",
-   "description": "Screenshots, hung out to dry. A tiny native macOS app that hangs every screenshot on a line at the top of your screen.",
-   "language": "Swift",
-   "stars": 1946,
-   "topics": []
-  },
-  {
-   "name": "noahdunnagan/fsearch",
-   "url": "https://github.com/noahdunnagan/fsearch",
-   "description": "Whole-disk file search for macOS: fuzzy names, typo tolerance, indexed content grep. ~1 ms over 8M files.",
-   "language": "Rust",
-   "stars": 1927,
-   "topics": []
-  },
-  {
-   "name": "storytold/craft-launcher",
-   "url": "https://github.com/storytold/craft-launcher",
-   "description": "The Craft App Launcher",
-   "language": "Rust",
-   "stars": 1507,
-   "topics": []
-  },
-  {
-   "name": "ARahim3/DigUp",
-   "url": "https://github.com/ARahim3/DigUp",
-   "description": "Search your Mac by what's in your files: photos, PDFs, recordings, videos and code. On-device, built on Google DeepMind's EmbeddingGemma 2.",
-   "language": "Swift",
-   "stars": 1491,
-   "topics": [
-    "embeddinggemma",
-    "embeddings",
-    "llama-cpp",
-    "local-first",
-    "macos",
-    "menubar-app"
-   ]
-  },
-  {
-   "name": "LoreanXavier/pt-pc",
-   "url": "https://github.com/LoreanXavier/pt-pc",
-   "description": "Native PC port of P.T. (runs from your own PS4 game files)",
-   "language": "C++",
-   "stars": 1474,
-   "topics": []
-  },
-  {
-   "name": "shadany7824/playgta5",
-   "url": "https://github.com/shadany7824/playgta5",
-   "description": "A source code for playgta5.com.",
+   "name": "HeyPuter/everything",
+   "url": "https://github.com/HeyPuter/everything",
+   "description": "We're rebuilding and open-sourcing the world’s software from scratch.",
    "language": "JavaScript",
-   "stars": 1432,
-   "topics": []
+   "stars": 2264,
+   "topics": [
+    "adobe",
+    "cad",
+    "office",
+    "photoshop",
+    "saas",
+    "spreadsheet"
+   ]
   },
   {
-   "name": "HelixDB/helix-foundry",
-   "url": "https://github.com/HelixDB/helix-foundry",
-   "description": "Your company's data, connected into one ontology, on your own computer. A local-first data workspace built on HelixDB and DuckDB.",
+   "name": "ahwootech/BRUTAL",
+   "url": "https://github.com/ahwootech/BRUTAL",
+   "description": "A free, open source C# framework for making games, or your own game engine. Direct access to native APIs and Vulkan, with the low-level libraries around them. The foundation under Kitten Space Agency and RimWorld's Waylith engine.",
+   "language": "C#",
+   "stars": 1937,
+   "topics": [
+    "csharp",
+    "dotnet",
+    "game-engine",
+    "gamedev",
+    "vulkan"
+   ]
+  },
+  {
+   "name": "chenglou/handwired",
+   "url": "https://github.com/chenglou/handwired",
+   "description": "Turn your regular JavaScript code into a neural net.",
    "language": "TypeScript",
-   "stars": 1274,
+   "stars": 1759,
    "topics": []
   },
   {
-   "name": "Fei2411/DeepSeek-Bot",
-   "url": "https://github.com/Fei2411/DeepSeek-Bot",
-   "description": "A team of long-lived bots for DeepSeek Harness, with main bots, bot-to-bot messages and group chats.",
-   "language": "JavaScript",
-   "stars": 1207,
+   "name": "Supermedo/uncharted_pc",
+   "url": "https://github.com/Supermedo/uncharted_pc",
+   "description": "Uncharted: The Nathan Drake Collection running natively on Windows - by SuperMedo",
+   "language": "C++",
+   "stars": 1489,
+   "topics": []
+  },
+  {
+   "name": "Caho1/open-claude-ui",
+   "url": "https://github.com/Caho1/open-claude-ui",
+   "description": "基于 REA 深度拆解并高保真还原 Claude 官方桌面端 UI。还原 30 个独立 React 组件与 8 项硬核交互物理算法，附带 3000+ 行逆向分析手册。",
+   "language": "TypeScript",
+   "stars": 1221,
    "topics": [
-    "bot",
-    "deepseek-harness",
-    "dsh-plugin",
-    "multi-agent"
+    "anthropic",
+    "audioworklet",
+    "claude",
+    "design-system",
+    "framer-motion",
+    "motion-physics"
    ]
   },
   {
-   "name": "liseami/CCBaga",
-   "url": "https://github.com/liseami/CCBaga",
+   "name": "ly05010419/MacNativeGames",
+   "url": "https://github.com/ly05010419/MacNativeGames",
    "description": "",
-   "language": "Rust",
-   "stars": 1184,
+   "language": "C",
+   "stars": 1215,
    "topics": []
   },
   {
-   "name": "pingdotgg/ts-rust",
-   "url": "https://github.com/pingdotgg/ts-rust",
-   "description": "An experimental Rust port of the TypeScript 7 compiler (tsc)",
-   "language": "Rust",
-   "stars": 1084,
+   "name": "Leonxlnx/earshot",
+   "url": "https://github.com/Leonxlnx/earshot",
+   "description": "Ears for coding agents: let AI hear, review and make sound. CPU-only, open source.",
+   "language": "Python",
+   "stars": 1052,
    "topics": [
-    "compiler",
-    "rust",
-    "tsc",
+    "ai-agents",
+    "audio",
+    "claude-code",
+    "mcp",
+    "sound-design"
+   ]
+  },
+  {
+   "name": "outcrawlai/scout",
+   "url": "https://github.com/outcrawlai/scout",
+   "description": "Scout: the open-source browser agent, by Outcrawl. Mirrored automatically from Outcrawl's own repository.",
+   "language": "TypeScript",
+   "stars": 946,
+   "topics": [
+    "ai-agent",
+    "browser-agent",
+    "browser-automation",
+    "cdp",
+    "llm",
     "typescript"
    ]
   },
   {
-   "name": "anthropics/oss-scanner",
-   "url": "https://github.com/anthropics/oss-scanner",
+   "name": "Tencent-Hunyuan/Hy-Memory",
+   "url": "https://github.com/Tencent-Hunyuan/Hy-Memory",
    "description": "",
-   "language": "Dockerfile",
-   "stars": 846,
+   "language": "Python",
+   "stars": 890,
    "topics": []
   },
   {
-   "name": "wesbos/photo-frame-dashboard",
-   "url": "https://github.com/wesbos/photo-frame-dashboard",
-   "description": "Getting ADB, root, backups and custom apps onto locked-down Android photo frames (Skylight Calendar, BIUFRAME)",
-   "language": "Python",
-   "stars": 846,
+   "name": "xscreensaver-official/xscreensaver",
+   "url": "https://github.com/xscreensaver-official/xscreensaver",
+   "description": "There is no official XScreenSaver GitHub repository.",
+   "language": "",
+   "stars": 880,
    "topics": []
+  },
+  {
+   "name": "CoolkHz/gptibo",
+   "url": "https://github.com/CoolkHz/gptibo",
+   "description": "Self-hosted GPTibo storefront, admin and Go backend — sanitized MIT source",
+   "language": "TypeScript",
+   "stars": 830,
+   "topics": []
+  },
+  {
+   "name": "MyLuxy/overdrive",
+   "url": "https://github.com/MyLuxy/overdrive",
+   "description": "Overdrive, a PS5 homebrew game store with 1,800+ games.",
+   "language": "C++",
+   "stars": 827,
+   "topics": [
+    "exfat",
+    "game-store",
+    "homebrew",
+    "jailbreak",
+    "ps5",
+    "ps5-homebrew"
+   ]
+  },
+  {
+   "name": "OpenMOSS/MOSS-Image",
+   "url": "https://github.com/OpenMOSS/MOSS-Image",
+   "description": "Official repository for MOSS-Image, a 5B-parameter base DiT model with high-quality text rendering, layout generation, and efficient fine-tuning.",
+   "language": "Python",
+   "stars": 816,
+   "topics": [
+    "controllable-generation",
+    "foundation-models",
+    "image-generation",
+    "text-rendering",
+    "text-to-image"
+   ]
+  },
+  {
+   "name": "LiCinCan/blender-ai-mcp-addon",
+   "url": "https://github.com/LiCinCan/blender-ai-mcp-addon",
+   "description": "AI assistant and MCP server for Blender: visual chat, scene tools, multi-agent workflows. Works with OpenAI, ChatGPT, Claude, Gemini, Ollama, OpenCode. Blender AI addon and plugin, copilot for 3D, bpy Python scripting, MCP integration.",
+   "language": "Python",
+   "stars": 792,
+   "topics": [
+    "ai-assistant",
+    "blender",
+    "blender-addon",
+    "blender-ai",
+    "blender-automation",
+    "blender-extension"
+   ]
+  },
+  {
+   "name": "Zfinix/eleven",
+   "url": "https://github.com/Zfinix/eleven",
+   "description": "Agent-first reverse engineering for macOS, Windows and Linux: any ACP agent reads, renames and patches binaries, Android apps and GPU kernels next to you.",
+   "language": "TypeScript",
+   "stars": 772,
+   "topics": [
+    "acp",
+    "ai-agents",
+    "android",
+    "decompiler",
+    "disassembler",
+    "ghidra"
+   ]
+  },
+  {
+   "name": "aicodeking/leanrea",
+   "url": "https://github.com/aicodeking/leanrea",
+   "description": "One 8 KB skill that replaces REA (Reverse Engineer Anything): plain CLI tools, no MCP. Benchmarked: 38% faster, 35% cheaper.",
+   "language": "Python",
+   "stars": 750,
+   "topics": []
+  },
+  {
+   "name": "Noniv/web-ocean",
+   "url": "https://github.com/Noniv/web-ocean",
+   "description": "Real-time WebGPU ocean renderer written from scratch, no engine. FFT waves, whitecaps, sun glitter, physically based sunset sky with clouds, free camera. Built with Claude Code (Opus 5.5). Opens from a single 61 KB HTML file in Chrome.",
+   "language": "HTML",
+   "stars": 712,
+   "topics": []
+  },
+  {
+   "name": "alchaincyf/huashu-motion",
+   "url": "https://github.com/alchaincyf/huashu-motion",
+   "description": "让你的agent一键直出商业级产品宣传片：会作曲，能指着画面改。Commercial-grade launch films by your coding agent — point at the frame to change it.",
+   "language": "JavaScript",
+   "stars": 667,
+   "topics": [
+    "agent-skills",
+    "animation",
+    "claude-code",
+    "codex",
+    "gsap",
+    "launch-video"
+   ]
+  },
+  {
+   "name": "xiaoyang111222/cn-math-taxonomy",
+   "url": "https://github.com/xiaoyang111222/cn-math-taxonomy",
+   "description": "初中数学知识图谱 + 前置诊断：课标对齐、人教版七–九、333 知识点、自适应诊断",
+   "language": "JavaScript",
+   "stars": 656,
+   "topics": [
+    "chinese",
+    "curriculum",
+    "diagnostic",
+    "edtech",
+    "education",
+    "junior-high-school"
+   ]
+  },
+  {
+   "name": "datalab-to/indra",
+   "url": "https://github.com/datalab-to/indra",
+   "description": "Fast CPU OCR: line detection, CTC recognition, reading order, markdown",
+   "language": "Python",
+   "stars": 644,
+   "topics": [
+    "ai",
+    "cpu",
+    "document-parsing",
+    "ocr",
+    "onnx",
+    "pdf"
+   ]
+  },
+  {
+   "name": "0xProbabillity/house-control",
+   "url": "https://github.com/0xProbabillity/house-control",
+   "description": "Your home as a live 3D model in the Mac menu bar and on iPhone — lights and ACs via Smart Life, Home Assistant, Philips Hue and Apple Home.",
+   "language": "Swift",
+   "stars": 641,
+   "topics": [
+    "home-assistant",
+    "home-automation",
+    "homekit",
+    "ios",
+    "macos",
+    "menu-bar-app"
+   ]
+  },
+  {
+   "name": "HayatoG/iss_pc",
+   "url": "https://github.com/HayatoG/iss_pc",
+   "description": "Native PC port (Linux/Windows) of inFAMOUS Second Son (PS4, CUSA00223) — in development, playable; runs your own game dump; no game or firmware files included. Motion sensor emulation. | Port nativo para PC de inFAMOUS Second Son (em desenvolvimento) — usa o seu próprio dump.",
+   "language": "C++",
+   "stars": 614,
+   "topics": [
+    "game-preservation",
+    "homebrew",
+    "infamous-second-son",
+    "linux",
+    "native-port",
+    "pc-port"
+   ]
   }
  ]
 }

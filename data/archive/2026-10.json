@@ -2572,5 +2572,222 @@
   ],
   "url": "https://dev.to/wellingtonmwadali/tenant-isolation-and-resource-separation-engineering-trust-in-multi-tenant-systems-4moa",
   "weight": 0.8
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "9007a7d049a4b31f",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-16T16:01:02+00:00",
+  "quality": 8,
+  "source": "Netflix Tech Blog",
+  "source_type": "rss",
+  "summary": "Netflix describes how it built an ontology-backed knowledge graph that connects services, telemetry, and dependencies across its infrastructure, so engineers can trace regressions end to end. The post covers why dashboards and team-scoped views break down at billions of requests and tens of millions of log events per second, and how a shared semantic model cuts the time to find a root cause.",
+  "title": "Ontology-Driven Observability: Building an End-to-End Knowledge Graph at Netflix Scale",
+  "topics": [
+   "observability",
+   "distributed-systems",
+   "reliability",
+   "data-engineering"
+  ],
+  "url": "https://netflixtechblog.com/ontology-driven-observability-building-an-end-to-end-knowledge-graph-at-netflix-scale-421392cf5adf?source=rss----2615bd06b42e---4",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "b774389cd364e6b1",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-15T13:25:00+00:00",
+  "quality": 8,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "An experience report from modernizing a fleet of about 800,000 battery-powered retail IoT sensors across 3000 stores. It shows how familiar practices change shape under physical constraints: hardware-in-the-loop development with sensor farms, firmware-level self-diagnostics, and virtual device emulators for scale testing. It also covers designing for intermittent connectivity, treating energy as a design concern, and OTA updates with resumable state, partition swapping and staged rollouts.",
+  "title": "When Software Meets Hardware",
+  "topics": [
+   "distributed-systems",
+   "reliability",
+   "observability",
+   "testing"
+  ],
+  "url": "https://martinfowler.com/articles/software-meets-hardware.html",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "ed5131a764070b5e",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-14T20:02:22+00:00",
+  "quality": 8,
+  "source": "Netflix Tech Blog",
+  "source_type": "rss",
+  "summary": "Netflix describes how it integrates a centralized transformer-based foundation model for member preference learning into downstream personalization applications. It covers practical integration patterns such as distributing learned embeddings and representations to specialized models, along with the trade-offs involved in serving and adoption.",
+  "title": "Integrating Netflix’s Foundation Model into Personalization applications",
+  "topics": [
+   "ai-engineering",
+   "system-design",
+   "data-engineering"
+  ],
+  "url": "https://netflixtechblog.com/integrating-netflixs-foundation-model-into-personalization-applications-cf176b5860eb?source=rss----2615bd06b42e---4",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "6a8d51049e32b398",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-15T19:00:03+00:00",
+  "quality": 8,
+  "source": "Meta Engineering",
+  "source_type": "rss",
+  "summary": "Meta describes building its Forum app with agents running plan-implement-test loops under engineer supervision, gated by automated verification (builds, tests, UI spec matching, navigation agents). It covers operating-model pieces (rules, skills, commands, hooks), giving agents tools to inspect live state, sandbox build flavors that compile prototype code out of production, and agent-driven stress testing that found a memory issue.",
+  "title": "How Meta Built Forum With AI-Native Engineering",
+  "topics": [
+   "ai-engineering",
+   "testing",
+   "reliability",
+   "frontend"
+  ],
+  "url": "https://engineering.fb.com/2026/10/15/ml-applications/how-meta-built-forum-ai-native-engineering/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "bc6f7d6d13e5ee6f",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-14T17:06:56+00:00",
+  "quality": 7,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Podcast episode notes with Uber Distinguished Engineer Uday Kiran Medisetty on how Uber's decade of developer infrastructure (DevPods, M3DB, Cadence, Jaeger, service registries) underpins its AI agent tooling. Covers the Model Gateway for vendor-agnostic LLM access, harness abstraction, token spend controls, AI-assisted code review with risk scores, CI overload mitigation, and measuring productivity by PR type.",
+  "title": "Uber’s AI infra, from the inside",
+  "topics": [
+   "ai-engineering",
+   "infrastructure",
+   "system-design",
+   "career"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "42cfdf49638add89",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-14T19:11:33+00:00",
+  "quality": 8,
+  "source": "GitHub Engineering",
+  "source_type": "rss",
+  "summary": "GitHub explains how it replaced stargazer-list scraping with an aggregate star history endpoint. The post covers why the old endpoint was expensive, including a pagination bug that counted all stars on every request. It also explains why aggregating before OFFSET/LIMIT doesn't reduce database work, and how filtering by an indexed time range before grouping cut requests for large repos from about 2,500 to 24 while removing identity exposure.",
+  "title": "From 2,500 requests to 24: Rebuilding star history without the stargazers",
+  "topics": [
+   "databases",
+   "performance",
+   "backend",
+   "security"
+  ],
+  "url": "https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/",
+  "weight": 1.1
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "f118bcb568c33605",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-15T18:00:00+00:00",
+  "quality": 7,
+  "source": "GitHub Engineering",
+  "source_type": "rss",
+  "summary": "GitHub describes Evergreen, a Go-based GitHub App that automates quarterly outside-collaborator access reviews and stale repo archival using scheduled Actions, webhooks, issue-ops, custom properties, and git-committed JSON state as an audit trail. It covers fail-secure/fail-closed design, partial-failure handling, dry-run rollout, observability, and pacing around secondary rate limits.",
+  "title": "Staying Evergreen: How we automated secure access and repo hygiene in a shared org",
+  "topics": [
+   "security",
+   "system-design",
+   "reliability",
+   "infrastructure"
+  ],
+  "url": "https://github.blog/engineering/platform-security/staying-evergreen-how-we-automated-secure-access-and-repo-hygiene-in-a-shared-org/",
+  "weight": 1.1
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "b697cd068e6652ad",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-13T17:01:02+00:00",
+  "quality": 7,
+  "source": "Airbnb Engineering",
+  "source_type": "rss",
+  "summary": "Airbnb describes CASTLE, an approach to bootstrapping a natural language search ranking model before any real user queries exist by jointly generating synthetic queries and relevance labels from de-identified booking and search signals. Readers learn how the team framed the cold-start problem and used synthetic data generation to train retrieval and ranking for NL search.",
+  "title": "CASTLE: training natural language search before the first real query",
+  "topics": [
+   "ai-engineering",
+   "data-engineering",
+   "system-design"
+  ],
+  "url": "https://medium.com/airbnb-engineering/castle-training-natural-language-search-before-the-first-real-query-3818ef8b4828?source=rss----53c7c27702d5---4",
+  "weight": 1.2
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=50107379",
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "34bf133078de58bf",
+  "kind": "release",
+  "level": "intermediate",
+  "popularity": 918,
+  "published": "2026-10-15T17:47:39+00:00",
+  "quality": 5,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "Meta announces open-weight release of Muse Spark Open, an 816B-parameter (42B active) MoE multimodal model with 1M context, aimed at coding and agentic tasks. It covers availability across inference engines and hosts, running it locally on two M5 Ultra Mac Studios via MLX using unified memory, and custom Helion kernels in SGLang. Technical depth is limited; it's mainly a release announcement.",
+  "title": "Muse Spark Open",
+  "topics": [
+   "ai-engineering",
+   "infrastructure"
+  ],
+  "url": "https://research.meta.ai/blog/muse-spark-open",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-19T09:02:25+00:00",
+  "id": "06d335df8db522f0",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-15T18:30:29+00:00",
+  "quality": 6,
+  "source": "Meta Engineering",
+  "source_type": "rss",
+  "summary": "Meta describes how its infrastructure handled record World Cup 2026 traffic, including WhatsApp peaks of 30M messages/sec, and the finding that traffic surged during match breaks rather than gameplay. It covers pre-provisioned capacity buffers, country-level graceful degradation, cascade prevention, per-region peak forecasting when all regions spike simultaneously, and the decision not to freeze deployments.",
+  "title": "2026 World Cup: Breaking Records, Spiky Charts and Reliability at Scale",
+  "topics": [
+   "reliability",
+   "scalability",
+   "infrastructure",
+   "distributed-systems"
+  ],
+  "url": "https://engineering.fb.com/2026/10/15/production-engineering/2026-world-cup-record-traffic-reliability-at-scale/",
+  "weight": 1.2
  }
 ]
