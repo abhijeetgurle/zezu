@@ -2789,5 +2789,218 @@
   ],
   "url": "https://engineering.fb.com/2026/10/15/production-engineering/2026-world-cup-record-traffic-reliability-at-scale/",
   "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "20d42f4887085c51",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-23T18:22:59+00:00",
+  "quality": 8,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Cloudflare explains how it replaced fixed, per-zone range-size caching (nginx-style slicing) with a Pingora-based design that aligns origin fetches to on-disk cache chunks and composes responses from cached, in-flight, and newly fetched bytes. It covers validation rules (ETag, size, If-Range, compression) for correct 206 responses and reports production results for R2: roughly halved p99 TTFB and about 6% less tiered cache traffic.",
+  "title": "Origin Range Requests: Serving large files without range-request tuning",
+  "topics": [
+   "distributed-systems",
+   "performance",
+   "networking",
+   "system-design"
+  ],
+  "url": "https://blog.cloudflare.com/origin-range-requests/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "5d93986f3f764f68",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-23T18:06:56+00:00",
+  "quality": 8,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Cloudflare describes how its GeoKey Manager restricts where customer private keys can be unwrapped, replacing attribute-based encryption with regional symmetric root keys that derive hybrid ML-KEM-768/X25519 HPKE key pairs. It covers the key hierarchy (service context, region, epoch) and how blast radius is scoped across it. It also explains TPM-backed provisioning of root keys to edge servers, storage in the kernel keyring, and fail-closed behavior when a key is missing.",
+  "title": "Bringing post-quantum cryptography to geographically fenced key management",
+  "topics": [
+   "security",
+   "distributed-systems",
+   "infrastructure",
+   "system-design"
+  ],
+  "url": "https://blog.cloudflare.com/post-quantum-geo-key-manager/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "5c4b417b27b9346f",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-23T18:32:51+00:00",
+  "quality": 7,
+  "source": "Netflix Tech Blog",
+  "source_type": "rss",
+  "summary": "Netflix's Java Platform team describes Quasar, a tool that maps proposed API changes in shared libraries to actual symbol references across many consumer repositories. It explains how this blast-radius evidence informs release decisions such as removing deprecated APIs, and how it can give coding agents cross-repo context for migrations.",
+  "title": "Beyond API Compatibility: Building a Tool to Measure the Blast Radius of Library Changes",
+  "topics": [
+   "backend",
+   "testing",
+   "infrastructure"
+  ],
+  "url": "https://netflixtechblog.com/beyond-api-compatibility-building-a-tool-to-measure-the-blast-radius-of-library-changes-9474f2fd4f90?source=rss----2615bd06b42e---4",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "e3dbe5050f2fdebe",
+  "kind": "deep-dive",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-26T06:15:19+00:00",
+  "quality": 8,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "Describes OpenLDK, a JIT compiler and runtime that translates JVM bytecode into Common Lisp so SBCL compiles it to native code, with Java classes mapped to CLOS classes and lazy per-method compilation with a persistent code cache. It shows polyglot interop across Kotlin, Scala, Clojure, Groovy and others, CLOS method combination around Java methods, exception/condition mapping, and saving a warmed Spring Boot app in a Lisp image for fast startup.",
+  "title": "OpenLDK: Bringing the Java World into Common Lisp",
+  "topics": [
+   "programming-languages",
+   "performance"
+  ],
+  "url": "https://atgreen.github.io/repl-yell/posts/openldk-java-in-common-lisp/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "e45502f48b70a7cb",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-22T22:19:12+00:00",
+  "quality": 7,
+  "source": "Netflix Tech Blog",
+  "source_type": "rss",
+  "summary": "Netflix describes how its Kubernetes-based Titus container platform, which is multi-tenant by default, added a single-tenant mode that gives certain workloads VM-level isolation. The piece covers why some workloads don't fit shared hosts and how the platform supports dedicated instances while keeping the same container experience for application teams.",
+  "title": "Single-tenant Titus: VM-level isolation on a multi-tenant container platform",
+  "topics": [
+   "infrastructure",
+   "system-design",
+   "security",
+   "reliability"
+  ],
+  "url": "https://netflixtechblog.com/single-tenant-titus-vm-level-isolation-on-a-multi-tenant-container-platform-6d8b1909d163?source=rss----2615bd06b42e---4",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "20a259028135abda",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-21T16:00:00+00:00",
+  "quality": 8,
+  "source": "GitHub Engineering",
+  "source_type": "rss",
+  "summary": "GitHub explains how it migrated nearly all Git repositories to Azure and why the busiest ones were blocked by cross-region write latency under a repository-wide quorum lock. It describes moving to per-reference quorum serialization (3-4x write throughput) and adding object storage as a 'virtual replica' so stateless read replicas can scale independently from writes.",
+  "title": "The bridge to agent-scale Git infrastructure",
+  "topics": [
+   "distributed-systems",
+   "system-design",
+   "scalability",
+   "infrastructure"
+  ],
+  "url": "https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/",
+  "weight": 1.1
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "c44f9c4df5d50f4c",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-25T22:23:32+00:00",
+  "quality": 7,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "Arthur O'Dwyer discusses how compiler warnings should handle fixits, specifically the tension between offering a fix that changes behavior to match likely intent and one that silences the warning while keeping current behavior, with Clang and GCC examples. He also argues that suppression mechanisms such as extra parentheses work like error-correcting codes and signaling. Under that view, warnings should compare how much \"ornamentation\" the code has relative to its typo-corrected version, rather than follow absolute rules.",
+  "title": "Two musings on the design of compiler warnings (2020)",
+  "topics": [
+   "programming-languages",
+   "testing"
+  ],
+  "url": "https://quuxplusone.github.io/blog/2020/09/02/wparentheses/",
+  "weight": 1.0
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=50182987",
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "2ce3f3251873a619",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 816,
+  "published": "2026-10-21T15:48:56+00:00",
+  "quality": 6,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "The PHP Foundation explains how two critical RCE vulnerabilities in PHP's memory management and error handling were found, why the fix stalled for months over compatibility trade-offs, and how coordinated disclosure was disrupted by leaks and an embargo break. It also covers changes to security team processes and the growing role of AI tools in vulnerability discovery and triage.",
+  "title": "Today's PHP security release, and how we're strengthening security",
+  "topics": [
+   "security",
+   "programming-languages"
+  ],
+  "url": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "c54791ad2087e3c3",
+  "kind": "paper",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-26T04:00:00+00:00",
+  "quality": 7,
+  "source": "arXiv cs.DC",
+  "source_type": "rss",
+  "summary": "Presents KVStream, a KV cache engine for long-context LLM serving that treats prefix retrieval as aggregate-bandwidth scheduling across storage tiers (node-local NVMe plus the parallel or cloud file system). It batches a step's reads, defers writes behind the forward pass, replicates chunks on every tier, and has each tier pull the next unread chunks once it is free. A performance model shows why this beats static splits, and the evaluation on up to 128 GPUs reports up to 1.49x throughput and 6.1x lower TTFT compared with LMCache.",
+  "title": "KVStream: Adaptive Parallel Storage Management for KV Caching in Large-Scale LLM Serving",
+  "topics": [
+   "ai-engineering",
+   "distributed-systems",
+   "performance",
+   "infrastructure"
+  ],
+  "url": "https://arxiv.org/abs/2610.31827",
+  "weight": 0.9
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-10-26T09:05:13+00:00",
+  "id": "b11683121a186816",
+  "kind": "paper",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-26T04:00:00+00:00",
+  "quality": 7,
+  "source": "arXiv cs.SE",
+  "source_type": "rss",
+  "summary": "An empirical study of 335 real failures across 40 open-source LLM GUI-agent applications, where the tools that capture screenshots or UI trees and execute actions leave the agent's view out of sync with the live interface. The failures fall into 11 defect patterns covering state representation, state transition, and synchronization, and most of them are silent. The authors also present MalvaGuard, a static contract checker that reaches 57.3% precision and 76.8% recall on a separate 20-application corpus.",
+  "title": "Understanding Tool-Mediated Interaction Failures in Agentic GUI Software: An Empirical Study",
+  "topics": [
+   "ai-engineering",
+   "reliability",
+   "testing"
+  ],
+  "url": "https://arxiv.org/abs/2610.31698",
+  "weight": 0.9
  }
 ]
