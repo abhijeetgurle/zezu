@@ -1,0 +1,219 @@
+[
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "16ec2c40ac77b51d",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-30T17:38:50+00:00",
+  "quality": 8,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Cloudflare follows up on the eMudhra CA weak intermediate key incident, describing how they patched internal systems (including AI-assisted code analysis to find trust points), logged handshakes in Pingora to detect forged certificates, and measured client patching via probe connections from challenge pages. It shows that modern browsers are mostly patched but bots, embedded WebViews, and many networks still accept the compromised chain, and argues for dynamically updatable trust stores.",
+  "title": "4 real? Tracking exploitation and patching of eMudhra’s weak keys",
+  "topics": [
+   "security",
+   "networking",
+   "observability",
+   "reliability"
+  ],
+  "url": "https://blog.cloudflare.com/emudhra-patching/",
+  "weight": 1.2
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=50319143",
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "6bd209feefbeab17",
+  "kind": "deep-dive",
+  "level": "advanced",
+  "popularity": 716,
+  "published": "2026-10-31T19:16:30+00:00",
+  "quality": 7,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "Explains a critical remote use-after-free in the Linux IPv4 TCP handshake: request-socket IP options were freed with kfree instead of kfree_rcu while other CPUs could still read them. Covers affected kernels and distro patch status, why Go's default MPTCP listeners matter, how to check hosts with ss -M, and an nftables mitigation that drops TCP packets carrying IPv4 options.",
+  "title": "TCP Use-After-Free: CVE-2026-98432 / CVSS 9.8",
+  "topics": [
+   "security",
+   "networking",
+   "infrastructure"
+  ],
+  "url": "https://atlasum.net/blog/cve-2026-98432-linux-ipv4-tcp-uaf",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "7a5fec0b961daf67",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-28T16:00:01+00:00",
+  "quality": 8,
+  "source": "Meta Engineering",
+  "source_type": "rss",
+  "summary": "Describes how Meta redesigned its Andromeda ads retrieval system by co-designing a mixture-of-experts retrieval model, fused GPU kernels, and a co-located single-GPU pipeline, reaching over a billion ads scored per second. It explains why retrieval at this scale is bound by memory bandwidth and network traffic, and how kernel fusion, moving index matching onto the GPU, and INT8 quantization address those limits.",
+  "title": "Meta Andromeda: Powering the Next Generation of Ads Retrieval Through Model-System Co-Design",
+  "topics": [
+   "system-design",
+   "performance",
+   "ai-engineering",
+   "scalability"
+  ],
+  "url": "https://engineering.fb.com/2026/10/28/ml-applications/meta-andromeda-next-gen-ads-retrieval-gpu-co-design/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "e73b1e1885594982",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-29T13:50:00+00:00",
+  "quality": 7,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "Rachel Laycock argues that experienced developers' hesitancy toward fully agentic coding stems from knowing that built software isn't the same as software that works in production. She describes a Thoughtworks experiment where a team built an app entirely with agents, spending most time on domain design and test/CI harnesses, yet struggled with a frequently red build, and she raises open questions about TDD, batch size, and CI/CD in the agentic era.",
+  "title": "Why are good developers so wary of agentic development?",
+  "topics": [
+   "ai-engineering",
+   "reliability",
+   "testing",
+   "career"
+  ],
+  "url": "https://martinfowler.com/rachels-ramblings/good-devs-wary.html",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "22a42169ff916c20",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-29T13:37:13+00:00",
+  "quality": 7,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Podcast summary with Titus Winters covering Google's large-scale C++ refactoring (AST parsing via MapReduce, coexisting APIs, sharded changes), why Google mandated tests, and the readability review program. It also discusses AI's mixed effect on outages and productivity, plus critiques of the CS curriculum and career advice for new engineers.",
+  "title": "Software engineering at Google & CS education with Titus Winters",
+  "topics": [
+   "testing",
+   "career",
+   "programming-languages",
+   "ai-engineering"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/software-engineering-at-google-and",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "8200dab1236b6727",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-27T16:00:12+00:00",
+  "quality": 8,
+  "source": "Meta Engineering",
+  "source_type": "rss",
+  "summary": "Meta describes PrivacyLib, a shared library embedded in clients of hundreds of data systems that enforces and observes privacy requirements at the point of data access via pluggable enforcing and observing modules. It covers how they achieve coverage (typed clients plus RPC boundaries), scale (build-time compiled policies, in-process caching for billions of checks/sec), and reliability (per-service rollout), with a concrete code walkthrough of Policy Zones protecting messaging metadata and agent-context propagation for AI agents.",
+  "title": "PrivacyLib: Privacy Controls at the Data Access Boundary",
+  "topics": [
+   "security",
+   "system-design",
+   "scalability",
+   "infrastructure"
+  ],
+  "url": "https://engineering.fb.com/2026/10/27/security/privacylib/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "2b2f487795f0e5d2",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-10-29T16:00:12+00:00",
+  "quality": 7,
+  "source": "Meta Engineering",
+  "source_type": "rss",
+  "summary": "Meta describes its production system for LLM-generated 'catching' tests that run against risky diffs before landing. The system uses intent-aware and mutation-based 'dodgy diff' generation workflows, then filters false positives with an LLM-as-judge ensemble plus a rule-based assessor, escalating to engineers only when warranted. Reported results include a 60% true-positive rate and 74 serious privacy bugs caught at the diff stage.",
+  "title": "Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full Scale",
+  "topics": [
+   "testing",
+   "ai-engineering",
+   "reliability"
+  ],
+  "url": "https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/",
+  "weight": 1.2
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=50290177",
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "739e0b5535e3ec06",
+  "kind": "opinion",
+  "level": "beginner",
+  "popularity": 606,
+  "published": "2026-10-29T14:57:55+00:00",
+  "quality": 6,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "Martin Fowler argues that LLM-drafted prose carries a recognizable 'voice' that puts readers off, and advises writers not to let LLMs draft or rephrase their work, though outlines may be acceptable. He frames writing as a tool for thinking, so delegating it to LLMs means delegating comprehension too. He also covers exceptions such as disability, translation, and form documents, and describes his site's AI-disclosure policy.",
+  "title": "LLM Voice",
+  "topics": [
+   "career",
+   "ai-engineering"
+  ],
+  "url": "https://martinfowler.com/bliki/LLM-Voice.html",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "8475093c4b1d02f2",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-26T17:04:57+00:00",
+  "quality": 7,
+  "source": "Netflix Tech Blog",
+  "source_type": "rss",
+  "summary": "Netflix describes how Pensive, its system for auto-diagnosing and remediating failed data workloads across Titus, Spark, Trino, and Druid, moved from regex and hand-written Java rules to an AI-assisted approach. The piece covers the scale involved (around 100k failures on peak days), how errors are classified into user versus platform causes, and how the system produces retry or remediation guidance reliably.",
+  "title": "Making Failure Diagnosis Reliable with Pensive AI",
+  "topics": [
+   "ai-engineering",
+   "reliability",
+   "data-engineering",
+   "observability"
+  ],
+  "url": "https://netflixtechblog.com/making-failure-diagnosis-reliable-with-pensive-ai-6b0811a1c015?source=rss----2615bd06b42e---4",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-02T11:23:18+00:00",
+  "id": "7028f0740bab9c81",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-10-26T16:01:02+00:00",
+  "quality": 7,
+  "source": "Netflix Tech Blog",
+  "source_type": "rss",
+  "summary": "Netflix describes an automated system that reframes horizontal video into vertical and other aspect ratios for its in-app Clips feed and social marketing, replacing manual editor reframing. The post covers how cropping decisions are made and how the system plugs into internal production tooling at scale.",
+  "title": "Multi‑Ratio Video Resizing for Mobile Feed and Marketing",
+  "topics": [
+   "ai-engineering",
+   "system-design",
+   "data-engineering"
+  ],
+  "url": "https://netflixtechblog.com/multi-ratio-video-resizing-for-mobile-feed-and-marketing-2e6b42810f49?source=rss----2615bd06b42e---4",
+  "weight": 1.3
+ }
+]

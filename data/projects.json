@@ -1,388 +1,435 @@
 {
- "generated_at": "2026-10-26T09:05:13+00:00",
+ "generated_at": "2026-11-02T11:23:18+00:00",
  "projects": [
   {
-   "title": "ChunkFetch: A Range-Request Proxy with Composable Byte Serving",
-   "pitch": "Build an HTTP caching proxy that serves large files by composing responses from cached chunks, in-flight fetches, and new origin fetches — aligning origin range requests to fixed on-disk chunk boundaries instead of naive slicing.",
+   "title": "Chunk-Aligned Range-Request Caching Proxy",
+   "pitch": "Build a small HTTP caching reverse proxy that serves arbitrary byte-range requests for large files. It aligns origin fetches to fixed on-disk chunks and composes each 206 response from cached, in-flight, and newly fetched chunks. Then measure p99 time-to-first-byte against a naive pass-through proxy.",
    "stack": [
     "Rust",
     "tokio",
     "hyper",
-    "Redis or local disk cache"
+    "Pingora (optional, for reading or reusing its cache abstractions)",
+    "MinIO or local S3-compatible origin",
+    "Prometheus + Grafana"
    ],
    "you_will_learn": [
-    "Range request validation (ETag, If-Range, size, 206 correctness)",
-    "Chunk-aligned caching and deduplication of in-flight fetches",
-    "Reducing p99 TTFB and origin traffic through request coalescing"
+    "HTTP Range, If-Range, ETag, and 206/416 semantics and when serving a partial response is safe",
+    "Request coalescing, so concurrent readers of the same chunk share one origin fetch",
+    "Cache key design and chunk alignment trade-offs (chunk size vs. read amplification)",
+    "Cache invalidation when the object's ETag or size changes mid-stream",
+    "Latency observability: TTFB histograms and origin egress accounting"
    ],
    "milestones": [
-    "Proxy that forwards range requests and caches full objects",
-    "Split objects into fixed-size on-disk chunks and serve partial 206 responses from cache",
-    "Coalesce concurrent requests for the same byte range into one origin fetch",
-    "Add ETag/If-Range revalidation and measure TTFB and origin-traffic reduction under load"
+    "Pass-through proxy in front of a MinIO origin, with Prometheus metrics for TTFB and bytes fetched from origin",
+    "Fixed-size chunk cache on disk; translate any client range into aligned origin range fetches",
+    "In-flight chunk registry so overlapping requests wait on one fetch instead of duplicating it",
+    "Stream a response composed of cached, in-flight, and new chunks without buffering the whole range",
+    "Validation: reject or refetch on ETag/size mismatch, honor If-Range, refuse ranges over compressed encodings",
+    "Load-test with random seeks over 1–5 GB files; compare p99 TTFB and origin traffic against the naive proxy and against nginx slice"
    ],
    "scope": "1-2 weeks",
    "inspired_by": "https://blog.cloudflare.com/origin-range-requests/"
   },
   {
-   "title": "RefQuorum: Per-Reference Serialized Git Write Server",
-   "pitch": "Implement a minimal Git-like server that serializes writes per-reference instead of with a repo-wide lock, plus a read path backed by object storage so reads scale independently from writes.",
+   "title": "Embedded Policy Enforcement Library with Data-Access Observability",
+   "pitch": "Write a PrivacyLib-style client library that wraps database and RPC clients. It enforces data-flow policies at the moment data is read, propagates a policy context (including an 'acting on behalf of an AI agent' flag) across service hops, and runs in either observe-only or enforce mode, so you can roll out new rules without breaking production.",
    "stack": [
     "Go",
-    "gRPC",
-    "Raft (hashicorp/raft) or etcd",
-    "S3-compatible object store (MinIO)"
+    "PostgreSQL",
+    "gRPC with interceptors",
+    "OpenTelemetry (baggage for context propagation)",
+    "CUE or a small DSL compiled to Go at build time"
    ],
    "you_will_learn": [
-    "Lock granularity and write throughput trade-offs",
-    "Quorum serialization and consistency under concurrent writers",
-    "Read/write path separation with object storage as a virtual replica"
+    "Enforcing policy at the data-access boundary instead of at the edge",
+    "Context propagation across RPC boundaries (requester, purpose, agent identity)",
+    "Compiling policies at build time and caching decisions in-process for low per-check overhead",
+    "Shadow (observe) mode vs. enforce mode as a reliability rollout technique",
+    "Building an audit trail that is useful without itself becoming a data leak"
    ],
    "milestones": [
-    "Model refs and objects with a repo-wide write lock baseline",
-    "Benchmark write throughput; migrate to per-ref serialization",
-    "Add stateless read replicas served from object storage",
-    "Measure 3-4x write throughput gain and verify read-after-write consistency semantics"
-   ],
-   "scope": "month",
-   "inspired_by": "https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/"
-  },
-  {
-   "title": "TierCache: Adaptive KV-Cache Storage Scheduler",
-   "pitch": "Build a multi-tier cache engine that treats retrieval as aggregate-bandwidth scheduling across RAM, NVMe, and a remote store — batching reads, deferring writes, and pulling chunks per-tier as bandwidth frees up.",
-   "stack": [
-    "Python or Rust",
-    "asyncio/tokio",
-    "NVMe local disk",
-    "MinIO for the remote tier"
-   ],
-   "you_will_learn": [
-    "Backpressure and bandwidth-aware scheduling across storage tiers",
-    "Write-behind buffering and read batching",
-    "Building a performance model to justify dynamic vs static tier splits"
-   ],
-   "milestones": [
-    "Simulate a workload of prefix chunk reads/writes with latency per tier",
-    "Implement batched reads and deferred write-behind",
-    "Add per-tier pull scheduling: each tier fetches next unread chunks when idle",
-    "Compare throughput/TTFT against a static split baseline and plot the performance model"
+    "Define a tiny policy language: data zones, allowed purposes, and allowed sinks",
+    "Build-time compiler that turns policies into Go decision tables",
+    "Typed DB client wrapper that tags rows with zones and checks reads against the caller's context",
+    "gRPC interceptors that propagate the policy context; demo three services in which an 'agent' request tries to exfiltrate messaging metadata",
+    "Observe mode that logs would-be violations to OpenTelemetry, and an enforce mode toggled per service",
+    "Benchmark checks per second with and without the decision cache; write up the overhead"
    ],
    "scope": "1-2 weeks",
-   "inspired_by": "https://arxiv.org/abs/2610.31827"
+   "inspired_by": "https://engineering.fb.com/2026/10/27/security/privacylib/"
   },
   {
-   "title": "BlastRadius: Cross-Repo Symbol Reference Mapper",
-   "pitch": "Build a tool that parses a library's public API and scans consumer repositories to find every symbol reference, so you can estimate the blast radius of removing or changing an API before you ship it.",
+   "title": "Mutation-Driven 'Catching Test' Generator for Risky Diffs",
+   "pitch": "A CI bot that takes a git diff, generates LLM-written tests aimed at the change, and validates them by seeding mutants of the diff. It keeps only tests that pass on the real diff and fail on the mutants, then uses an LLM-judge ensemble plus deterministic rules to decide whether a failing test is a real bug worth showing a human.",
    "stack": [
-    "TypeScript",
-    "tree-sitter",
-    "SQLite",
-    "a small graph index"
+    "Python",
+    "pytest + mutmut (or a custom AST mutator)",
+    "Any OpenAI-compatible LLM endpoint (DeepSeek or a local model)",
+    "GitHub Actions",
+    "SQLite for the results ledger"
    ],
    "you_will_learn": [
-    "AST-level symbol resolution and indexing",
-    "Building and querying a dependency/reference graph",
-    "Release risk scoring from real usage evidence"
+    "Mutation testing as a way to measure test strength",
+    "Managing the false-positive rate in automated signals (precision vs. recall, escalation thresholds)",
+    "Making flaky LLM outputs dependable through ensembles plus deterministic gates",
+    "Sandboxed, reproducible test execution in CI",
+    "Tracking a human-on-the-loop feedback loop with simple metrics"
    ],
    "milestones": [
-    "Parse a target library and extract its exported symbols",
-    "Index symbol references across a set of consumer repos into a graph",
-    "Query 'what breaks if I remove X' and rank affected repos",
-    "Add a report showing blast radius per proposed change"
+    "CLI that extracts changed functions from a diff using the Python AST",
+    "Prompt an LLM to generate targeted tests, then run them in a sandboxed container with time and memory limits",
+    "Mutator that produces 'dodgy' variants of the diff; keep only tests that kill mutants",
+    "Triage stage with a rule-based assessor (flakiness rerun, assertion sanity) plus a 3-model judge vote",
+    "GitHub Action that comments on a PR only when the triage confidence threshold is met",
+    "Seed real bugs into a sample repo and report true-positive rate and comments per PR"
    ],
    "scope": "1-2 weeks",
-   "inspired_by": "https://netflixtechblog.com/beyond-api-compatibility-building-a-tool-to-measure-the-blast-radius-of-library-changes-9474f2fd4f90?source=rss----2615bd06b42e---4"
+   "inspired_by": "https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/"
   },
   {
-   "title": "GeoVault: Region-Fenced Key Management with Hybrid HPKE",
-   "pitch": "Build a key manager that only unwraps private keys inside designated regions, using regional symmetric root keys that derive hybrid post-quantum (ML-KEM-768 + X25519) HPKE key pairs, with fail-closed behavior.",
+   "title": "Failure-Diagnosis Pipeline for Batch Jobs with Backpressure",
+   "pitch": "Build a mini version of Netflix's Pensive: ingest failure logs from many simulated Spark/Trino-style jobs and classify each failure as a user error or a platform error. Start with cheap fingerprinting, fall back to an LLM only for unknown signatures, and emit retry or remediation advice. The system has to survive failure storms without overloading the LLM.",
+   "stack": [
+    "Go or Python",
+    "Redpanda (Kafka-compatible)",
+    "PostgreSQL",
+    "Ollama running a small local model",
+    "Prometheus"
+   ],
+   "you_will_learn": [
+    "Backpressure and load shedding when downstream capacity (LLM tokens per second) is the bottleneck",
+    "Log fingerprinting and deduplication to collapse thousands of failures into a few signatures",
+    "Tiered classification: deterministic rules first, LLM second, results cached by signature",
+    "Retry policy design (idempotency, exponential backoff, avoiding retry storms on platform outages)",
+    "Measuring classifier precision against a labeled set"
+   ],
+   "milestones": [
+    "Job simulator that emits realistic stack traces (OOM, missing table, bad SQL, node loss) into a Redpanda topic",
+    "Fingerprinter that normalizes traces (strips IDs, paths, timestamps) and dedupes them into signatures",
+    "Rules engine for known signatures, plus an LLM classifier for novel ones, with verdicts cached in Postgres",
+    "Bounded worker pool with a token budget; shed or defer low-priority work during a simulated 10x failure spike",
+    "Retry advisor that suppresses retries when many jobs share one platform-level signature",
+    "Dashboard with queue lag, LLM calls per minute, cache hit rate, and accuracy on a held-out labeled set"
+   ],
+   "scope": "1-2 weeks",
+   "inspired_by": "https://netflixtechblog.com/making-failure-diagnosis-reliable-with-pensive-ai-6b0811a1c015?source=rss----2615bd06b42e---4"
+  },
+  {
+   "title": "Git-Backed Temporal Law Store with Point-in-Time Queries",
+   "pitch": "Ingest a git history in which every commit is a law taking effect, such as the global-law repo, into a bitemporal database. Then build an API that answers questions like 'what did country X's law say on date D?' and 'what changed between D1 and D2?', backed by a full-text plus temporal index you design yourself.",
    "stack": [
     "Rust or Go",
-    "liboqs / ML-KEM library",
-    "HPKE library",
-    "software TPM emulator (swtpm)"
+    "libgit2 (git2-rs / go-git)",
+    "PostgreSQL with range types and GiST indexes",
+    "Tantivy or Postgres full-text search",
+    "Axum or chi for the HTTP API"
    ],
    "you_will_learn": [
-    "Key hierarchies and blast-radius scoping (service/region/epoch)",
-    "Hybrid post-quantum key encapsulation in HPKE",
-    "Fail-closed security design and TPM-backed provisioning"
+    "Bitemporal modeling: valid time vs. transaction time",
+    "Range-type and GiST indexing for interval queries",
+    "Incremental ingestion from an append-only log (git commits as a change-data-capture stream)",
+    "Combining a full-text index with temporal filters, and the query planning involved",
+    "Handling submodules and sharded sources consistently"
    ],
    "milestones": [
-    "Implement an HPKE wrap/unwrap flow with X25519",
-    "Add ML-KEM-768 to make the KEM hybrid and verify interop",
-    "Build the region/epoch key hierarchy and enforce region-gated unwrap",
-    "Simulate a missing regional key and verify fail-closed behavior"
+    "Walk a git history (including submodules) and turn each commit into a change event with an effective date",
+    "Schema with a valid-time tstzrange per law section; load the events",
+    "Point-in-time query endpoint; use EXPLAIN ANALYZE to compare GiST against a naive btree",
+    "Diff endpoint between two dates built from section-level version chains",
+    "Full-text search scoped by date and country",
+    "Incremental sync that resumes from the last ingested commit and is idempotent on rerun"
    ],
-   "scope": "month",
-   "inspired_by": "https://blog.cloudflare.com/post-quantum-geo-key-manager/"
+   "scope": "1-2 weeks",
+   "inspired_by": "https://github.com/lexifina/global-law"
   }
  ],
  "trending": [
   {
-   "name": "pengchujin/aerial-tv",
-   "url": "https://github.com/pengchujin/aerial-tv",
-   "description": "给国产电视的一块干净桌面：参照 tvOS 设计的开源 Android TV 桌面，没有广告，开机自动接管。A tvOS-style launcher for Xiaomi, TCL and other China-market TVs.",
-   "language": "Kotlin",
-   "stars": 5629,
+   "name": "deepseek-ai/dsh-superagent-prototype",
+   "url": "https://github.com/deepseek-ai/dsh-superagent-prototype",
+   "description": "Towards a More Autonomous Agent System",
+   "language": "TypeScript",
+   "stars": 11047,
    "topics": []
   },
   {
-   "name": "JustAResearcher/gpu-unlock-ada",
-   "url": "https://github.com/JustAResearcher/gpu-unlock-ada",
-   "description": "GPU tensor unlock source for RTX 4090 and experimental RTX 4070 Ti SUPER; firmware generated locally",
-   "language": "C",
-   "stars": 3335,
-   "topics": []
-  },
-  {
-   "name": "wesbos/3d-model-anything",
-   "url": "https://github.com/wesbos/3d-model-anything",
-   "description": "Capture iPhone LiDAR and photos, reconstruct editable Three.js rooms, and explore them in a browser.",
-   "language": "Swift",
-   "stars": 1991,
-   "topics": []
-  },
-  {
-   "name": "xevrion/hatchzip",
-   "url": "https://github.com/xevrion/hatchzip",
-   "description": "HatchZip is a free, open-source archive extractor for Windows, macOS and Linux that extracts ZIP, 7z, RAR, tar and split archives in place, so it needs free space for the extracted files only. Desktop app and CLI.",
-   "language": "Rust",
-   "stars": 1987,
-   "topics": [
-    "7z",
-    "7zip",
-    "archive",
-    "archive-extractor",
-    "cli",
-    "crash-safe"
-   ]
-  },
-  {
-   "name": "ikow/php2shell-poc",
-   "url": "https://github.com/ikow/php2shell-poc",
-   "description": "CVE-2026-109618/109619 — 5 RCE chains + detection rules (Suricata, Sigma, ModSecurity). PHP session.upload_progress pre-auth exploit research.",
-   "language": "Python",
-   "stars": 1809,
-   "topics": [
-    "cve-2026-109618",
-    "cve-2026-109619",
-    "detection-rules",
-    "exploit",
-    "php-exploit",
-    "php-security"
-   ]
-  },
-  {
-   "name": "Jakeschincariol/day-trader-skill",
-   "url": "https://github.com/Jakeschincariol/day-trader-skill",
-   "description": "11 Claude skills for day trading: scan thousands of charts, track breaking news, time every entry and exit, and replay every outcome before you risk a dollar.",
-   "language": "Python",
-   "stars": 1796,
-   "topics": [
-    "backtesting",
-    "claude",
-    "claude-skills",
-    "day-trading",
-    "stock-market"
-   ]
-  },
-  {
-   "name": "oosexgang/hackios-xnu-kernel",
-   "url": "https://github.com/oosexgang/hackios-xnu-kernel",
-   "description": "",
-   "language": "C",
-   "stars": 1537,
-   "topics": []
-  },
-  {
-   "name": "9bie/php2shell-bypass-aslr-exp",
-   "url": "https://github.com/9bie/php2shell-bypass-aslr-exp",
-   "description": "A php2shell exploit that requires no modifications to the official version, and does not require display_errors or limit_memory.",
-   "language": "Python",
-   "stars": 1455,
-   "topics": []
-  },
-  {
-   "name": "openai/php2shell-checker",
-   "url": "https://github.com/openai/php2shell-checker",
-   "description": "",
+   "name": "heydamir/unslop",
+   "url": "https://github.com/heydamir/unslop",
+   "description": "A Claude skill that turns vibecoded, AI-looking UI into a designed interface",
    "language": "JavaScript",
-   "stars": 1406,
+   "stars": 5403,
    "topics": []
   },
   {
-   "name": "rddmwmddr/android-ad-cleaner",
-   "url": "https://github.com/rddmwmddr/android-ad-cleaner",
-   "description": "关掉国产安卓手机系统里的广告、热搜、资讯推荐和营销推送。不 root，可还原，支持 AI 智能体一键执行。",
-   "language": "Python",
-   "stars": 1279,
+   "name": "anhao/ai-pose-gallery-zh",
+   "url": "https://github.com/anhao/ai-pose-gallery-zh",
+   "description": "中文版 AI 姿势参考图库 · 1439 组 / 2878 张图片 / 完整汉化 · 零依赖静态画廊",
+   "language": "TypeScript",
+   "stars": 5378,
    "topics": [
-    "adb",
+    "ai-art",
+    "chinese",
+    "cloudflare-pages",
+    "gallery",
+    "i18n",
+    "pose"
+   ]
+  },
+  {
+   "name": "wangzan101/Mika",
+   "url": "https://github.com/wangzan101/Mika",
+   "description": "An on-device AI agent for Android that operates apps and the web to get things done for you.",
+   "language": "Kotlin",
+   "stars": 4790,
+   "topics": [
+    "accessibility",
     "ai-agent",
     "android",
-    "coloros",
-    "debloat",
-    "hyperos"
+    "automation",
+    "jetpack-compose",
+    "kotlin"
    ]
   },
   {
-   "name": "colinhacks/reylo",
-   "url": "https://github.com/colinhacks/reylo",
-   "description": "Import .sql files into TypeScript with full type inference and zero codegen.",
+   "name": "valentderah/totk-pc-recomp",
+   "url": "https://github.com/valentderah/totk-pc-recomp",
+   "description": "Static recompilation of The Legend of Zelda: Tears of the Kingdom to native Windows x86-64, with a Vulkan renderer. Game files not included.",
+   "language": "C",
+   "stars": 3523,
+   "topics": []
+  },
+  {
+   "name": "patch-gg/pixelfx",
+   "url": "https://github.com/patch-gg/pixelfx",
+   "description": "244 pixel art effects, every one a small piece of code. Plus a Claude Code skill to make your own.",
+   "language": "JavaScript",
+   "stars": 3161,
+   "topics": [
+    "agent-skills",
+    "animation",
+    "canvas",
+    "claude-code-plugin",
+    "gamedev",
+    "pixel-art"
+   ]
+  },
+  {
+   "name": "storytold/craft-anything",
+   "url": "https://github.com/storytold/craft-anything",
+   "description": "Craft Anything: understand how any software works, and craft your own.",
    "language": "Rust",
-   "stars": 1275,
+   "stars": 2255,
    "topics": []
   },
   {
-   "name": "designfuchen/word-atlas",
-   "url": "https://github.com/designfuchen/word-atlas",
-   "description": "词光 · 一词一画，点亮雅思 — 7,298 IELTS words, each with an original illustration, UK/US audio, 14,596 example sentences and FSRS review. Free, open source, no login. Dataset CC BY 4.0.",
-   "language": "TypeScript",
-   "stars": 1104,
-   "topics": [
-    "chinese",
-    "dataset",
-    "english-learning",
-    "flashcards",
-    "fsrs",
-    "ielts"
-   ]
-  },
-  {
-   "name": "eness/php2shell-CVE-2026-109618-CVE-2026-109619-PoC",
-   "url": "https://github.com/eness/php2shell-CVE-2026-109618-CVE-2026-109619-PoC",
-   "description": "Proof-of-Concept (PoC) exploit for php2shell (CVE-2026-109618 / CVE-2026-109619), demonstrating remote code execution in vulnerable PHP environments. For security research and educational purposes only.",
-   "language": "Shell",
-   "stars": 1012,
+   "name": "Djihads80/Eglantine",
+   "url": "https://github.com/Djihads80/Eglantine",
+   "description": "VERY experimental Nintendo Switch 2 emulator",
+   "language": "C++",
+   "stars": 2190,
    "topics": []
   },
   {
-   "name": "eagle-hq/EAGLE-4",
-   "url": "https://github.com/eagle-hq/EAGLE-4",
-   "description": "Official Inference Code of EAGLE-4",
-   "language": "Python",
-   "stars": 998,
-   "topics": [
-    "eagle",
-    "gpu",
-    "llm-inference",
-    "sglang",
-    "speculative-decoding",
-    "tokenspeed"
-   ]
-  },
-  {
-   "name": "Snapintosh/Snapintosh",
-   "url": "https://github.com/Snapintosh/Snapintosh",
-   "description": "EL2 hypervisor and toolchain that boots macOS on the ASUS A16 (Snapdragon X2 Elite), with an Adreno Metal/IOGPU stack",
-   "language": "Python",
-   "stars": 958,
+   "name": "paipiange/nvzhuang",
+   "url": "https://github.com/paipiange/nvzhuang",
+   "description": "1407 张 AI 女装参考图集与虚拟试穿网站，支持中英检索、OpenAI Images / Gemini / 豆包及自定义 Base URL、API Key、模型。https://github.com/paipiange/nvzhuang",
+   "language": "Go",
+   "stars": 2017,
    "topics": []
   },
   {
-   "name": "lyramakesmusic/neuron-explorer",
-   "url": "https://github.com/lyramakesmusic/neuron-explorer",
-   "description": "Steering-first neuron explorer for Qwen3.5-4B: push every MLP neuron, keep every rollout, browse the results",
-   "language": "Python",
-   "stars": 954,
+   "name": "haydenschmitty/floorplan",
+   "url": "https://github.com/haydenschmitty/floorplan",
+   "description": "See how your app actually fits together. An interactive, plain-English map of your codebase, drawn by Claude or Codex.",
+   "language": "JavaScript",
+   "stars": 2012,
    "topics": [
-    "interpretability",
-    "mechanistic-interpretability",
-    "qwen",
-    "steering"
-   ]
-  },
-  {
-   "name": "morganlinton/BeautifulRust",
-   "url": "https://github.com/morganlinton/BeautifulRust",
-   "description": "A Claude Code plugin that teaches Claude to write idiomatic, robust Rust",
-   "language": "Python",
-   "stars": 935,
-   "topics": [
+    "ai-coding",
+    "architecture-diagram",
+    "claude",
     "claude-code",
-    "claude-plugin",
-    "claude-skills",
-    "coding-agent",
-    "rust",
-    "style-guide"
+    "claude-code-plugin",
+    "codebase-visualization"
    ]
   },
   {
-   "name": "assetnote/php2shell-scanner",
-   "url": "https://github.com/assetnote/php2shell-scanner",
-   "description": "High fidelity scanner for php2shell (CVE-2026-109618 and CVE-2026-109619)",
-   "language": "Python",
-   "stars": 912,
+   "name": "aschmelyun/print-my-profile-pic",
+   "url": "https://github.com/aschmelyun/print-my-profile-pic",
+   "description": "Say cheese! Star this repo and your profile picture gets printed out on a receipt printer.",
+   "language": "",
+   "stars": 1719,
    "topics": []
   },
   {
-   "name": "NVIDIA/flare-local-inference",
-   "url": "https://github.com/NVIDIA/flare-local-inference",
-   "description": "",
-   "language": "Python",
-   "stars": 664,
+   "name": "lexifina/global-law",
+   "url": "https://github.com/lexifina/global-law",
+   "description": "Git for Global Law: the law of every country as one git history, each country's record a submodule, every commit one law taking effect",
+   "language": "HTML",
+   "stars": 1643,
    "topics": []
   },
   {
-   "name": "udhaykumarbala/cleanyourtv-app",
-   "url": "https://github.com/udhaykumarbala/cleanyourtv-app",
-   "description": "A community-built phone app for Clean Your TV: clean up an Android TV from your phone. No laptop, no coding agent, nothing uninstalled.",
+   "name": "BryceYuuu/RUN",
+   "url": "https://github.com/BryceYuuu/RUN",
+   "description": "RUN · 润：海外移居手册（欧洲 36 国 · 110 条路线 · 主要移民地区）",
+   "language": "Python",
+   "stars": 1408,
+   "topics": []
+  },
+  {
+   "name": "smithjohn78390/tongjiang-lab",
+   "url": "https://github.com/smithjohn78390/tongjiang-lab",
+   "description": "Free interactive 3D science lessons for high school · 铜匠实验室 · https://lab.tongjiang.app",
+   "language": "HTML",
+   "stars": 1394,
+   "topics": [
+    "3d",
+    "biology",
+    "chemistry",
+    "education",
+    "geography",
+    "high-school"
+   ]
+  },
+  {
+   "name": "kevinraymond/florilegium",
+   "url": "https://github.com/kevinraymond/florilegium",
+   "description": "Procedurally generated Delft-blue floral page margins for LuaLaTeX, drawn in Lua",
+   "language": "Lua",
+   "stars": 1332,
+   "topics": [
+    "generative-art",
+    "latex",
+    "latex-package",
+    "lua",
+    "lualatex",
+    "postscript"
+   ]
+  },
+  {
+   "name": "Arjun-Ingole/hop",
+   "url": "https://github.com/Arjun-Ingole/hop",
+   "description": "Install Linux next to Windows without a USB stick",
+   "language": "PowerShell",
+   "stars": 1305,
+   "topics": []
+  },
+  {
+   "name": "elvarofficial/teardown",
+   "url": "https://github.com/elvarofficial/teardown",
+   "description": "A Claude Code skill that turns any machine into a 3D simulator you can take apart",
+   "language": "JavaScript",
+   "stars": 1102,
+   "topics": []
+  },
+  {
+   "name": "modelflare-ai/AnyModelBot",
+   "url": "https://github.com/modelflare-ai/AnyModelBot",
+   "description": "🤖 Open-source, local-first alternative to Grok Bot, OpenAI dots and Claude Duet. Your own AI bots on any model: GPT, Claude, Gemini, Grok, DeepSeek, Kimi, GLM and 70+ more through one Modelflare key. Reach them in the app, WeChat or Feishu; they remember you, work in the background, run commands and use your computer. Pay per use.",
+   "language": "TypeScript",
+   "stars": 1096,
+   "topics": [
+    "ai-agent",
+    "ai-assistant",
+    "chatbot",
+    "claude",
+    "computer-use",
+    "deepseek"
+   ]
+  },
+  {
+   "name": "HRuiCcc/RuiC-PoseAtlas",
+   "url": "https://github.com/HRuiCcc/RuiC-PoseAtlas",
+   "description": "RuiC-PoseAtlas｜姿态 + 衣装双图鉴：288 组人体姿态 × 5 视角 × 1,439 张人台线稿，加 1,407 套无人物衣装 × 8 分类 × 86 个三语标签。中/英/日切换、搜索筛选、键盘浏览、原图下载，纯静态零依赖。",
+   "language": "JavaScript",
+   "stars": 1025,
+   "topics": [
+    "3d-modeling",
+    "ai-art",
+    "art-reference",
+    "gallery",
+    "photography",
+    "pose-reference"
+   ]
+  },
+  {
+   "name": "caru-ini/stack-diagram",
+   "url": "https://github.com/caru-ini/stack-diagram",
+   "description": "Agent skill: describe your stack in a sentence, get an architecture diagram with official logos",
+   "language": "TypeScript",
+   "stars": 847,
+   "topics": [
+    "agent-skills",
+    "architecture-diagram",
+    "claude-code",
+    "claude-skills",
+    "codex",
+    "diagram"
+   ]
+  },
+  {
+   "name": "jacke-pp/open-yoki",
+   "url": "https://github.com/jacke-pp/open-yoki",
+   "description": "An AI live-stream host that runs on one server: voice, face, chat, memory, posts. The base yoki runs on. By Jacke_pp · contact: DM @Jacke_pp on X",
+   "language": "JavaScript",
+   "stars": 830,
+   "topics": []
+  },
+  {
+   "name": "Verlintas/NOIR",
+   "url": "https://github.com/Verlintas/NOIR",
+   "description": "手机隐私审计：用 adb 扫出 Android 应用的权限、上报端点与数据流向，并给出可回滚的处置。Desktop Android leak audit: permissions, endpoints, data flows, reversible fixes.",
    "language": "Kotlin",
-   "stars": 658,
+   "stars": 823,
    "topics": [
     "adb",
-    "android-tv",
-    "debloat",
-    "fire-tv",
-    "google-tv",
-    "launcher"
+    "android",
+    "android-privacy",
+    "android-security",
+    "android-tools",
+    "apk-analysis"
    ]
   },
   {
-   "name": "enesozturk/dimensional-drawing",
-   "url": "https://github.com/enesozturk/dimensional-drawing",
-   "description": "",
-   "language": "HTML",
-   "stars": 654,
-   "topics": []
-  },
-  {
-   "name": "mizorewww/gdirect",
-   "url": "https://github.com/mizorewww/gdirect",
-   "description": "Rust Google Drive direct downloader using pinned libaria2",
-   "language": "Rust",
-   "stars": 652,
-   "topics": []
-  },
-  {
-   "name": "dominikmartn/harp",
-   "url": "https://github.com/dominikmartn/harp",
-   "description": "Run many Claude Code and Codex agents side by side, in one sidebar that tells you which one needs you. An unofficial fork of Warp.",
-   "language": "Rust",
-   "stars": 630,
-   "topics": []
-  },
-  {
-   "name": "nthnclrk/CleanFrame",
-   "url": "https://github.com/nthnclrk/CleanFrame",
-   "description": "A personal home screen for Samsung The Frame. A starting point to fork and adapt.",
+   "name": "NiazMorshed2007/reanimate",
+   "url": "https://github.com/NiazMorshed2007/reanimate",
+   "description": "A Claude Code skill that reverse-engineers any animation frame by frame, then proves the copy moves the same.",
    "language": "JavaScript",
-   "stars": 629,
-   "topics": []
+   "stars": 815,
+   "topics": [
+    "agent-skills",
+    "animation",
+    "claude-code",
+    "claude-skills",
+    "frontend",
+    "motion"
+   ]
   },
   {
-   "name": "torrentplayer/torrentplayer",
-   "url": "https://github.com/torrentplayer/torrentplayer",
-   "description": "Stream any torrent, video or audio, and skip to any moment in about a second. Free, open-source desktop app for Windows, macOS and Linux. No servers, no accounts, no telemetry.",
-   "language": "Rust",
-   "stars": 622,
+   "name": "OpenBMB/MiniCPM-OCR",
+   "url": "https://github.com/OpenBMB/MiniCPM-OCR",
+   "description": "Fast, accurate OCR with correctness assessment.",
+   "language": "TypeScript",
+   "stars": 761,
    "topics": [
-    "audio-player",
-    "bittorrent",
-    "cross-platform",
-    "desktop-app",
-    "media-player",
-    "p2p"
+    "image2text",
+    "minicpm-v",
+    "ocr"
+   ]
+  },
+  {
+   "name": "jackwener/DSH-Android",
+   "url": "https://github.com/jackwener/DSH-Android",
+   "description": "免 ROOT 免 Termux，一个 APK 在安卓手机上跑 DeepSeek Harness。引擎内嵌 App 进程 · 读屏操作 App · 改系统设置 · 定时/条件自动化 · 可选 Shizuku",
+   "language": "Kotlin",
+   "stars": 739,
+   "topics": [
+    "ai-agent",
+    "android",
+    "deepseek",
+    "deepseek-harness",
+    "llm",
+    "phone-agent"
    ]
   }
  ]
