@@ -215,5 +215,219 @@
   ],
   "url": "https://netflixtechblog.com/multi-ratio-video-resizing-for-mobile-feed-and-marketing-2e6b42810f49?source=rss----2615bd06b42e---4",
   "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "dab63348f0c77269",
+  "kind": "deep-dive",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-11-06T14:00:00+00:00",
+  "quality": 8,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Cloudflare explains how Privacy Pass and its successor MOLE (issuer-hiding endorsements and credentials) can move to post-quantum cryptography. It covers why token privacy already survives quantum attacks while unforgeability does not, and introduces VOLE-in-the-Head zero-knowledge proofs, MQ-based signatures like KuMQuat and UOV, and the tradeoffs in signature size and composability.",
+  "title": "The post-quantum future of web privacy",
+  "topics": [
+   "security",
+   "networking",
+   "distributed-systems"
+  ],
+  "url": "https://blog.cloudflare.com/vole-mole/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "13e4297a454eda82",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-05T14:00:00+00:00",
+  "quality": 8,
+  "source": "Dropbox Tech",
+  "source_type": "rss",
+  "summary": "Dropbox describes the architecture behind its file-acting AI agent. The agent runs in per-conversation QEMU snapshot-restored VMs that come up in milliseconds and reach Dropbox files through rclone. Permission checks and credential injection sit in a host-side proxy outside the VM, and the piece also covers the Codex App Server JSON-RPC protocol (threads/turns/items), harness adapters, plan approval, and version-history rollback.",
+  "title": "How two engineer side projects became the agent taking action inside Dropbox",
+  "topics": [
+   "ai-engineering",
+   "security",
+   "system-design",
+   "infrastructure"
+  ],
+  "url": "https://dropbox.tech/machine-learning/how-two-engineer-side-projects-became-the-agent-taking-action-inside-dropbox",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "f655e020e8464ce4",
+  "kind": "deep-dive",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-11-08T21:06:06+00:00",
+  "quality": 8,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "Describes building a Virtio-FS driver for Redox OS and porting it to boot on Cloud Hypervisor, including an explanation of how hardware virtualization, nested paging, and VirtIO devices work. Walks through concrete bugs encountered, such as legacy 8259 interrupt routing and a missing PIT/HPET timer that broke sleeps and preemption, fixed by using the local APIC TSC-deadline timer.",
+  "title": "Virtualized Redox: from Virtio-FS to Cloud Hypervisor, and beyond",
+  "topics": [
+   "infrastructure",
+   "programming-languages",
+   "security"
+  ],
+  "url": "https://www.redox-os.org/news/virtualized-redox/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "e3d8f84b72b0d817",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-05T16:31:07+00:00",
+  "quality": 7,
+  "source": "ByteByteGo",
+  "source_type": "rss",
+  "summary": "Explains read, write, and space amplification as the gap between logical database requests and the physical storage work they trigger. Compares how B-trees and LSM trees trade off these amplifications, and covers how indexes, Bloom filters, compression, and caching affect them. The provided text is only the introduction and outline, so how deep the full article goes is unclear.",
+  "title": "The Hidden Work Behind Every Database Request",
+  "topics": [
+   "databases",
+   "performance",
+   "system-design"
+  ],
+  "url": "https://blog.bytebytego.com/p/the-hidden-work-behind-every-database",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "7fb652c9ef37fd7e",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-05T15:58:00+00:00",
+  "quality": 7,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Podcast episode notes with Maude Lemaire covering scaling challenges at Slack and GitHub: thundering herds from emoji reactions in huge channels, event floods for power users, building the Koi Pond load-testing tool for 500k WebSocket connections, and how ActiveRecord-driven scatter queries capped GitHub at 16 shards. It also touches on using AI for foundational work and rotating platform and product engineers.",
+  "title": "Scaling Slack and GitHub with Maude Lemaire",
+  "topics": [
+   "scalability",
+   "performance",
+   "databases",
+   "distributed-systems"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/scaling-slack-and-github-with-maude",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "4d44cd91cc18561d",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-05T14:11:00+00:00",
+  "quality": 7,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "Applies the CNCF Platform Engineering Maturity Model to self-service platforms for data mesh and data products, using domain storytelling to contrast provisional, operational, scalable, and optimizing levels. It explains the 'platform gap' between data product/contract concepts and underlying tools like Spark, Iceberg, and S3, and why ticketing and IaC scripts alone still leave developers gluing components together.",
+  "title": "The Data Product Platform Navigator",
+  "topics": [
+   "data-engineering",
+   "infrastructure",
+   "system-design"
+  ],
+  "url": "https://martinfowler.com/articles/data-product-platform-nav.html",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "e1491c4239ea20a0",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-11-03T17:00:35+00:00",
+  "quality": 8,
+  "source": "Meta Engineering",
+  "source_type": "rss",
+  "summary": "Meta describes F3 Lightning, which decouples per-feature releases of ads ML features from a single merged compute graph while keeping shared execution efficiency. It covers content-derived stable identifiers for deduplicating computation, building a single flattened execution plan at startup with failure isolation, a shared per-request memory buffer for cache locality, and dense index mapping to remove hash lookups. The result is ~3.6x faster time-to-production with no added compute cost.",
+  "title": "F3 Lightning: How Meta Accelerates Ads ML Features to Production at Scale",
+  "topics": [
+   "system-design",
+   "performance",
+   "ai-engineering",
+   "backend"
+  ],
+  "url": "https://engineering.fb.com/2026/11/03/ml-applications/f3-lightning-how-meta-accelerates-ads-ml-features-to-production/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "65bf7a9e9f17dc12",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-05T17:03:04+00:00",
+  "quality": 7,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Cloudflare argues that remotely hosted AI agents act as intermediaries that strip websites of the identity, reputation, and accountability signals they use for fraud prevention, monetization, and compliance. It catalogs concrete problems such as friendly fraud, traffic commingling, broken risk-based auth, and account sharing. It also explains why human-in-the-loop CAPTCHAs and scoped permissions fail to solve them, and proposes the principle that the user–site relationship must survive intermediation.",
+  "title": "Agents aren’t humans (but they kinda are)",
+  "topics": [
+   "security",
+   "ai-engineering",
+   "system-design"
+  ],
+  "url": "https://blog.cloudflare.com/trusted-agent-delegation/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "bc11980cf062197d",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-11-06T16:01:03+00:00",
+  "quality": 7,
+  "source": "Pinterest Engineering",
+  "source_type": "rss",
+  "summary": "Pinterest engineers describe how they pre-train large ID embedding tables and fine-tune them inside the Homefeed ranking model. The focus is on making multi-epoch training safe, meaning it avoids the overfitting that is typical when ID embeddings see the same data repeatedly, while keeping the infrastructure efficient. The excerpt is truncated, so how deep the detail goes is uncertain.",
+  "title": "Safe and Efficient Multi-Epoch Embedding Training",
+  "topics": [
+   "ai-engineering",
+   "infrastructure",
+   "scalability"
+  ],
+  "url": "https://medium.com/pinterest-engineering/safe-and-efficient-multi-epoch-embedding-training-103bec2abc83?source=rss----4c5a5f6279b6---4",
+  "weight": 1.1
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-09T11:45:20+00:00",
+  "id": "2c0a2462d59ebfba",
+  "kind": "paper",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-11-09T05:00:00+00:00",
+  "quality": 7,
+  "source": "arXiv cs.DC",
+  "source_type": "rss",
+  "summary": "Presents AutoParallel, a PyTorch-native planner that jointly searches parallelization strategies (data, tensor, pipeline, expert) for distributed training and emits ordinary PyTorch programs that compose with the compile stack and user-written distributed code. On dense, hybrid and MoE models across up to 128 H100s, it matches or beats expert TorchTitan recipes by up to 18.3% throughput and finds plans that hand-written recipes don't express.",
+  "title": "AutoParallel: Composable, PyTorch-Native Automatic Parallelism for Production Training",
+  "topics": [
+   "distributed-systems",
+   "ai-engineering",
+   "performance",
+   "scalability"
+  ],
+  "url": "https://arxiv.org/abs/2611.08660",
+  "weight": 0.9
  }
 ]
