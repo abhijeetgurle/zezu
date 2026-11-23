@@ -641,5 +641,219 @@
   ],
   "url": "https://newsletter.pragmaticengineer.com/p/the-pulse-what-can-we-learn-from-114",
   "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "1e6b15e0e8457b12",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-18T14:02:00+00:00",
+  "quality": 8,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "Explains data contracts as API-style interface definitions for datasets, using the Open Data Contract Standard (ODCS) YAML format to specify schema, semantics, quality rules, SLAs, and terms of use. Covers the defining properties of a contract (machine-readable, verifiable, versioned, provider-driven) and why explicit metadata matters for AI agents that consume data autonomously.",
+  "title": "Data Contracts",
+  "topics": [
+   "data-engineering",
+   "databases",
+   "ai-engineering",
+   "system-design"
+  ],
+  "url": "https://martinfowler.com/articles/data-contracts.html",
+  "weight": 1.3
+ },
+ {
+  "discussion": "https://news.ycombinator.com/item?id=50572503",
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "0000282282406879",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 682,
+  "published": "2026-11-20T10:01:41+00:00",
+  "quality": 7,
+  "source": "Hacker News",
+  "source_type": "hackernews",
+  "summary": "Describes Frostbite, a CPU architecture based on interaction nets, designed end-to-end by AI agent swarms from ISA through RTL to GDS, claiming 4.59x perf/W over an in-order superscalar core. Explains why interaction nets expose parallelism and locality, and how a formal spec language (ASL, lowered to Lean) served as the single source of truth with a fast system model calibrated against RTL power. Partly a company showcase, but contains real detail on agent-driven hardware design methodology.",
+  "title": "Frostbite: A new CPU architecture discovered, designed and verified by AI",
+  "topics": [
+   "ai-engineering",
+   "performance",
+   "programming-languages"
+  ],
+  "url": "https://architectlabs.com/blog/frostbite",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "f93ea93941f60201",
+  "kind": "news",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-20T20:24:38+00:00",
+  "quality": 7,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Explains a Ruby heap buffer overflow in string case conversion for legacy single-byte encodings (German sharp s uppercasing to SS), and how Rack's MethodOverride middleware makes default Rails and Sinatra apps reachable before authentication. Also covers the affected versions, the limits of WAF mitigation such as origin bypass and non-HTTP entry points, and the steps to patch.",
+  "title": "How Cloudflare WAF protects against ruby2shell (CVE-2026-132825)",
+  "topics": [
+   "security",
+   "backend",
+   "infrastructure"
+  ],
+  "url": "https://blog.cloudflare.com/ruby2shell-waf-protection/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "f7bfd04d60285012",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-18T18:08:52+00:00",
+  "quality": 7,
+  "source": "The Pragmatic Engineer",
+  "source_type": "rss",
+  "summary": "Podcast episode notes with CodeRabbit CEO Harjot Gill on running AI agent 'software factories', shipping thousands of PRs monthly at high AI spend. Covers verification layers for agents (TLA+/Lean, deterministic simulation, API emulation, staged rollouts with agent monitoring), replacing per-PR human review with release-level review and a strike-based review-exempt system, and hiring and cost tradeoffs.",
+  "title": "Software factories and code reviews with Harjot Gill",
+  "topics": [
+   "ai-engineering",
+   "testing",
+   "reliability",
+   "career"
+  ],
+  "url": "https://newsletter.pragmaticengineer.com/p/software-factories-and-code-reviews",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "ff4da9032d2d0257",
+  "kind": "deep-dive",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-20T01:58:29+00:00",
+  "quality": 7,
+  "source": "Cloudflare Blog",
+  "source_type": "rss",
+  "summary": "Explains five nginx memory-corruption vulnerabilities (HTTP/2 integer overflow, HTTP/3, resolver, mail proxy use-after-frees) plus a related Linux SCTP privilege-escalation bug, and why terminating HTTP/2/3 at a reverse proxy shields origins from protocol-level attacks. Covers where that protection stops, how to lock origins to the proxy, and concrete patching and mitigation steps.",
+  "title": "nginx2root: Five new nginx vulnerabilities, and how Cloudflare protects origins from the worst of them",
+  "topics": [
+   "security",
+   "networking",
+   "infrastructure"
+  ],
+  "url": "https://blog.cloudflare.com/nginx2root/",
+  "weight": 1.2
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "62598cad61e434bd",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-11-20T18:49:05+00:00",
+  "quality": 8,
+  "source": "AWS Architecture Blog",
+  "source_type": "rss",
+  "summary": "Describes how Bee built a zero-operator-access architecture on AWS using NitroTPM-based EC2 instance attestation, measured boot extended to containers and model weights via PCR14, and a public Sigstore Rekor transparency log. Clients release short-lived, in-memory-only encryption keys only to instances whose attestation, embedded in TLS certificates, checks out. The post also covers the controls attestation can't measure: network isolation, ephemeral storage, and separation of duties enforced with SCPs.",
+  "title": "How Bee implemented Zero Operator Access for personal AI on AWS",
+  "topics": [
+   "security",
+   "system-design",
+   "infrastructure",
+   "ai-engineering"
+  ],
+  "url": "https://aws.amazon.com/blogs/architecture/how-bee-implemented-zero-operator-access-for-personal-ai-on-aws/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "9dc9285371a95c0c",
+  "kind": "case-study",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-17T17:01:02+00:00",
+  "quality": 7,
+  "source": "Netflix Tech Blog",
+  "source_type": "rss",
+  "summary": "Netflix engineers describe the intelligence layer behind AI Discover, a TV app tab that offers steerable, theme-based recommendations with explanations and narrower follow-up themes. The post covers how they used generative AI while keeping latency, reliability and safety acceptable on TV devices. The excerpt is truncated, so the depth of the architectural details is not visible.",
+  "title": "Engineering AI Discover",
+  "topics": [
+   "ai-engineering",
+   "system-design",
+   "performance",
+   "reliability"
+  ],
+  "url": "https://netflixtechblog.com/engineering-ai-discover-e244944cdc38?source=rss----2615bd06b42e---4",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "7c0fb66e77256ee4",
+  "kind": "opinion",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-20T18:38:00+00:00",
+  "quality": 6,
+  "source": "Martin Fowler",
+  "source_type": "rss",
+  "summary": "A link-roundup from Martin Fowler covering an experiment showing healthier code reduces agent review costs by 22-35%, Steve Yegge on pacing AI software factories to human speed, and Chad Fowler's vision of SaaS as a slow-changing platform layer under customer-specific agent-built apps. Also includes off-topic items on Nvidia leadership, AI corrigibility, and Meta's agent suing Meta.",
+  "title": "Fragments: November 20",
+  "topics": [
+   "ai-engineering",
+   "system-design"
+  ],
+  "url": "https://martinfowler.com/fragments/2026-11-20.html",
+  "weight": 1.3
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "abe4c1951f795f1a",
+  "kind": "tutorial",
+  "level": "intermediate",
+  "popularity": 0,
+  "published": "2026-11-22T21:44:04+00:00",
+  "quality": 7,
+  "source": "Lobsters",
+  "source_type": "rss",
+  "summary": "Walks through using AWS's Emulator (a local emulation of AWS API endpoints) to test Terraform applies before running against real infrastructure, catching errors that terraform plan misses. Covers provider configuration for redirecting endpoints, running the emulator in Docker locally, and a GitHub Actions workflow with signature checks and CA bundle setup.",
+  "title": "Testing Terraform with AWS Emulator",
+  "topics": [
+   "infrastructure",
+   "testing"
+  ],
+  "url": "https://notes.hatedabamboo.me/terraform-tests-with-aws-emulator/",
+  "weight": 1.0
+ },
+ {
+  "enriched_by": "claude",
+  "fetched": "2026-11-23T13:05:41+00:00",
+  "id": "9e6e8f1a36f07820",
+  "kind": "case-study",
+  "level": "advanced",
+  "popularity": 0,
+  "published": "2026-11-20T01:10:14+00:00",
+  "quality": 8,
+  "source": "AWS Architecture Blog",
+  "source_type": "rss",
+  "summary": "Describes how Cognition built per-session macOS VMs for its Devin coding agent on EC2 Mac Dedicated Hosts using Apple's Virtualization framework. Covers disk snapshotting via an NBD frontend to S3, a user-space Ethernet gateway for per-session network policy enforcement, pre-baked guest images that avoid permission dialogs, low-latency live video streaming, and use of the accessibility tree instead of screenshots for agent control.",
+  "title": "AI coding agents on Amazon EC2 Mac: How Cognition scales Devin for macOS",
+  "topics": [
+   "infrastructure",
+   "ai-engineering",
+   "system-design",
+   "networking"
+  ],
+  "url": "https://aws.amazon.com/blogs/architecture/ai-coding-agents-on-amazon-ec2-mac-how-cognition-scales-devin-for-macos/",
+  "weight": 1.0
  }
 ]
